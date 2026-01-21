@@ -5,6 +5,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
+console.log('isProduction:', isProduction) // 调试用，确保正确输出环境变量
 
 module.exports = {
   entry: './main.js',

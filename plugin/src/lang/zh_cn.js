@@ -30,7 +30,7 @@ export default {
     associativeLineColor: '颜色',
     associativeLineActiveWidth: '激活粗细',
     associativeLineActiveColor: '激活颜色',
-    rootStyle: '根节点',
+    rootStyle: '根节点连线风格',
     associativeLineText: '关联线文字',
     fontFamily: '字体',
     fontSize: '字号',
@@ -61,9 +61,6 @@ export default {
     activeOnly: '只激活新节点，不进入编辑',
     openRealtimeRenderOnNodeTextEdit: '开启文本编辑实时渲染效果',
     isShowScrollbar: '显示滚动条',
-    isUseHandDrawnLikeStyle: '开启手绘风格',
-    isUseMomentum: '开启拖动画布的动量效果',
-    isUseSameNodeAlign: '开启同级节点对齐',
     openBlankMode: '开启演示模式的填空功能',
     watermark: '水印',
     showWatermark: '显示水印',
@@ -86,26 +83,35 @@ export default {
       '该操作会清空所有历史修改记录，并且修改思维导图数据，是否继续？',
     changeRichTextTip2: '是否切换为富文本模式？',
     changeRichTextTip3: '是否切换为非富文本模式？',
-    enableDragImport: '允许直接拖拽文件到页面进行导入',
     imgTextMargin: '节点图片和文本间隔',
     textContentMargin: '节点各种内容间隔',
-    enableAi: '显示AI功能入口',
     isShowBottomToolbar: '显示底部工具栏',
     rootEnableUnExpand: '根节点允许收起下级',
     settingConfig: '思绪思维导图设置',
     title1: '节点',
     title2: '编辑',
     title3: '显示',
-    title4: '其他'
+    title4: '其他',
+    sameNodeAlignInitWidth: '同级节点对齐初始宽度',
+    enableFreeDragTip:
+      '关闭设置后，如果要恢复默认布局，请点击画布右键菜单-【一键整理布局】',
+    isUseSameNodeAlignTip1:
+      '1.节点编辑后宽度不会自动对齐，需手动点击画布右键菜单-【一键同级节点对齐】',
+    isUseSameNodeAlignTip2:
+      '2.关闭设置后，如果要恢复默认宽度，请点击画布右键菜单-【一键去除所有节点自定义宽度】',
+    openRealtimeRenderOnNodeTextEditTip:
+      '开启后可能会导致性能下降，建议在节点数量比较多时关闭',
+    openPerformanceTip: '如果节点数量比较多，可以尝试开启性能模式加快渲染'
   },
   color: {
     moreColor: '更多颜色'
   },
   contextmenu: {
-    insertSiblingNode: '插入同级节点',
-    insertChildNode: '插入子级节点',
-    insertParentNode: '插入父节点',
-    insertSummary: '插入概要',
+    insertNode: '插入节点',
+    insertSiblingNode: '同级节点',
+    insertChildNode: '子节点',
+    insertParentNode: '父节点',
+    insertSummary: '概要',
     moveUpNode: '上移节点',
     moveDownNode: '下移节点',
     deleteNode: '删除节点',
@@ -153,7 +159,8 @@ export default {
     removeCustomWidth: '去除自定义宽度',
     copyAsInternalUrl: '复制为ob内链',
     removeAllCustomWidth: '一键去除所有节点自定义宽度',
-    download: '下载到本地'
+    download: '下载到本地',
+    copyNodeToTxt: '复制为纯文本'
   },
   count: {
     words: '字数',
@@ -212,7 +219,10 @@ export default {
     mdPlaceholder: '请输入Markdown格式的内容',
     mdEmptyTip: '内容不能为空',
     mdImportFailTip: '导入失败，没有解析到可导入内容。只支持标题、列表等语法',
-    rootNodeName: '根节点'
+    rootNodeName: '根节点',
+    importTip: '其中.mm、.xlsx会员可用',
+    dragTip: '拖动仓库或电脑本地文件到此',
+    warningTip: '注意：导入会覆盖现有内容，且无法恢复，请先做好备份！'
   },
   navigatorToolbar: {
     openMiniMap: '开启小地图',
@@ -273,7 +283,8 @@ export default {
   },
   nodeTag: {
     title: '标签',
-    addTip: '请按回车键添加，最多可添加五个标签'
+    addTip: '请按回车键添加，最多可添加五个标签',
+    add: '添加'
   },
   outline: {
     title: '大纲',
@@ -281,7 +292,7 @@ export default {
     print: '打印',
     fullscreen: '全屏',
     tip1: '插入兄弟节点：',
-    tip2: '插入子节点：',
+    tip2: '节点下移层级：',
     tip3: '节点上移层级：',
     tip4: '删除节点：',
     tip5: '按住节点可拖拽'
@@ -291,8 +302,7 @@ export default {
     zoomOut: '缩小'
   },
   shortcutKey: {
-    title: '快捷键',
-    tip: '其他操作请通过命令，也可自行设置命令的快捷键'
+    title: '快捷键'
   },
   strusture: {
     title: '结构'
@@ -425,7 +435,10 @@ export default {
     defaultGeneralizationText: '概要',
     defaultAssociativeLineText: '关联',
     defaultOuterFrameText: '外框',
-    pasteImage: '粘贴图片'
+    pasteImage: '粘贴图片',
+    notSplit: '不分割',
+    keepLevel: '保留层级',
+    ignoreLevel: '忽略层级'
   },
   mouseAction: {
     tip1: '当前：左键拖动画布，右键框选节点。点击可切换',
@@ -480,15 +493,6 @@ export default {
   attachment: {
     deleteAttachment: '删除附件',
     tip: '附件功能仅在客户端可用'
-  },
-  annotation: {
-    mark: '标记',
-    show: '显示标记',
-    type: '类型',
-    color: '颜色',
-    lineWidth: '线宽',
-    padding: '内边距',
-    animate: '开启动画'
   },
   nodeOuterFrame: {
     nodeOuterFrameStyle: '外框样式',

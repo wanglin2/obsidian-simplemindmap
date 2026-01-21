@@ -1,4 +1,5 @@
-// 字型列表
+import { checkIsMac } from '@/utils/index.js'
+
 export const fontFamilyList = [
   {
     name: '宋體',
@@ -54,7 +55,6 @@ export const fontFamilyList = [
   }
 ]
 
-// 框線樣式
 export const borderDasharrayList = [
   {
     name: '實線',
@@ -90,7 +90,6 @@ export const borderDasharrayList = [
   }
 ]
 
-// 連線樣式
 export const lineStyleList = [
   {
     name: '直線',
@@ -101,12 +100,15 @@ export const lineStyleList = [
     value: 'curve'
   },
   {
+    name: '曲線2',
+    value: 'curve2'
+  },
+  {
     name: '直接連線',
     value: 'direct'
   }
 ]
 
-// 曲線樣式中，根節點樣式是否和其他節點保持一致
 export const rootLineKeepSameInCurveList = [
   {
     name: '括號',
@@ -118,7 +120,17 @@ export const rootLineKeepSameInCurveList = [
   }
 ]
 
-// 圖片重複方式
+export const rootLineKeepSameInCurveList2 = [
+  {
+    name: '括號',
+    value: true
+  },
+  {
+    name: '大括號',
+    value: false
+  }
+]
+
 export const backgroundRepeatList = [
   {
     name: '不重複',
@@ -138,7 +150,6 @@ export const backgroundRepeatList = [
   }
 ]
 
-// 背景圖片位置
 export const backgroundPositionList = [
   {
     name: '預設',
@@ -182,12 +193,11 @@ export const backgroundPositionList = [
   }
 ]
 
-const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0
+const isMac = checkIsMac()
 const ctrl = isMac ? '⌘' : 'Ctrl'
 const enter = isMac ? 'Return' : 'Enter'
 const macFn = isMac ? 'fn + ' : ''
 
-// 背景圖片大小
 export const backgroundSizeList = [
   {
     name: '自動',
@@ -203,15 +213,159 @@ export const backgroundSizeList = [
   }
 ]
 
-// 快捷鍵列表
 export const shortcutKeyList = [
+  {
+    type: 'Obsidian特有',
+    list: [
+      {
+        icon: 'iconbaocun',
+        name: '保存並更新影像數據',
+        value: `${ctrl} + Shfit + S`
+      },
+      {
+        icon: 'iconxinbiaoqianyedakai',
+        name: '新標籤頁打開超連結',
+        value: `${ctrl} + 左鍵`
+      }
+    ]
+  },
   {
     type: '節點操作',
     list: [
       {
+        icon: 'icontianjiazijiedian',
+        name: '插入子節點',
+        value: 'Tab | Insert'
+      },
+      {
+        icon: 'iconjiedian',
+        name: '插入同層節點',
+        value: enter
+      },
+      {
+        icon: 'icondodeparent',
+        name: '插入父節點',
+        value: 'Shift + Tab'
+      },
+      {
+        icon: 'iconshangyi',
+        name: '上移節點',
+        value: `${ctrl} + ↑`
+      },
+      {
+        icon: 'iconxiayi',
+        name: '下移節點',
+        value: `${ctrl} + ↓`
+      },
+      {
+        icon: 'icongaikuozonglan',
+        name: '插入摘要',
+        value: `${ctrl} + G`
+      },
+      {
+        icon: 'iconzhankai',
+        name: '展開／收合節點',
+        value: '/'
+      },
+      {
+        icon: 'iconshanchu',
+        name: '刪除節點',
+        value: 'Delete | Backspace'
+      },
+      {
+        icon: 'iconshanchu',
+        name: '僅刪除目前節點',
+        value: 'Shift + Backspace'
+      },
+      {
+        icon: 'iconbianji',
+        name: '編輯節點',
+        value: macFn + 'F2'
+      },
+      {
+        icon: 'iconzhengli',
+        name: '一鍵整理版面配置',
+        value: `${ctrl} + R`
+      },
+      {
+        icon: 'iconzuoyouduiqi',
+        name: '一鍵同級節點對齊',
+        value: `${ctrl} + E`
+      },
+      {
+        icon: 'iconsousuo',
+        name: '搜尋與取代',
+        value: `${ctrl} + F`
+      }
+    ]
+  },
+  {
+    type: '編輯操作',
+    list: [
+      {
+        icon: 'iconhoutui-shi',
+        name: '復原',
+        value: `${ctrl} + Z`
+      },
+      {
+        icon: 'iconqianjin1',
+        name: '重做',
+        value: `${ctrl} + Y`
+      },
+      {
         icon: 'iconhuanhang',
         name: '文字換行',
         value: `Shift + ${enter}`
+      },
+      {
+        icon: 'iconcase',
+        name: '增大字型大小',
+        value: `${ctrl} + Shift + +`
+      },
+      {
+        icon: 'iconcase',
+        name: '减小字型大小',
+        value: `${ctrl} + Shift + -`
+      },
+      {
+        icon: 'iconzitijiacu',
+        name: '加粗',
+        value: `${ctrl} + B`
+      },
+      {
+        icon: 'iconzitixieti',
+        name: '斜體',
+        value: `${ctrl} + I`
+      },
+      {
+        icon: 'iconzitixiahuaxian',
+        name: '添加下划线',
+        value: `${ctrl} + U`
+      },
+      {
+        icon: 'iconshanchuxian',
+        name: '添加删除線',
+        value: `${ctrl} + [`
+      },
+      {
+        icon: 'iconfuzhi',
+        name: '複製節點',
+        value: `${ctrl} + C`
+      },
+      {
+        icon: 'iconjianqie',
+        name: '剪下節點',
+        value: `${ctrl} + X`
+      },
+      {
+        icon: 'iconniantie',
+        name: '貼上節點',
+        value: `${ctrl} + V`
+      },
+      {
+        icon: 'iconquanxuan',
+        name: '全選',
+        value: `${ctrl} + A`
       },
       {
         icon: 'iconquanxuan',
@@ -225,8 +379,28 @@ export const shortcutKeyList = [
     list: [
       {
         icon: 'iconfangda',
+        name: '放大',
+        value: `${ctrl} + +`
+      },
+      {
+        icon: 'iconsuoxiao',
+        name: '縮小',
+        value: `${ctrl} + -`
+      },
+      {
+        icon: 'iconfangda',
         name: '放大／縮小',
         value: `${ctrl} + 滑鼠滾輪`
+      },
+      {
+        icon: 'icondingwei',
+        name: '回到根節點',
+        value: `${ctrl} + ${enter}`
+      },
+      {
+        icon: 'iconquanping1',
+        name: '適應畫布',
+        value: `${ctrl} + Shift + I`
       },
       {
         icon: 'iconshubiaoyidong',
@@ -259,25 +433,29 @@ export const shortcutKeyList = [
         value: 'Delete'
       },
       {
-        icon: 'icontianjiazijiedian',
-        name: '插入子節點',
-        value: 'Tab'
-      },
-      {
         icon: 'iconjiedian',
         name: '插入同層節點',
         value: enter
       },
       {
+        icon: 'icondodechild',
+        name: '下移一層',
+        value: 'Tab'
+      },
+      {
         icon: 'icondodeparent',
         name: '上移一層',
         value: 'Shift + Tab'
+      },
+      {
+        icon: 'iconjiedian',
+        name: '將光標後的內容創建為同級節點',
+        value: `Ctrl + ${enter}`
       }
     ]
   }
 ]
 
-// 形狀列表
 export const shapeList = [
   {
     name: '矩形',
@@ -317,7 +495,6 @@ export const shapeList = [
   }
 ]
 
-// 側邊欄列表
 export const sidebarTriggerList = [
   {
     name: '節點樣式',
@@ -351,7 +528,6 @@ export const sidebarTriggerList = [
   }
 ]
 
-// 下載類型列表
 export const downTypeList = [
   {
     name: '思緒檔案',
@@ -403,7 +579,6 @@ export const downTypeList = [
   }
 ]
 
-// 背景渐变方向
 export const linearGradientDirList = [
   {
     name: '从左到右',
@@ -455,7 +630,6 @@ export const linearGradientDirList = [
   }
 ]
 
-// 文本对齐方式
 export const alignList = [
   {
     name: '左對齊',
@@ -471,7 +645,6 @@ export const alignList = [
   }
 ]
 
-// 结构列表
 export const layoutGroupList = [
   {
     name: '邏輯結構圖',
@@ -491,7 +664,11 @@ export const layoutGroupList = [
   },
   {
     name: '時間軸',
-    list: ['timeline', 'timeline2', 'verticalTimeline']
+    list: [
+      'timeline',
+      'timeline2',
+      'verticalTimeline'
+    ]
   },
   {
     name: '魚骨圖',
@@ -511,8 +688,6 @@ export const iconNameMap = {
   summary: '插入概要',
   associativeLine: '添加關聯線',
   formula: '插入數學公式',
-  // "attachment": "插入附件",
   outerFrame: '添加外框',
-  annotation: '添加標記',
   ai: 'AI一鍵生成'
 }

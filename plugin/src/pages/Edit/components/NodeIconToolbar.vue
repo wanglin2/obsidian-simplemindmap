@@ -151,30 +151,25 @@ export default {
       this.close()
     },
 
-    // 获取图标渲染方式
     getHtml(icon) {
       return /^<svg/.test(icon) ? icon : `<img src="${icon}" />`
     },
 
-    // 设置icon
     setIcon(name) {
       let key = this.iconType + '_' + name
       let index = this.nodeIconList.findIndex(item => {
         return item === key
       })
-      // 删除icon
       if (index !== -1) {
         this.nodeIconList.splice(index, 1)
       } else {
         let typeIndex = this.nodeIconList.findIndex(item => {
           return item.split('_')[0] === this.iconType
         })
-        // 替换icon
         if (typeIndex !== -1) {
           this.nodeIconList.splice(typeIndex, 1, key)
           this.iconName = name
         } else {
-          // 增加icon
           this.nodeIconList.push(key)
         }
       }

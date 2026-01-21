@@ -23,6 +23,7 @@ import { mapState, mapMutations } from 'vuex'
 import OutlineEdit from './components/OutlineEdit.vue'
 import Guide from './components/Guide.vue'
 import darkMixin from '@/mixins/dark'
+import Export from './components/Export.vue'
 
 export default {
   mixins: [darkMixin],
@@ -30,7 +31,8 @@ export default {
     Toolbar,
     Edit,
     OutlineEdit,
-    Guide
+    Guide,
+    Export
   },
   data() {
     return {
@@ -86,6 +88,7 @@ export default {
 
     onMindMapLoadend() {
       this.loadToolbar = true
+      this.$root.$bus.$emit('mindMapFirstLoadend')
     },
 
     onToggleReadonly(isReadonly) {
@@ -107,7 +110,6 @@ export default {
       }
     },
 
-    // 初始化本地配置
     initLocalConfig() {
       const config = this.$root.$obsidianAPI.getMindMapLocalConfig()
       if (config) {
@@ -118,7 +120,6 @@ export default {
       }
     },
 
-    // 保存本地配置
     saveLocalConfig() {
       this.$root.$obsidianAPI.saveMindMapLocalConfig({
         ...this.localConfig
@@ -230,7 +231,10 @@ export default {
 
 body {
   &.isDark {
-    /* el-button */
+    .el-loading-mask {
+      background-color: #363b3f;
+    }
+
     .el-button {
       background-color: #363b3f;
       color: hsla(0, 0%, 100%, 0.9);
@@ -242,7 +246,6 @@ body {
       }
     }
 
-    /* el-input */
     .el-input__inner {
       background-color: #363b3f;
       border-color: hsla(0, 0%, 100%, 0.1);
@@ -255,7 +258,6 @@ body {
       color: hsla(0, 0%, 100%, 0.3);
     }
 
-    // 数字输入框
     .el-input-number__decrease,
     .el-input-number__increase {
       background-color: transparent;
@@ -273,7 +275,6 @@ body {
       color: hsla(0, 0%, 100%, 0.9);
     }
 
-    /* el-select */
     .el-select-dropdown {
       background-color: #36393d;
       border-color: hsla(0, 0%, 100%, 0.1);
@@ -296,7 +297,6 @@ body {
       border-color: hsla(0, 0%, 100%, 0.1);
     }
 
-    /* el-popper*/
     .el-popper {
       background-color: #36393d;
       border-color: hsla(0, 0%, 100%, 0.1);
@@ -318,7 +318,6 @@ body {
       border-top-color: #36393d;
     }
 
-    /* el-tabs */
     .el-tabs__item {
       color: hsla(0, 0%, 100%, 0.6);
 
@@ -332,12 +331,10 @@ body {
       background-color: hsla(0, 0%, 100%, 0.6);
     }
 
-    /* el-slider */
     .el-slider__runway {
       background-color: hsla(0, 0%, 100%, 0.6);
     }
 
-    /* el-radio-group */
     .el-radio-group {
       .el-radio-button__inner {
         background-color: #36393d;
@@ -350,7 +347,6 @@ body {
       }
     }
 
-    /* el-dialog */
     .el-dialog {
       background-color: #262a2e;
 
@@ -371,12 +367,10 @@ body {
       }
     }
 
-    /* el-upload */
     .el-upload__tip {
       color: #999;
     }
 
-    // 勾选框
     .el-checkbox__inner {
       background-color: transparent;
     }
@@ -385,7 +379,6 @@ body {
       color: hsla(0, 0%, 100%, 0.6);
     }
 
-    // 下拉菜单
     .el-dropdown-menu__item {
       color: hsla(0, 0%, 100%, 0.6);
     }
@@ -396,7 +389,6 @@ body {
       color: var(--text-accent);
     }
 
-    // 数字输入框
     .el-input-number__decrease,
     .el-input-number__increase {
       background-color: transparent;
@@ -404,19 +396,16 @@ body {
       border-color: hsla(0, 0%, 100%, 0.2);
     }
 
-    // 单选框
     .el-radio__label {
       color: hsla(0, 0%, 100%, 0.6);
     }
 
-    // 文本域
     .el-textarea__inner {
       background-color: #363b3f;
       border-color: hsla(0, 0%, 100%, 0.1);
       color: hsla(0, 0%, 100%, 0.9);
     }
 
-    // 确认框
     .smmCustomElConfirm {
       background-color: #262a2e;
       border-color: hsla(0, 0%, 100%, 0.2);
@@ -430,7 +419,6 @@ body {
       }
     }
 
-    // 表单
     .el-form-item__label {
       color: hsla(0, 0%, 100%, 0.6);
     }
@@ -453,33 +441,30 @@ body {
     .el-tree-node:focus > .el-tree-node__content {
       background-color: transparent;
     }
-  }
 
-  // 确认对话框
-  .darkElMessageBox {
-    background-color: #262a2e;
-    border-color: hsla(0, 0%, 100%, 0.1);
+    .darkElMessageBox {
+      background-color: #262a2e;
+      border-color: hsla(0, 0%, 100%, 0.1);
 
-    .el-message-box__header {
-      .el-message-box__title {
-        color: hsla(0, 0%, 100%, 0.9);
+      .el-message-box__header {
+        .el-message-box__title {
+          color: hsla(0, 0%, 100%, 0.9);
+        }
       }
-    }
 
-    .el-message-box__content {
-      color: #999;
+      .el-message-box__content {
+        color: #999;
+      }
     }
   }
 }
 
-// 小号按钮
 .el-button.smmElButtonSmall {
   height: 25px;
   padding: 0 30px;
   border-radius: 5px;
 }
 
-// 确认框
 .smmCustomElConfirm {
   .el-message-box__header {
     .el-message-box__headerbtn {

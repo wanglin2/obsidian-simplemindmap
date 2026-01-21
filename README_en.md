@@ -8,11 +8,15 @@ The mind map functionality is built upon the [mind-map](https://github.com/wangl
 
 mind-map also provides a standalone mind map client. Learn more about the [Client](https://github.com/wanglin2/mind-map/releases).
 
+Download standalone client(Windows、macOS、Linux): [Click here](https://github.com/wanglin2/mind-map/releases)
+
+Changelog: [中文](./docs/changelog_zh.md) | [English](./docs/changelog.md)
+
+Help: [中文](./docs/help_zh.md) | [English](./docs/help.md)
+
+Image Hosting Help: [中文](./docs/imageHosting_zh.md) | [English](./docs/imageHosting.md)
+
 # Feature List
-
-- Shortcuts
-
-  Starting from '0.1.5+', the plugin no longer provides default shortcut keys, all are converted to ob commands, and you can set the corresponding shortcut keys for the commands yourself. This [document](./ShortcutKeySettingReference_en.md) lists the original shortcut keys for reference.
 
 - For mind map features, refer to the [mind-map](https://github.com/wanglin2/mind-map) project. You can also check [Common Issues](./Help.md) here.
 

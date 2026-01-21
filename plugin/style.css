@@ -27,6 +27,89 @@
   user-select: text;
 }
 
+/* 字体管理弹窗样式 */
+.smm-font-manager-modal {
+}
+
+.smm-font-manager-modal hr {
+  margin: 1em 0;
+}
+
+.smm-font-manager-modal h2 {
+  margin-top: 0;
+}
+
+.smm-font-manager-modal .smm-font-search-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+}
+
+.smm-font-results-list,
+.smm-added-fonts-list {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.smm-font-results-list li,
+.smm-added-fonts-list li {
+  padding: 8px 12px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.smm-font-results-list li {
+  background-color: var(--background-secondary);
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.smm-font-results-list li:hover {
+  background-color: var(--background-primary-alt);
+}
+
+.smm-added-fonts-list li {
+  background-color: var(--background-secondary);
+  padding: 4px 8px;
+}
+
+.smm-added-fonts-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.smm-added-fonts-list li {
+  width: 49%;
+}
+
+.smm-font-name {
+  flex-grow: 1;
+}
+
+.smm-remove-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: var(--cursor);
+  padding: 4px;
+  border-radius: var(--radius-s);
+  color: var(--icon-color);
+  opacity: var(--icon-opacity);
+}
+
+.smm-remove-btn:hover {
+  background-color: var(--background-modifier-hover);
+}
+
 /* ob白板 */
 .smm-canvas-node-content {
   justify-content: center;
@@ -44,4 +127,29 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+/* 确认弹窗样式 */
+.smm-confirm-dialog-content, .smm-text-info-dialog-content {
+  padding: 16px 0;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  color: var(--text-normal);
+}
+
+.smm-confirm-dialog-content p, .smm-text-info-dialog-content p {
+  margin: 0;
+}
+
+.smm-confirm-dialog-buttons, .smm-text-info-dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* 文字信息弹窗 */
+.smm-text-info-dialog-content p a {
+  color: var(--text-accent);
 }

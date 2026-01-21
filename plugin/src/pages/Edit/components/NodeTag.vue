@@ -6,6 +6,8 @@
     :width="'90%'"
     :top="isMobile ? '20px' : '15vh'"
     :modal-append-to-body="false"
+    :close-on-click-modal="false"
+    :show-close="false"
   >
     <el-input
       v-model="tag"
@@ -15,6 +17,7 @@
       :disabled="tagArr.length >= max"
       :placeholder="$t('nodeTag.addTip')"
     >
+      <el-button slot="append" @click="add">{{ $t('nodeTag.add') }}</el-button>
     </el-input>
     <div class="tagList">
       <div
@@ -48,7 +51,6 @@
 import { generateColorByContent } from 'simple-mind-map/src/utils/index'
 import { mapState } from 'vuex'
 
-// 节点标签内容设置
 export default {
   data() {
     return {

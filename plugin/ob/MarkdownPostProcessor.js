@@ -1,31 +1,32 @@
 import { TFile } from 'obsidian'
 import { parseMarkdownText } from './metadataAndMarkdown.js'
-import { dataURItoBlob } from './utils.js'
+import { dataURItoBlob, smmFilePathToFileName } from './utils.js'
 import LZString from 'lz-string'
+import { SMM_VIEW_TYPE } from './constant.js'
+import SmmEditView from '../SmmEditView.js'
 
 export default class MarkdownPostProcessor {
   constructor(plugin) {
     this.plugin = plugin
 
-    this.urlCache = new Map() // 文件路径 -> 图片URL的缓存
-    this.imageElements = new Map() // 文件路径 -> 图片元素集合
-    this.emptyMap = new Map() // 文件路径 -> 当前没有预览图像的集合
+    this.urlCache = new Map()
+    this.imageElements = new Map()
+    this.emptyMap = new Map()
 
-    // 绑定事件处理器
     this.handleFileModify = this.handleFileModify.bind(this)
     this.handleFileDelete = this.handleFileDelete.bind(this)
+    this.handleModifySvgName = this.handleModifySvgName.bind(this)
 
-    // 注册文件监听
     plugin.app.vault.on('modify', this.handleFileModify)
     plugin.app.vault.on('delete', this.handleFileDelete)
+    plugin.app.vault.on('rename', this.handleModifySvgName)
   }
 
   destroy() {
-    // 清理事件监听
     this.plugin.app.vault.off('modify', this.handleFileModify)
     this.plugin.app.vault.off('delete', this.handleFileDelete)
+    this.plugin.app.vault.off('rename', this.handleModifySvgName)
 
-    // 释放所有URL对象
     this.urlCache.forEach(url => URL.revokeObjectURL(url))
     this.urlCache.clear()
     this.imageElements.clear()
@@ -42,15 +43,13 @@ export default class MarkdownPostProcessor {
         return
       }
       const curIsNoImage = noUrlCache && hasEmpty
-      // 重新生成图片URL
       const data = await this.plugin.app.vault.read(file)
       const parsedata = parseMarkdownText(data)
-      const svgBlob = dataURItoBlob(
-        LZString.decompressFromBase64(parsedata.svgdata)
-      )
-      const newUrl = URL.createObjectURL(svgBlob)
+      const newUrl = this._getImgUrl(parsedata.svgdata)
+      if (!newUrl) {
+        return
+      }
 
-      // 更新缓存
       const oldUrl = this.urlCache.get(file.path)
       if (oldUrl) URL.revokeObjectURL(oldUrl)
       this.urlCache.set(file.path, newUrl)
@@ -60,7 +59,6 @@ export default class MarkdownPostProcessor {
         this.emptyMap.delete(file.path)
       }
 
-      // 更新所有关联的图片元素
       const elements = this.imageElements.get(file.path) || new Set()
       elements.forEach(img => {
         img.src = newUrl
@@ -74,10 +72,9 @@ export default class MarkdownPostProcessor {
     }
   }
 
-  handleFileDelete(file) {
+  async handleFileDelete(file) {
     if (!(file instanceof TFile)) return
 
-    // 清理被删除文件的资源
     const url = this.urlCache.get(file.path)
     if (url) {
       URL.revokeObjectURL(url)
@@ -95,12 +92,62 @@ export default class MarkdownPostProcessor {
       })
       this.imageElements.delete(file.path)
     }
-    // 没有预览图像时修改提示信息
     const emptyDiv = this.emptyMap.get(file.path)
     if (emptyDiv) {
       emptyDiv.textContent = this.plugin._t('tip.fileDeleted')
       emptyDiv.removeEventListener('dblclick', emptyDiv.dblclickHandler)
       this.emptyMap.delete(file.path)
+    }
+
+    this.deletePreviewSvgFile(file)
+  }
+
+  async deletePreviewSvgFile(file) {
+    try {
+      const targetFileName = smmFilePathToFileName(file.path, '.svg')
+      const { embedImageIsSeparateFileFolder } = this.plugin.settings
+      const previewFilePath = embedImageIsSeparateFileFolder
+        ? `${embedImageIsSeparateFileFolder}/${targetFileName}`
+        : targetFileName
+      const exist = await this.plugin.app.vault.exists(previewFilePath)
+      console.log('删除预览图像文件:', previewFilePath, exist)
+      if (exist) {
+        await this.plugin.app.vault.adapter.remove(previewFilePath)
+      }
+    } catch (error) {
+      console.error('删除预览图像文件失败:', error)
+    }
+  }
+
+  async handleModifySvgName(file, oldName) {
+    try {
+      oldName = smmFilePathToFileName(oldName, '.svg')
+      const { embedImageIsSeparateFileFolder } = this.plugin.settings
+      const oldPath = embedImageIsSeparateFileFolder + '/' + oldName
+      const exist = await this.plugin.app.vault.exists(oldPath)
+      if (exist) {
+        const newName = smmFilePathToFileName(file.name, '.svg')
+        const newPath = embedImageIsSeparateFileFolder + '/' + newName
+        await this.plugin.app.vault.adapter.rename(oldPath, newPath)
+      }
+    } catch (error) {
+      console.error('修改svg文件名失败:', error)
+    }
+    try {
+      const markdownLeafs = this.plugin.app.workspace.getLeavesOfType(
+        SMM_VIEW_TYPE
+      )
+      for (const leaf of markdownLeafs) {
+        if (
+          leaf.view instanceof SmmEditView &&
+          leaf.view.file.path === file.path
+        ) {
+          leaf.view.forceSave(true)
+          break
+        }
+      }
+    } catch (error) {
+      console.error('保存失败:', error)
     }
   }
 
@@ -112,12 +159,11 @@ export default class MarkdownPostProcessor {
 
   async _markdownPostProcessor(el, ctx) {
     try {
-      // 特殊卡片处理
       if (this._isSpecialCard(el)) {
+        console.log('特殊卡片处理')
         return this._processSpecialCard(el)
       }
 
-      // 模式检测与处理
       const embeddedItems = el.querySelectorAll('.internal-embed')
       if (embeddedItems.length === 0) {
         await this._processEditMode(el, ctx)
@@ -141,7 +187,7 @@ export default class MarkdownPostProcessor {
   _processSpecialCard(el) {
     el.classList.add('smmMindCard')
     const svgdata = el.children[3].children[0].innerHTML
-    const url = URL.createObjectURL(dataURItoBlob(svgdata))
+    const url = this._getImgUrl(svgdata)
 
     const img = this._createSvgImageElement(url)
     el.replaceChildren(img)
@@ -178,8 +224,8 @@ export default class MarkdownPostProcessor {
       const img = await this._createImageFromFile(file, data)
       containerEl.empty()
       if (img) {
-        this._updateImgSize(containerEl, img)
         containerEl.appendChild(img)
+        this._updateImgSize(containerEl, img)
       } else {
         const emptyDiv = this._createEmptyDiv(
           containerEl,
@@ -223,7 +269,6 @@ export default class MarkdownPostProcessor {
   }
 
   _updateImgSize(containerEl, img) {
-    // 悬浮预览弹窗
     if (
       containerEl.parentNode &&
       containerEl.parentNode.classList.contains('popover')
@@ -242,25 +287,35 @@ export default class MarkdownPostProcessor {
   }
 
   async _createImageFromFile(file, data) {
-    // 优先使用缓存
     if (this.urlCache.has(file.path)) {
       const url = this.urlCache.get(file.path)
       return this._createSvgImageElement(url, file.path)
     }
 
-    // 生成新URL并缓存
     const parsedata = parseMarkdownText(data)
-    if (!parsedata.svgdata) {
+    const svgdata = parsedata.svgdata
+    if (!svgdata) {
       return null
     }
-    const svgBlob = dataURItoBlob(
-      LZString.decompressFromBase64(parsedata.svgdata)
-    )
-    const url = URL.createObjectURL(svgBlob)
+    const url = this._getImgUrl(svgdata)
     this.urlCache.set(file.path, url)
-
     const img = this._createSvgImageElement(url, file.path)
     return img
+  }
+
+  _getImgUrl(svgdata) {
+    if (!svgdata) return ''
+    let url = ''
+    if (/^!\[\[/.test(svgdata)) {
+      const match = svgdata.match(/!\[\[([^\]]+)\]\]/)
+      if (match && match[1]) {
+        url = this.plugin.app.vault.adapter.getResourcePath(match[1])
+      }
+    } else {
+      const svgBlob = dataURItoBlob(LZString.decompressFromBase64(svgdata))
+      url = URL.createObjectURL(svgBlob)
+    }
+    return url
   }
 
   _createSvgImageElement(url, filePath = '') {
@@ -269,22 +324,18 @@ export default class MarkdownPostProcessor {
     img.draggable = false
 
     if (filePath) {
-      // 添加文件路径标识
       img.setAttribute('data-smm-file', filePath)
 
-      // 注册双击打开源文件
       img.addEventListener('dblclick', () => {
         const newWindow = this.plugin.settings.embedDblClickNewWindow
         this.plugin.app.workspace.openLinkText(filePath, '', newWindow)
       })
 
-      // 添加到元素追踪
       if (!this.imageElements.has(filePath)) {
         this.imageElements.set(filePath, new Set())
       }
       this.imageElements.get(filePath).add(img)
 
-      // 元素卸载时清理
       const observer = new MutationObserver(() => {
         if (!document.contains(img)) {
           this.imageElements.get(filePath)?.delete(img)

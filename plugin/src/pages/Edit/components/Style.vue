@@ -5,7 +5,6 @@
       :class="{ isDark: isDark }"
       v-if="activeNodes.length > 0"
     >
-      <!-- 文字 -->
       <div class="smmSidebarGroupTitle noTop">{{ $t('style.text') }}</div>
       <div class="row">
         <el-select
@@ -129,7 +128,6 @@
           </el-radio-group>
         </el-popover>
       </div>
-      <!-- 边框 -->
       <div class="smmSidebarGroupTitle">{{ $t('style.border') }}</div>
       <div class="row">
         <div class="rowItem mr">
@@ -228,7 +226,6 @@
           </el-select>
         </div>
       </div>
-      <!-- 背景 -->
       <div class="smmSidebarGroupTitle">{{ $t('style.background') }}</div>
       <div class="row">
         <div class="rowItem mr">
@@ -294,7 +291,6 @@
           </el-select>
         </div>
       </div>
-      <!-- 形状 -->
       <div class="smmSidebarGroupTitle">{{ $t('style.shape') }}</div>
       <div class="row">
         <div class="rowItem">
@@ -335,7 +331,6 @@
           </el-select>
         </div>
       </div>
-      <!-- 线条 -->
       <template v-if="!isGeneralization">
         <div class="smmSidebarGroupTitle">{{ $t('style.line') }}</div>
         <div class="row">
@@ -411,10 +406,31 @@
               </el-option>
             </el-select>
           </div>
+        </div>
+        <div class="row">
+          <div class="rowItem mr">
+            <span class="name">显示箭头</span>
+            <span
+              class="icon iconfont iconbangzhu"
+              style="margin: 0 4px;"
+              aria-label="设置到子级节点连线的箭头"
+              data-tooltip-position="left"
+            ></span>
+            <el-checkbox
+              v-model="style.showLineMarker"
+              @change="update('showLineMarker')"
+            ></el-checkbox>
+          </div>
           <div class="rowItem">
             <span class="name" :title="$t('style.arrowDir')">{{
               $t('style.arrowDir')
             }}</span>
+            <span
+              class="icon iconfont iconbangzhu"
+              style="margin: 0 4px;"
+              aria-label="这个方向设置的是和父节点连线的箭头的方向"
+              data-tooltip-position="left"
+            ></span>
             <el-select
               size="mini"
               style="width: 80px"
@@ -437,7 +453,6 @@
         </div>
       </template>
       <template v-else>
-        <!-- 概要连线 -->
         <div class="smmSidebarGroupTitle">
           {{ $t('baseStyle.lineOfOutline') }}
         </div>
@@ -482,7 +497,6 @@
           </div>
         </div>
       </template>
-      <!-- 节点内边距 -->
       <div class="smmSidebarGroupTitle">{{ $t('style.nodePadding') }}</div>
       <div class="row noBottom">
         <div class="rowItem">
@@ -504,7 +518,20 @@
           ></el-slider>
         </div>
       </div>
-      <!-- 节点图片布局 -->
+      <template v-if="!isFishLayout">
+        <div class="title">节点外边距</div>
+        <div class="row">
+          <div class="rowItem">
+            <span class="name">下外边距</span>
+            <el-slider
+              :max="200"
+              style="width: 175px"
+              v-model="style.marginY"
+              @change="update('marginY')"
+            ></el-slider>
+          </div>
+        </div>
+      </template>
       <div class="smmSidebarGroupTitle">{{ $t('style.img') }}</div>
       <div class="row">
         <div class="rowItem wrap">
@@ -528,7 +555,6 @@
           </el-radio-group>
         </div>
       </div>
-      <!-- 节点标签布局 -->
       <div class="smmSidebarGroupTitle">{{ $t('style.tag') }}</div>
       <div class="row">
         <div class="rowItem">
@@ -559,7 +585,6 @@
 import Sidebar from './Sidebar.vue'
 import Color from './Color.vue'
 import {
-  fontFamilyList,
   fontSizeList,
   borderWidthList,
   borderDasharrayList,
@@ -571,9 +596,10 @@ import {
   lineWidthList
 } from '@/config'
 import { mapState } from 'vuex'
+import fontFamilyMixin from '@/mixins/fontFamily'
 
-// 节点样式设置
 export default {
+  mixins: [fontFamilyMixin],
   components: {
     Sidebar,
     Color
@@ -608,6 +634,7 @@ export default {
         lineColor: '',
         lineDasharray: '',
         lineWidth: '',
+        showLineMarker: false,
         lineMarkerDir: '',
         gradientStyle: false,
         startColor: '',
@@ -620,8 +647,10 @@ export default {
         imgPlacement: '',
         tagPlacement: '',
         generalizationLineWidth: '',
-        generalizationLineColor: ''
-      }
+        generalizationLineColor: '',
+        marginY: 0
+      },
+      isFishLayout: false
     }
   },
   computed: {
@@ -629,18 +658,33 @@ export default {
       isDark: state => state.localConfig.isDark,
       activeSidebar: state => state.activeSidebar
     }),
-    fontFamilyList() {
-      return fontFamilyList[this.$i18n.locale] || fontFamilyList.en
-    },
     borderDasharrayList() {
       return borderDasharrayList[this.$i18n.locale] || borderDasharrayList.en
     },
     shapeList() {
-      return [...(shapeList[this.$i18n.locale] || shapeList.en)]
+      return [
+        ...(shapeList[this.$i18n.locale] || shapeList.en),
+        ...this.mindMap.extendShapeList
+          .filter(item => {
+            return !['fishHead'].includes(item.name)
+          })
+          .map(item => {
+            return {
+              width: '40px',
+              name: item.nameShow,
+              value: item.name
+            }
+          })
+      ]
     },
     shapeListMap() {
+      const map2 = {}
+      this.mindMap.extendShapeList.forEach(item => {
+        map2[item.name] = item.path
+      })
       return {
-        ...shapeListMap
+        ...shapeListMap,
+        ...map2
       }
     },
     linearGradientDirList() {
@@ -661,6 +705,9 @@ export default {
     activeSidebar(val) {
       if (val === 'nodeStyle') {
         this.$refs.sidebar.show = true
+        this.isFishLayout = ['fishbone'].some(item => {
+          return this.mindMap.renderer.isLayout(item)
+        })
       } else {
         this.$refs.sidebar.show = false
       }
@@ -673,7 +720,6 @@ export default {
     this.$root.$bus.$off('node_active', this.onNodeActive)
   },
   methods: {
-    // 监听节点激活事件
     onNodeActive(...args) {
       this.$nextTick(() => {
         this.activeNodes = [...args[1]]
@@ -681,7 +727,6 @@ export default {
       })
     },
 
-    // 初始节点样式
     initNodeStyle() {
       if (this.activeNodes.length <= 0) {
         return
@@ -692,7 +737,6 @@ export default {
       this.initLinearGradientDir()
     },
 
-    // 初始化渐变方向样式
     initLinearGradientDir() {
       const startDir = this.activeNodes[0].getStyle('startDir', false)
       const endDir = this.activeNodes[0].getStyle('endDir', false)
@@ -709,7 +753,6 @@ export default {
       }
     },
 
-    // 修改样式
     update(prop) {
       if (prop === 'linearGradientDir') {
         const target = this.linearGradientDirList.find(item => {
@@ -728,7 +771,6 @@ export default {
       }
     },
 
-    // 切换加粗样式
     toggleFontWeight() {
       if (this.style.fontWeight === 'bold') {
         this.style.fontWeight = 'normal'
@@ -738,7 +780,6 @@ export default {
       this.update('fontWeight')
     },
 
-    // 切换字体样式
     toggleFontStyle() {
       if (this.style.fontStyle === 'italic') {
         this.style.fontStyle = 'normal'
@@ -748,43 +789,36 @@ export default {
       this.update('fontStyle')
     },
 
-    // 修改字体颜色
     changeFontColor(color) {
       this.style.color = color
       this.update('color')
     },
 
-    // 修改边框颜色
     changeBorderColor(color) {
       this.style.borderColor = color
       this.update('borderColor')
     },
 
-    // 修改线条颜色
     changeLineColor(color) {
       this.style.lineColor = color
       this.update('lineColor')
     },
 
-    // 修改背景颜色
     changeFillColor(color) {
       this.style.fillColor = color
       this.update('fillColor')
     },
 
-    // 切换渐变开始颜色
     changeStartColor(color) {
       this.style.startColor = color
       this.update('startColor')
     },
 
-    // 切换渐变结束颜色
     changeEndColor(color) {
       this.style.endColor = color
       this.update('endColor')
     },
 
-    // 切换概要线条颜色
     changeGeneralizationLineColor(color) {
       this.style.generalizationLineColor = color
       this.update('generalizationLineColor')

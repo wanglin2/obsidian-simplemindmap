@@ -154,7 +154,7 @@ export default {
 
   .btn {
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px;
     width: 30px;
     height: 30px;
     display: flex;

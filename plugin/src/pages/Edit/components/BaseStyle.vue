@@ -13,7 +13,6 @@
       :class="{ isDark: isDark }"
       v-if="data"
     >
-      <!-- 背景 -->
       <div class="smmSidebarGroupTitle noTop">
         {{ $t('baseStyle.background') }}
       </div>
@@ -39,7 +38,6 @@
                 }
               "
             ></ImgUpload>
-            <!-- 图片重复方式 -->
             <div class="rowItem mb">
               <span class="name">{{ $t('baseStyle.imageRepeat') }}</span>
               <el-select
@@ -62,7 +60,6 @@
                 </el-option>
               </el-select>
             </div>
-            <!-- 图片位置 -->
             <div class="rowItem mb">
               <span class="name">{{ $t('baseStyle.imagePosition') }}</span>
               <el-select
@@ -85,7 +82,6 @@
                 </el-option>
               </el-select>
             </div>
-            <!-- 图片大小 -->
             <div class="rowItem">
               <span class="name">{{ $t('baseStyle.imageSize') }}</span>
               <el-select
@@ -111,7 +107,6 @@
           </el-tab-pane>
         </el-tabs>
       </div>
-      <!-- 连线 -->
       <div class="smmSidebarGroupTitle">{{ $t('baseStyle.line') }}</div>
       <div class="row">
         <div class="rowItem mr">
@@ -173,7 +168,6 @@
         </div>
       </div>
       <div class="row">
-        <!-- 线宽 -->
         <div class="rowItem mr">
           <span class="name">{{ $t('baseStyle.width') }}</span>
           <el-select
@@ -202,7 +196,7 @@
             </el-option>
           </el-select>
         </div>
-        <div class="rowItem" v-if="lineStyleListShow.length > 1">
+        <div class="rowItem" v-if="showLineStyleList">
           <span class="name">{{ $t('baseStyle.style') }}</span>
           <el-select
             size="mini"
@@ -216,7 +210,7 @@
             "
           >
             <el-option
-              v-for="item in lineStyleListShow"
+              v-for="item in lineStyleList"
               :key="item.value"
               :label="item.name"
               :value="item.value"
@@ -234,11 +228,11 @@
       <div
         class="row"
         v-if="
-          (style.lineStyle === 'curve' && showRootLineKeepSameInCurveLayouts) ||
+          (['curve', 'curve2'].includes(style.lineStyle) &&
+            showRootLineKeepSameInCurveLayouts) ||
             showLineRadius
         "
       >
-        <!-- 根节点连线样式 -->
         <div
           class="rowItem"
           v-if="
@@ -266,8 +260,34 @@
             </el-option>
           </el-select>
         </div>
+        <div
+          class="rowItem"
+          v-if="
+            style.lineStyle === 'curve2' && showRootLineKeepSameInCurveLayouts
+          "
+        >
+          <span class="name">{{ $t('baseStyle.rootStyle') }}</span>
+          <el-select
+            size="mini"
+            style="width: 80px"
+            v-model="style.rootLineKeepSameInCurve2"
+            placeholder=""
+            @change="
+              value => {
+                update('rootLineKeepSameInCurve2', value)
+              }
+            "
+          >
+            <el-option
+              v-for="item in rootLineKeepSameInCurveList2"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
         <div class="rowItem" v-if="showLineRadius">
-          <!-- 连线圆角大小 -->
           <span class="name">{{ $t('baseStyle.lineRadius') }}</span>
           <el-select
             size="mini"
@@ -292,9 +312,11 @@
       </div>
       <div
         class="row"
-        v-if="style.lineStyle === 'curve' && showRootLineKeepSameInCurveLayouts"
+        v-if="
+          ['curve', 'curve2'].includes(style.lineStyle) &&
+            showRootLineKeepSameInCurveLayouts
+        "
       >
-        <!-- 根节点连线起始位置 -->
         <div class="rowItem">
           <span class="name">{{ $t('baseStyle.rootLineStartPos') }}</span>
           <el-select
@@ -331,8 +353,34 @@
             >{{ $t('baseStyle.showArrow') }}</el-checkbox
           >
         </div>
+        <div class="rowItem">
+          <span class="name" style="margin-right: 0">{{
+            $t('style.arrowDir')
+          }}</span>
+          <el-select
+            size="mini"
+            style="width: 80px"
+            v-model="style.lineMarkerDir"
+            placeholder=""
+            @change="
+              value => {
+                update('lineMarkerDir', value)
+              }
+            "
+          >
+            <el-option
+              key="start"
+              :label="$t('style.arrowDirStart')"
+              value="start"
+            ></el-option>
+            <el-option
+              key="end"
+              :label="$t('style.arrowDirEnd')"
+              value="end"
+            ></el-option>
+          </el-select>
+        </div>
       </div>
-      <!-- 彩虹线条 -->
       <div class="smmSidebarGroupTitle">{{ $t('baseStyle.rainbowLines') }}</div>
       <div class="row">
         <div class="rowItem">
@@ -366,10 +414,13 @@
               </div>
             </div>
             <div slot="reference" class="curRainbowLine">
-              <div class="smmColorsBar" v-if="curRainbowLineColorList">
+              <div
+                class="smmColorsBar"
+                v-if="style.lineRainbow && style.lineRainbowColorsList"
+              >
                 <span
                   class="colorItem"
-                  v-for="color in curRainbowLineColorList"
+                  v-for="color in style.lineRainbowColorsList"
                   :key="color"
                   :style="{ backgroundColor: color }"
                 ></span>
@@ -379,7 +430,6 @@
           </el-popover>
         </div>
       </div>
-      <!-- 概要连线 -->
       <div class="smmSidebarGroupTitle">
         {{ $t('baseStyle.lineOfOutline') }}
       </div>
@@ -431,7 +481,6 @@
           </el-select>
         </div>
       </div>
-      <!-- 关联线 -->
       <div class="smmSidebarGroupTitle">
         {{ $t('baseStyle.associativeLine') }}
       </div>
@@ -576,7 +625,6 @@
           </el-select>
         </div>
       </div>
-      <!-- 关联线文字 -->
       <div class="smmSidebarGroupTitle">
         {{ $t('baseStyle.associativeLineText') }}
       </div>
@@ -640,7 +688,6 @@
           </el-select>
         </div>
       </div>
-      <!-- 节点边框风格 -->
       <template v-if="showNodeUseLineStyle">
         <div class="smmSidebarGroupTitle">
           {{ $t('baseStyle.nodeBorderType') }}
@@ -659,7 +706,6 @@
           </div>
         </div>
       </template>
-      <!-- 内边距 -->
       <div class="smmSidebarGroupTitle">{{ $t('baseStyle.nodePadding') }}</div>
       <div class="row noBottom">
         <div class="rowItem">
@@ -689,7 +735,6 @@
           ></el-slider>
         </div>
       </div>
-      <!-- 图片 -->
       <div class="smmSidebarGroupTitle">{{ $t('baseStyle.image') }}</div>
       <div class="row noBottom">
         <div class="rowItem">
@@ -723,7 +768,6 @@
           ></el-slider>
         </div>
       </div>
-      <!-- 图标 -->
       <div class="smmSidebarGroupTitle">{{ $t('baseStyle.icon') }}</div>
       <div class="row">
         <div class="rowItem">
@@ -741,7 +785,6 @@
           ></el-slider>
         </div>
       </div>
-      <!-- 二级节点外边距 -->
       <div class="smmSidebarGroupTitle">{{ $t('baseStyle.nodeMargin') }}</div>
       <div class="row column noBottom">
         <el-tabs
@@ -785,7 +828,6 @@
           ></el-slider>
         </div>
       </div>
-      <!-- 外框内边距 -->
       <div class="smmSidebarGroupTitle">
         {{ $t('baseStyle.outerFramePadding') }}
       </div>
@@ -830,25 +872,26 @@ import {
   backgroundRepeatList,
   backgroundPositionList,
   backgroundSizeList,
-  fontFamilyList,
   fontSizeList,
   rootLineKeepSameInCurveList,
+  rootLineKeepSameInCurveList2,
   lineStyleMap,
   borderDasharrayList
 } from '@/config'
 import ImgUpload from '@/components/ImgUpload/index.vue'
 import { mapState } from 'vuex'
 import {
-  supportLineStyleLayoutsMap,
+  supportChangeLineStyleLayouts,
   supportLineRadiusLayouts,
   supportNodeUseLineStyleLayouts,
   supportRootLineKeepSameInCurveLayouts,
   rainbowLinesOptions
 } from '@/config/constant'
 import ConfigImportOutputDropdown from './ConfigImportOutputDropdown.vue'
+import fontFamilyMixin from '@/mixins/fontFamily'
 
-// 基础样式
 export default {
+  mixins: [fontFamilyMixin],
   components: {
     Sidebar,
     Color,
@@ -881,7 +924,9 @@ export default {
         lineWidth: '',
         lineStyle: '',
         showLineMarker: '',
+        lineMarkerDir: '',
         rootLineKeepSameInCurve: '',
+        rootLineKeepSameInCurve2: '',
         rootLineStartPositionKeepSameInCurve: '',
         lineRadius: 0,
         lineFlow: false,
@@ -908,11 +953,12 @@ export default {
         backgroundSize: '',
         marginX: 0,
         marginY: 0,
-        nodeUseLineStyle: false
+        nodeUseLineStyle: false,
+        lineRainbow: false,
+        lineRainbowColorsList: []
       },
       rainbowLinesPopoverVisible: false,
-      curRainbowLineColorList: null,
-      currentLayout: '', // 当前结构
+      currentLayout: '',
       outerFramePadding: {
         outerFramePaddingX: 0,
         outerFramePaddingY: 0
@@ -934,6 +980,12 @@ export default {
         rootLineKeepSameInCurveList.en
       )
     },
+    rootLineKeepSameInCurveList2() {
+      return (
+        rootLineKeepSameInCurveList2[this.$i18n.locale] ||
+        rootLineKeepSameInCurveList2.zh
+      )
+    },
     backgroundRepeatList() {
       return backgroundRepeatList[this.$i18n.locale] || backgroundRepeatList.en
     },
@@ -945,9 +997,6 @@ export default {
     backgroundSizeList() {
       return backgroundSizeList[this.$i18n.locale] || backgroundSizeList.en
     },
-    fontFamilyList() {
-      return fontFamilyList[this.$i18n.locale] || fontFamilyList.en
-    },
     showNodeUseLineStyle() {
       return supportNodeUseLineStyleLayouts.includes(this.currentLayout)
     },
@@ -957,19 +1006,8 @@ export default {
         supportLineRadiusLayouts.includes(this.currentLayout)
       )
     },
-    lineStyleListShow() {
-      const res = []
-      this.lineStyleList.forEach(item => {
-        const list = supportLineStyleLayoutsMap[item.value]
-        if (list) {
-          if (list.includes(this.currentLayout)) {
-            res.push(item)
-          }
-        } else {
-          res.push(item)
-        }
-      })
-      return res
+    showLineStyleList() {
+      return supportChangeLineStyleLayouts.includes(this.currentLayout)
     },
     showRootLineKeepSameInCurveLayouts() {
       return supportRootLineKeepSameInCurveLayouts.includes(this.currentLayout)
@@ -983,22 +1021,10 @@ export default {
       if (val === 'baseStyle') {
         this.$refs.sidebar.show = true
         this.initStyle()
-        this.initRainbowLines()
         this.initOuterFramePadding()
         this.currentLayout = this.mindMap.getLayout()
       } else {
         this.$refs.sidebar.show = false
-      }
-    },
-    lineStyleListShow: {
-      deep: true,
-      handler() {
-        const has = this.lineStyleListShow.find(item => {
-          return item.value === this.style.lineStyle
-        })
-        if (!has) {
-          this.style.lineStyle = this.lineStyleListShow[0].value
-        }
       }
     }
   },
@@ -1016,7 +1042,6 @@ export default {
       }, 0)
     },
 
-    // 初始样式
     initStyle() {
       Object.keys(this.style).forEach(key => {
         this.style[key] = this.mindMap.getThemeConfig(key)
@@ -1027,17 +1052,6 @@ export default {
       this.initMarginStyle()
     },
 
-    // 初始化彩虹线条配置
-    initRainbowLines() {
-      const config = this.mindMap.getConfig('rainbowLinesConfig') || {}
-      this.curRainbowLineColorList = config.open
-        ? this.mindMap.rainbowLines
-          ? this.mindMap.rainbowLines.getColorsList()
-          : null
-        : null
-    },
-
-    // 外框
     initOuterFramePadding() {
       this.outerFramePadding.outerFramePaddingX = this.mindMap.getConfig(
         'outerFramePaddingX'
@@ -1047,7 +1061,6 @@ export default {
       )
     },
 
-    // margin初始值
     initMarginStyle() {
       ;['marginX', 'marginY'].forEach(key => {
         this.style[key] = this.mindMap.getThemeConfig()[this.marginActiveTab][
@@ -1056,7 +1069,6 @@ export default {
       })
     },
 
-    // 更新配置
     update(key, value) {
       if (key === 'backgroundImage' && value === 'none') {
         this.style[key] = ''
@@ -1074,27 +1086,28 @@ export default {
       })
     },
 
-    // 更新彩虹线条配置
     updateRainbowLinesConfig(item) {
       this.rainbowLinesPopoverVisible = false
-      this.curRainbowLineColorList = item.list || null
-      let newConfig = null
       if (item.list) {
-        newConfig = {
-          open: true,
-          colorsList: item.list
-        }
+        this.style.lineRainbow = true
+        this.style.lineRainbowColorsList = item.list
+        this.data.theme.config.lineRainbow = true
+        this.data.theme.config.lineRainbowColorsList = item.list
       } else {
-        newConfig = {
-          open: false
-        }
+        this.style.lineRainbow = false
+        this.data.theme.config.lineRainbow = false
       }
-      this.configData.rainbowLinesConfig = newConfig
-      this.mindMap.rainbowLines.updateRainLinesConfig(newConfig)
-      this.$root.$obsidianAPI.saveMindMapConfig(this.configData)
+      this.$root.$bus.$emit('showLoading')
+      this.mindMap.setThemeConfig(this.data.theme.config)
+      this.mindMap.rainbowLines.updateRainLinesRender()
+      this.$root.$bus.$emit('storeData', {
+        theme: {
+          template: this.mindMap.getTheme(),
+          config: this.data.theme.config
+        }
+      })
     },
 
-    // 更新外框
     updateOuterFramePadding(prop, value) {
       this.outerFramePadding[prop] = value
       this.configData[prop] = value
@@ -1105,7 +1118,6 @@ export default {
       this.mindMap.render()
     },
 
-    // 设置margin
     updateMargin(type, value) {
       this.style[type] = value
       if (!this.data.theme.config[this.marginActiveTab]) {
@@ -1121,7 +1133,6 @@ export default {
       })
     },
 
-    // 导出配置
     getOutputConfig() {
       return {
         themeStyle: this.style || {},
@@ -1129,7 +1140,6 @@ export default {
       }
     },
 
-    // 导入配置
     setConfig({ themeStyle, config }) {
       Object.keys(themeStyle).forEach(key => {
         if (['marginX', 'marginY'].includes(key)) {
@@ -1138,16 +1148,12 @@ export default {
           this.update(key, themeStyle[key])
         }
       })
+      if (this.style.lineRainbow) {
+        this.mindMap.rainbowLines.updateRainLinesRender()
+      }
       Object.keys(config).forEach(key => {
         if (['outerFramePaddingX', 'outerFramePaddingY'].includes(key)) {
           this.updateOuterFramePadding(key, config[key])
-        } else if (key === 'rainbowLinesConfig') {
-          const value = config[key]
-          const data = {}
-          if (value.open) {
-            data.list = value.colorsList
-          }
-          this.updateRainbowLinesConfig(data)
         }
       })
     }

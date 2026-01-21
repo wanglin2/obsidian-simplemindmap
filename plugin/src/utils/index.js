@@ -1,4 +1,5 @@
-// 全屏事件检测
+import { nodeRichTextToTextWithWrap } from 'simple-mind-map/src/utils/index.js'
+
 const getOnfullscreEnevt = () => {
   if (document.documentElement.requestFullScreen) {
     return 'onfullscreenchange'
@@ -13,7 +14,6 @@ const getOnfullscreEnevt = () => {
 
 export const fullscrrenEvent = getOnfullscreEnevt()
 
-// 全屏
 export const fullScreen = element => {
   if (element.requestFullScreen) {
     element.requestFullScreen()
@@ -24,7 +24,6 @@ export const fullScreen = element => {
   }
 }
 
-// 文件转buffer
 export const fileToBuffer = file => {
   return new Promise(r => {
     const reader = new FileReader()
@@ -35,11 +34,8 @@ export const fileToBuffer = file => {
   })
 }
 
-// 复制文本到剪贴板
 export const copy = text => {
-  // 使用textarea可以保留换行
   const input = document.createElement('textarea')
-  // input.setAttribute('value', text)
   input.innerHTML = text
   document.body.appendChild(input)
   input.select()
@@ -47,14 +43,12 @@ export const copy = text => {
   document.body.removeChild(input)
 }
 
-// 复制文本到剪贴板
 export const setDataToClipboard = data => {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(data)
   }
 }
 
-// 复制图片到剪贴板
 export const setImgToClipboard = img => {
   if (navigator.clipboard && navigator.clipboard.write) {
     const data = [new ClipboardItem({ ['image/png']: img })]
@@ -62,21 +56,17 @@ export const setImgToClipboard = img => {
   }
 }
 
-// 打印大纲
 export const printOutline = el => {
   const printContent = el.outerHTML
   const iframe = document.createElement('iframe')
   iframe.setAttribute('style', 'position: absolute; width: 0; height: 0;')
   document.body.appendChild(iframe)
   const iframeDoc = iframe.contentWindow.document
-  // 将当前页面的所有样式添加到iframe中
   const styleList = document.querySelectorAll('style')
   Array.from(styleList).forEach(el => {
     iframeDoc.write(el.outerHTML)
   })
-  // 设置打印展示方式 - 纵向展示
   iframeDoc.write('<style media="print">@page {size: portrait;}</style>')
-  // 写入内容
   iframeDoc.write('<div>' + printContent + '</div>')
   setTimeout(function() {
     iframe.contentWindow?.print()
@@ -94,7 +84,6 @@ export const getParentWithClass = (el, className) => {
   return null
 }
 
-// 压缩图片
 export const compressImage = (file, options = {}) => {
   return new Promise((resolve, reject) => {
     const fileType = file.type
@@ -103,18 +92,16 @@ export const compressImage = (file, options = {}) => {
       maxHeight = 1200,
       quality = 0.8,
       mimeType = '',
-      exportType = 'dataURL' // blob、file
+      exportType = 'dataURL'
     } = options
     const reader = new FileReader()
     reader.onload = event => {
-      // 不处理gif格式
       if (/\/gif$/.test(fileType)) {
         return resolve(event.target.result)
       }
       mimeType = mimeType || fileType
       const img = new Image()
       img.onload = () => {
-        // 计算新尺寸，保持宽高比
         let width = img.width
         let height = img.height
         if (width > maxWidth || height > maxHeight) {
@@ -179,11 +166,10 @@ export const isObLinkText = lt => {
 
 export const dfsTraverse = (root, callback = () => {}) => {
   if (!root) return
-  const stack = [root] // 使用栈存储待处理节点
+  const stack = [root]
   while (stack.length > 0) {
-    const currentNode = stack.pop() // 取栈顶节点
-    callback(currentNode) // 处理当前节点
-    // 将子节点逆序压入栈（保证从左到右遍历）
+    const currentNode = stack.pop()
+    callback(currentNode)
     if (currentNode.children) {
       for (let i = currentNode.children.length - 1; i >= 0; i--) {
         stack.push(currentNode.children[i])
@@ -192,7 +178,112 @@ export const dfsTraverse = (root, callback = () => {}) => {
   }
 }
 
-// MIME 类型到扩展名的映射表
+export const matchAll = (str, regex) => {
+  const flags = regex.flags + (regex.global ? '' : 'g')
+  const globalRegex = new RegExp(regex, flags)
+  const matches = []
+  let match
+  while ((match = globalRegex.exec(str)) !== null) {
+    matches.push({
+      fullMatch: match[0],
+      groups: match.groups,
+      index: match.index,
+      captured: match.slice(1)
+    })
+  }
+  return matches
+}
+
+export const getObLinkShowName = exp => {
+  const linkInfo = parseObsidianLink(`[[${exp}]]`)
+  if (!linkInfo) return exp
+  if (linkInfo.alias) return linkInfo.alias
+  if (linkInfo.heading) return `${linkInfo.target}#${linkInfo.heading}`
+  if (linkInfo.block) return `${linkInfo.target}#^${linkInfo.block}`
+  return linkInfo.target
+}
+
+export const linkRichToObUrlText = (nodeText, done = () => {}) => {
+  if (/<a\s+href=/.test(nodeText)) {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(nodeText, 'text/html')
+    const els = doc.getElementsByTagName('a')
+    for (const el of els) {
+      const linkUrl = el.getAttribute('href')
+      nodeText = nodeText.replace(el.outerHTML, `[[${linkUrl}]]`)
+    }
+    done()
+  }
+  return nodeText
+}
+
+export const obUrlToLinkRich = str => {
+  if (/\[\[[^\[\]]+\]\]/g.test(str)) {
+    const m = [...str.matchAll(/\[\[[^\[\]]+\]\]/g)]
+    const arr = str.split(/\[\[[^\[\]]+\]\]/g)
+    for (let j = m.length - 1; j >= 0; j--) {
+      const exp = m[j] && m[j][0] ? m[j][0].slice(2, -2) || null : null
+      if (exp !== null && exp.trim().length > 0) {
+        arr.splice(
+          j + 1,
+          0,
+          `<a href="${exp}" data-href="${exp}">${getObLinkShowName(exp)}</a>`
+        )
+      } else {
+        arr.splice(j + 1, 0, '')
+      }
+    }
+    return arr.join('')
+  }
+  return str
+}
+
+export const parseObsidianLink = (text, ignoreMdExt = true) => {
+  const basicMatch = text.match(/^(!?)\[\[([^\[\]\|]+?)(?:\|([^\[\]]+))?\]\]$/)
+  if (!basicMatch) return null
+
+  const [raw, embedMarker, fullTarget, alias] = basicMatch
+
+  let target = fullTarget
+  let heading = null
+  let block = null
+
+  if (fullTarget.includes('#')) {
+    const parts = fullTarget.split('#')
+    target = parts[0]
+
+    const remaining = parts.slice(1).join('#')
+    if (remaining.includes('^')) {
+      const remainingParts = remaining.split('^')
+      heading = remainingParts[0] || null
+      block = remainingParts[1] || null
+    } else {
+      heading = remaining || null
+    }
+  } else if (fullTarget.includes('^')) {
+    const parts = fullTarget.split('^')
+    target = parts[0]
+    block = parts[1] || null
+  }
+
+  target = target.trim()
+  heading = heading ? heading.trim() : null
+  block = block ? block.trim() : null
+
+  return {
+    type: embedMarker === '!' ? 'embed' : 'link',
+    raw: raw,
+    target: target
+      ? ignoreMdExt
+        ? target.replace(/\.md$/, '')
+        : target
+      : null,
+    alias: alias ? alias.trim() : null,
+    heading: heading,
+    block: block
+  }
+}
+
 const mimeToExtension = {
   'image/jpeg': '.jpg',
   'image/jpg': '.jpg',
@@ -203,14 +294,10 @@ const mimeToExtension = {
   'image/bmp': '.bmp',
   'image/tiff': '.tiff'
 }
-// 根据 Blob 类型生成正确扩展名的文件名
 export const getFilenameWithExtension = (filename, type) => {
-  // 提取主文件名（不含原扩展名）
   const dotIndex = filename.lastIndexOf('.')
   const baseName = dotIndex > 0 ? filename.substring(0, dotIndex) : filename
-  // 获取对应的扩展名（未知类型时返回 undefined）
   const extension = mimeToExtension[type]
-  // 返回带正确扩展名的新文件名
   return extension ? `${baseName}${extension}` : filename
 }
 
@@ -220,20 +307,15 @@ export const base64ToFile = (base64Data, filename, mimeType) => {
     mimeType = matchRes && matchRes[1] ? matchRes[1] : 'image/png'
   }
   filename = getFilenameWithExtension(filename || 'file' + Date.now(), mimeType)
-  // 1. 分离 Base64 数据头（如果存在）
   const base64WithoutHeader = base64Data.includes(',')
     ? base64Data.split(',')[1]
     : base64Data
-  // 2. 解码 Base64 字符串为二进制数据
   const byteCharacters = atob(base64WithoutHeader)
-  // 3. 转换为 Uint8Array
   const byteArrays = new Uint8Array(byteCharacters.length)
   for (let i = 0; i < byteCharacters.length; i++) {
     byteArrays[i] = byteCharacters.charCodeAt(i)
   }
-  // 4. 创建 Blob 对象
   const blob = new Blob([byteArrays], { type: mimeType })
-  // 5. 转换为 File 对象
   return new File([blob], filename, {
     type: mimeType,
     lastModified: Date.now()
@@ -242,27 +324,20 @@ export const base64ToFile = (base64Data, filename, mimeType) => {
 
 export const imageUrlToBase64 = async url => {
   try {
-    // 1. 获取图片资源
     const response = await fetch(url)
-    // 2. 检查响应状态
     if (!response.ok) {
       throw new Error('请求失败')
     }
-    // 3. 获取图片Blob
     const blob = await response.blob()
-    // 4. 转换为Base64
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
       reader.onloadend = () => {
-        // 获取完整的Base64字符串（包含data:前缀）
         resolve(reader.result)
       }
       reader.onerror = reject
-      // 开始读取Blob数据
       reader.readAsDataURL(blob)
     })
   } catch (error) {
-    console.error('转换失败:', error)
     throw error
   }
 }
@@ -282,4 +357,57 @@ export const checkMindTreeHasImg = tree => {
   }
   walk(tree)
   return hasImg
+}
+
+export const parseInnerLinkAndText = (data, $obsidianAPI) => {
+  const obLinkMap = {}
+  const textData = []
+  const { supportObSearch } = $obsidianAPI.getSettings()
+  dfsTraverse(data.root, node => {
+    if (supportObSearch) {
+      textData.push(
+        nodeRichTextToTextWithWrap(node.data.text) + ' ^' + node.data.uid
+      )
+    }
+    const { hyperlink, hyperlinkTitle } = node.data
+    if (
+      hyperlink &&
+      hyperlinkTitle &&
+      !isHyperlink(hyperlink) &&
+      isObLinkText(hyperlinkTitle)
+    ) {
+      obLinkMap[hyperlinkTitle] = true
+    }
+    const matches = matchAll(node.data.text, /<a\s+href="([^"]+)"/g) || []
+    matches.forEach(match => {
+      if (match && match.captured && match.captured[0]) {
+        const res = $obsidianAPI.createLinkInfoFromFilePath(match.captured[0])
+        const linkStr = res ? res.linkText : `[[${match.captured[0]}]]`
+        obLinkMap[linkStr] = true
+      }
+    })
+  })
+  return {
+    linkData: Object.keys(obLinkMap).map(key => {
+      return key
+    }),
+    textData
+  }
+}
+
+export const tFileToFile = async function(tfile, app, mimeTypes = {}) {
+  const arrayBuffer = await app.vault.readBinary(tfile)
+  const ext = tfile.name
+    .split('.')
+    .pop()
+    .toLowerCase()
+  const mimeType = mimeTypes[ext] || ''
+  return new File([arrayBuffer], tfile.name, {
+    lastModified: tfile.stat.mtime,
+    type: mimeType
+  })
+}
+
+export const checkIsMac = () => {
+  return navigator.platform.toUpperCase().indexOf('MAC') >= 0
 }

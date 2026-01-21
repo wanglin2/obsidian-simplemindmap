@@ -3,7 +3,7 @@
     "mindMap": "Mind map",
     "rootNodeDefaultText": "Root node",
     "secondNodeDefaultText": "Secondary node",
-    "branchNodeDefaultText": "Branch node"
+    "branchNodeDefaultText": "Branch topic"
   },
   "action": {
     "createMindMap": "Create new mind map",
@@ -23,9 +23,13 @@
     "changeToMindMapFile": "Convert to mind map document"
   },
   "tip": {
+    "tip": "Tip",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "close": "Close",
     "fileExist": "File already exists",
     "createMindMapFail": "Failed to create mind map",
-    "fileIsNotMd": "Current file is not a Markdown document",
+    "fileIsNotMd": "Current file is not a markdown document",
     "fileIsEmpty": "File content is empty",
     "fileFormatError": "File format error",
     "onlyEnableSelectCurrentVaultFile": "Only files from the current vault can be added",
@@ -40,7 +44,14 @@
     "pluginNoNewVersion": "The current version is already the latest version",
     "pluginVersionCheckError": "Check failed",
     "changeSuccess": "Change completed",
-    "mdToMindMapFail": "Conversion failed, unable to parse data that can be converted into a mind map"
+    "mdToMindMapFail": "Conversion failed, unable to parse data that can be converted into a mind map",
+    "imgCreateFail": "Image file creation failed",
+    "mdModifyTip": "Do not modify any information except YAML",
+    "fileNameEmpty": "The file name cannot be empty",
+    "fileNameIllegal": "The file name contains illegal characters",
+    "fileRenameFail": "File renaming failed",
+    "mindMapToMdTip": "After converting to a Markdown document, only some content will be retained, such as node text, summary text, notes, etc. Other content will be discarded and cannot be recovered. Please make a backup first.",
+    "mdToMindMapTip": "Only supports converting syntax such as titles and lists into mind maps. Other content will be discarded and cannot be recovered. Please make a backup first."
   },
   "setting": {
     "title": {
@@ -48,7 +59,8 @@
       "title2": "File",
       "title3": "Image compression",
       "title4": "Embed",
-      "title5": "Other"
+      "title5": "Other",
+      "title6": "Image hosting"
     },
     "themeMode": {
       "title": "Theme mode",
@@ -61,7 +73,7 @@
       "title": "Default theme (light color)",
       "desc": "Default theme for creating a mind map file in light color mode",
       "title2": "Default theme (dark color)",
-      "desc2": "Default theme for creating a mind map file in dark color mode"
+      "desc2": "Default theme for creating a mind map file in dark mode"
     },
     "layout": {
       "title": "Default layout",
@@ -89,7 +101,9 @@
       "title8": "Support ob search",
       "desc8": "Mind map data is stored after encoding and compression, so it cannot be searched in OB. If you want to search for the node text content of the mind map in OB, you can turn on this option. After turning it on, the text content of all nodes will be saved in the file for search. The side effect is that it will cause the file size to increase, which may affect the speed of file opening and saving",
       "title9": "Store canvas position and scaling data",
-      "desc9": "After opening, the canvas position and zoom data will be saved in the file, so that the next time it is opened, it can be restored to the position and zoom state when it was closed last time. The disadvantage is that moving and scaling the canvas will cause file changes"
+      "desc9": "After opening, the canvas position and zoom data will be saved in the file, so that the next time it is opened, it can be restored to the position and zoom state when it was closed last time. The disadvantage is that moving and scaling the canvas will cause file changes",
+      "title10": "The maximum level for converting node text to Markdown titles",
+      "desc10": "Nodes with text less than or equal to this level will be converted to Markdown titles, while the rest will be converted to unordered lists"
     },
     "compress": {
       "title1": "Compress images",
@@ -109,7 +123,9 @@
     },
     "codeBlock": {
       "title": "Code block initial height",
-      "desc": "Initial height when embedding via smm code block (pixels)"
+      "desc": "Initial height when embedding via smm code block (pixels)",
+      "title2": "Code block background transparent",
+      "desc2": "Whether the background of the embedded smm code block is transparent, otherwise it will follow the selected mind map theme background color"
     },
     "linkInfo": {
       "issues": "Bugs and feature requests",
@@ -117,16 +133,32 @@
       "community": "Community"
     },
     "embed": {
-      "title1": "Embed preview double click to open a new window",
-      "desc1": "When embedding an MD document in format ![[]], double-click to preview the image and open the file in a new window",
+      "title1": "Embed preview double click to open a new tab",
+      "desc1": "When embedding an MD document in format ![[]], double-click to preview the image and open the file in a new tab",
       "title2": "Embed preview background transparent",
-      "desc2": "Set whether the background of the embedded preview image is transparent"
+      "desc2": "Is the background of the preview image embedded in the format of ![[]] transparent",
+      "title3": "Is the embedded image stored as a separate file",
+      "desc3": "By default, images used for embedding preview in ![[]] format will be stored separately in the repository as SVG files. This way, only the file path is stored in the mind map file, which can significantly reduce the file size and speed up file reading and saving. If closed, the image data will be stored in the mind map file, and the volume will significantly increase",
+      "title4": "Embedded image file storage directory",
+      "desc4": "The folder where the embedded preview image files are stored should not be empty relative to the repository root directory, and the directory should start with . as the hidden folder",
+      "title5": "New tab opens node link",
+      "desc5": "Does clicking on the inserted node link (excluding network links) open in a new tab. After closing, you can also open a new tab by pressing Ctrl+left mouse button"
     },
     "file": {
-      "title1": "New mind map file name prefix",
-      "desc1": "Default naming format for new mind map files: Prefix + Space + Date Timestamp",
-      "title2": "Date timestamp format for new mind map files",
-      "desc2": "Default format: YYYY-MM-DD HH.mm.ss, Example: 2025-01-01 23.59.59. For details on format meaning and modification, refer to: https://day.js.org/docs/en/parse/string-format"
+      "title1": "File name format for creating a new mind map",
+      "desc1": "Naming format for creating a new mind map file name. Support variables other than notename",
+      "title3": "Naming format for pasting images",
+      "desc3": "Naming format for images pasted on nodes",
+      "filenameFormatDesc": "File name format description"
+    },
+    "font": {
+      "title": "Font",
+      "desc": "Extended font list for mind maps",
+      "btn": "Manage",
+      "placeholder": "Search font. You can also press Enter to add input fonts directly",
+      "empty": "No font",
+      "noMatch": "No matching font",
+      "noFont": "No available font"
     },
     "button": {
       "select": "Select"
@@ -134,48 +166,21 @@
     "other": {
       "title1": "Check for new versions",
       "desc1": "After activation, it will check if a new version is available when the plugin starts. If your network cannot access Github, it is recommended to disable this option"
+    },
+    "imageHosting": {
+      "title1": "Open the picture bed",
+      "desc1": "After activation, all images will be uploaded to the image bed",
+      "tip1": "Please first improve the configuration information of the drawing bed",
+      "title2": "Picture bed URL",
+      "desc2": "Fill in the corresponding upload interface address based on the graphic tool you are using",
+      "title3": "Form field",
+      "desc3": "Name of the form field when uploading images",
+      "title4": "Response structure",
+      "desc4": "Response structure when uploading images. Please refer to the detailed description for more information:",
+      "desc5": "Image bed function description"
     }
   },
-  "commands": {
-    "save": "Edit operation-Save",
-    "saveAndUpdateImage": "Edit operation-Save and update image",
-    "undo": "Edit operation-Undo",
-    "redo": "Edit operation-Redo",
-    "searchReplace": "Edit operation-Search and replace",
-    "insertChildNode": "Node operation-Insert child node",
-    "insertSiblingNode": "Node operation-Insert sibling node",
-    "insertParentNode": "Node operation-Insert parent node",
-    "moveUpNode": "Node operation-Move up node",
-    "moveDownNode": "Node operation-Move down node",
-    "insertSummary": "Node operation-Insert summary",
-    "toggleExpandNode": "Node operation-Expand/collapse node",
-    "deleteNode": "Node operation-Delete node",
-    "deleteNodeOnly": "Node operation-Delete current node only",
-    "copyNode": "Node operation-Copy node",
-    "cutNode": "Node operation-Cut node",
-    "pasteNode": "Node operation-Paste node",
-    "selectAllNode": "Node operation-Select all",
-    "organizeLayout": "Node operation-Organize layout with one click",
-    "toggleBoldNode": "Node operation-Toggle bold",
-    "toggleItalicNode": "Node operation-Toggle italic",
-    "toggleUnderlineNode": "Node operation-Toggle underline",
-    "toggleStrikethroughNode": "Node operation-Toggle strikethrough",
-    "increaseFontSizeNode": "Node operation-Increase font size",
-    "decreaseFontSizeNode": "Node operation-Decrease font size",
-    "zoomInCanvas": "Canvas operation-Zoom in",
-    "zoomOutCanvas": "Canvas operation-Zoom out",
-    "backToRootCanvas": "Canvas operation-Back to root node",
-    "activateLeftCanvas": "Canvas operation-Move focus left",
-    "activateTopCanvas": "Canvas operation-Move focus up",
-    "activateRightCanvas": "Canvas operation-Move focus right",
-    "activateBottomCanvas": "Canvas operation-Move focus down",
-    "zoomFitCanvas": "Canvas operation-Fit to canvas",
-    "enterDemonstrate": "Auxiliary operation-Enter demonstration mode",
-    "openImageEdit": "Interface operation-Open image edit dialog",
-    "openHyperlinkEdit": "Interface operation-Open hyperlink edit dialog",
-    "openRemarkEdit": "Interface operation-Open remark edit dialog",
-    "openTagEdit": "Interface operation-Open tag edit dialog",
-    "openImport": "Interface operation-Open import dialog",
-    "openExport": "Interface operation-Open export dialog"
+  "html": {
+    "filenameFormatDesc": "<p>In addition to fixed names, variables can also be used, enclosed in {}. Available variables are as follows:</p><p>1.{notename}: The current file name without extension;</p><p>2.{date}: Current date in YYYY-MM-DD format;</p><p>3.{time}: Current time in HH:mm:ss format;</p><p>4.{datatime}: Current date and time in YYYY-MM-DD HH:mm:ss format;</p><p>5.{date:Format}: Specify date/time format, e.g.: MM-DD HH:mm, reference: <a href='https://day.js.org/docs/en/parse/string-format'>Format specification</a>;</p><p>6.{random}: Random string with 6-character length;</p>"
   }
 }

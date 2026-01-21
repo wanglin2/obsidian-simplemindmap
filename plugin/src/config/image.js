@@ -1,5 +1,3 @@
-
-// 该文件请运行npm run createNodeImageList命令自动生成
 import business_ from '../assets/svg/business/-.svg'
 import business__1 from '../assets/svg/business/-_1.svg'
 import business__10 from '../assets/svg/business/-_10.svg'

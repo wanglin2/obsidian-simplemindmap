@@ -22,7 +22,6 @@
 import { store } from '@/config'
 import { mapState, mapMutations } from 'vuex'
 
-// 侧边栏容器
 export default {
   props: {
     title: {
@@ -77,7 +76,7 @@ export default {
 .sidebarContainer {
   position: absolute;
   right: -300px;
-  top: 110px;
+  top: 60px;
   bottom: 27px;
   width: 300px;
   background-color: #fff;

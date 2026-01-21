@@ -76,7 +76,6 @@
 import { mapState } from 'vuex'
 import { isUndef, getTextFromHtml } from 'simple-mind-map/src/utils/index'
 
-// 搜索替换
 export default {
   props: {
     mindMap: {
@@ -122,6 +121,7 @@ export default {
       'search_match_node_list_change',
       this.onSearchMatchNodeListChange
     )
+    this.mindMap.keyCommand.addShortcut('Control+f', this.showSearch)
     this.$root.$bus.$on('windowResize', this.setSearchResultListHeight)
     this.$root.$bus.$on('setData', this.close)
   },
@@ -138,6 +138,7 @@ export default {
       'search_match_node_list_change',
       this.onSearchMatchNodeListChange
     )
+    this.mindMap.keyCommand.removeShortcut('Control+f', this.showSearch)
     this.$root.$bus.$off('windowResize', this.setSearchResultListHeight)
     this.$root.$bus.$off('setData', this.close)
   },
@@ -161,21 +162,18 @@ export default {
       this.replaceText = ''
     },
 
-    // 输入框聚焦时，禁止思维导图节点响应按键事件自动进入文本编辑
     onFocus() {
       this.mindMap.updateConfig({
         enableAutoEnterTextEditWhenKeydown: false
       })
     },
 
-    // 输入框失焦时恢复
     onBlur() {
       this.mindMap.updateConfig({
         enableAutoEnterTextEditWhenKeydown: true
       })
     },
 
-    // 画布，节点点击时让输入框失焦
     blur() {
       if (this.$refs.searchInputRef) {
         this.$refs.searchInputRef.blur()

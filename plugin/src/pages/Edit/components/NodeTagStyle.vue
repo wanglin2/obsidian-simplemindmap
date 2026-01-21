@@ -87,11 +87,9 @@ export default {
       if (typeof tag === 'string') {
         this.text = tag
       } else {
-        // v0.10.3+版本支持对象类型
         this.text = tag.text
         this.fill = tag.style && tag.style.fill ? tag.style.fill : ''
       }
-      // 获取外框的位置大小信息
       const rect = el.rbox()
       const elRect = this.mindMap.elRect
       const boxWidth = 260

@@ -1,27 +1,41 @@
 <template>
-  <el-dialog
-    class="nodeNoteDialog smmElDialog"
-    :title="$t('nodeNote.title')"
-    :visible.sync="dialogVisible"
-    :width="'90%'"
-    :top="isMobile ? '20px' : '15vh'"
-    :modal-append-to-body="false"
-    :close-on-click-modal="false"
+  <div
+    class="nodeNoteEditContainer"
+    :class="{ isDark: isDark }"
+    v-show="dialogVisible"
   >
-    <div class="noteEditor" ref="noteEditor" @keyup.stop @keydown.stop></div>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="cancel" size="small" class="smmElButtonSmall">{{
-        $t('dialog.cancel')
-      }}</el-button>
-      <el-button
-        type="primary"
-        @click="confirm"
-        size="small"
-        class="smmElButtonSmall"
-        >{{ $t('dialog.confirm') }}</el-button
-      >
-    </span>
-  </el-dialog>
+    <div class="nodeNoteEditContent" :class="{ isFullScreen: isFullScreen }">
+      <div class="editWrap">
+        <div
+          class="noteEditor"
+          ref="noteEditor"
+          @keyup.stop
+          @keydown.stop
+        ></div>
+        <!-- 全屏 -->
+        <div
+          class="fullScreenBtn"
+          :class="{ active: isFullScreen }"
+          @click="toggleFullScreen"
+          :title="isFullScreen ? '退出全屏' : '全屏'"
+        >
+          <span class="icon iconfont iconquanping1"></span>
+        </div>
+      </div>
+      <div class="footer">
+        <el-button @click="cancel" size="small" class="elButtonSmall">{{
+          $t('dialog.cancel')
+        }}</el-button>
+        <el-button
+          type="primary"
+          @click="confirm"
+          size="small"
+          class="elButtonSmall"
+          >{{ $t('dialog.confirm') }}</el-button
+        >
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -33,9 +47,7 @@ import { toastUiEditorLangMap } from '@/config/constant'
 import { compressImage, isNormalUrl } from '@/utils'
 import noteMixin from '@/mixins/note'
 
-// 节点备注内容设置
 export default {
-  name: 'NodeNote',
   mixins: [noteMixin],
   data() {
     return {
@@ -43,7 +55,8 @@ export default {
       note: '',
       activeNodes: [],
       editor: null,
-      appointNode: null
+      appointNode: null,
+      isFullScreen: false
     }
   },
   computed: {
@@ -99,18 +112,16 @@ export default {
       if (!this.editor) {
         this.editor = new Editor({
           el: this.$refs.noteEditor,
-          height: '500px',
+          height: '100%',
           initialEditType: 'markdown',
           previewStyle: 'vertical',
           theme: this.isDark ? 'dark' : 'light',
           language:
             toastUiEditorLangMap[this.$i18n.locale] || toastUiEditorLangMap.en,
           customHTMLRenderer: {
-            // 拦截图片渲染逻辑
             image: (node, { entering }) => {
               if (!entering) return null
               let url = node.destination || node.src
-              // 自定义转换逻辑（例如添加前缀、替换域名）
               if (!isNormalUrl(url)) {
                 url = this.$root.$obsidianAPI.getResourcePath(
                   decodeURIComponent(url)
@@ -160,7 +171,6 @@ export default {
                 }
                 callback(result)
               } catch (error) {
-                console.error('上传失败', error)
               }
             }
           }
@@ -186,22 +196,94 @@ export default {
           node.setNote(this.note)
         })
       }
-
       this.cancel()
+    },
+
+    toggleFullScreen() {
+      this.isFullScreen = !this.isFullScreen
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.nodeNoteDialog {
-  /deep/ .el-dialog {
-    max-width: 800px;
+.nodeNoteEditContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+
+  &.isDark {
+    .nodeNoteEditContent {
+      background-color: #262a2e;
+    }
   }
 
-  .tip {
-    margin-top: 5px;
-    color: #dcdfe6;
+  .nodeNoteEditContent {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 600px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.06);
+    border-left: 1px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-bottom: 27px;
+
+    &.isFullScreen {
+      width: 100%;
+    }
+
+    .editWrap {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+
+      .fullScreenBtn {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border-radius: 3px;
+        margin: 7px 5px;
+        border: 1px solid #f7f9fc;
+
+        &:hover {
+          border: 1px solid #e4e7ee;
+          background-color: #fff;
+        }
+
+        &.active {
+          color: #00a9ff;
+        }
+
+        .icon {
+          font-size: 16px;
+        }
+      }
+    }
+
+    .footer {
+      flex-shrink: 0;
+      height: 50px;
+      padding: 0 20px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
   }
 }
 </style>

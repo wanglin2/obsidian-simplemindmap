@@ -1,11 +1,11 @@
 <template>
-  <div class="countContainer" :class="{ isDark: isDark }"></div>
+  <div class="countContainer" :class="{ isDark: isDark }">
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 
-// 字数及节点数量统计
 let countEl = document.createElement('div')
 export default {
   props: {
@@ -40,7 +40,6 @@ export default {
     this.$root.$bus.$off('data_change', this.onDataChange)
   },
   methods: {
-    // 监听数据变化
     onDataChange(data) {
       this.textStr = ''
       this.words = 0
@@ -61,7 +60,6 @@ export default {
       }
     },
 
-    // 遍历
     walk(data) {
       if (!data) return
       this.num++
@@ -103,7 +101,6 @@ export default {
 }
 </style>
 <style lang="less">
-/* 隐藏默认状态栏项 */
 .smm-file-status-active .status-bar-item.plugin-word-count,
 .smm-file-status-active .status-bar-item.plugin-sync {
   display: none !important;

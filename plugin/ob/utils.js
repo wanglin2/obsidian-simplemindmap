@@ -1,6 +1,5 @@
-import manifestJson from '../../manifest.json'
+import { createUid } from 'simple-mind-map/src/utils/index.js'
 
-//  极简的深拷贝
 export const simpleDeepClone = data => {
   try {
     return JSON.parse(JSON.stringify(data))
@@ -13,7 +12,6 @@ export const generateRandomString = (
   length = 12,
   charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 ) => {
-  // 参数验证
   if (typeof length !== 'number' || length <= 0) {
     throw new Error('长度必须是正整数')
   }
@@ -21,7 +19,6 @@ export const generateRandomString = (
     throw new Error('字符集不能为空')
   }
 
-  // 使用加密安全的随机数生成器（如果可用）
   let randomValues
   if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
     randomValues = new Uint32Array(length)
@@ -32,7 +29,6 @@ export const generateRandomString = (
       .map(() => Math.random() * 0x100000000)
   }
 
-  // 生成随机字符串
   let result = ''
   for (let i = 0; i < length; i++) {
     const randomIndex = randomValues[i] % charSet.length
@@ -43,9 +39,7 @@ export const generateRandomString = (
 }
 
 export const hideTargetMenu = (menu, text = '在新窗口中打开') => {
-  // 隐藏特定默认菜单项
   menu.items.forEach(item => {
-    // 通过菜单项标题或ID识别要隐藏的项
     if (item.title === text || item.dom?.innerText?.includes(text)) {
       item.dom.hide()
     }
@@ -72,8 +66,6 @@ export const getUidFromSource = data => {
   const last = matches[matches.length - 1]
   let index = last[1]
   let str = content[index]
-  // 当检测到^时，记录后面的字符
-  // 当检测到换行符时，跳出循环
   let uid = ''
   let isJoin = false
   while (true || index >= total) {
@@ -92,73 +84,44 @@ export const getUidFromSource = data => {
   return uid
 }
 
-export let versionUpdateCheckTimer = null
-let versionUpdateChecked = false
-export const checkVersion = async (
-  callback = () => {},
-  force = false,
-  err = () => {}
-) => {
-  if (!force && versionUpdateChecked) {
-    return
-  }
-  versionUpdateChecked = true
-  try {
-    const gitAPIrequest = async () => {
-      return JSON.parse(
-        await request({
-          url: `https://api.github.com/repos/wanglin2/obsidian-simplemindmap/releases?per_page=15&page=1`
-        })
-      )
-    }
-    const latestVersion = (await gitAPIrequest())
-      .filter(el => !el.draft && !el.prerelease)
-      .map(el => {
-        return {
-          version: el.tag_name,
-          published: new Date(el.published_at)
-        }
-      })
-      .filter(el => el.version.match(/^\d+\.\d+\.\d+$/))
-      .sort((el1, el2) => el2.published - el1.published)[0].version
-    if (isVersionNewerThanOther(latestVersion, manifestJson.version)) {
-      callback(latestVersion)
-    } else {
-      callback()
-    }
-  } catch (e) {
-    console.error('检查更新失败', e)
-    err(e)
-  }
-  versionUpdateCheckTimer = window.setTimeout(() => {
-    versionUpdateChecked = false
-    versionUpdateCheckTimer = null
-  }, 28800000 * 3) // 24小时检查一次
+export const smmFilePathToFileName = (filePath, ext) => {
+  if (!filePath) return createUid() + ext
+  filePath =
+    filePath
+      .replace(/\//g, '_')
+      .replace(/.smm.md$/, '')
+      .replace(/.md$/, '') + ext
+  return filePath
 }
 
-export const isVersionNewerThanOther = (version, otherVersion) => {
-  if (!version || !otherVersion) return true
-  const v = version.match(/(\d*)\.(\d*)\.(\d*)/)
-  const o = otherVersion.match(/(\d*)\.(\d*)\.(\d*)/)
-  return Boolean(
-    v &&
-      v.length === 4 &&
-      o &&
-      o.length === 4 &&
-      !(
-        isNaN(parseInt(v[1])) ||
-        isNaN(parseInt(v[2])) ||
-        isNaN(parseInt(v[3]))
-      ) &&
-      !(
-        isNaN(parseInt(o[1])) ||
-        isNaN(parseInt(o[2])) ||
-        isNaN(parseInt(o[3]))
-      ) &&
-      (parseInt(v[1]) > parseInt(o[1]) ||
-        (parseInt(v[1]) >= parseInt(o[1]) && parseInt(v[2]) > parseInt(o[2])) ||
-        (parseInt(v[1]) >= parseInt(o[1]) &&
-          parseInt(v[2]) >= parseInt(o[2]) &&
-          parseInt(v[3]) > parseInt(o[3])))
-  )
+export const formatFileName = (str, { notename, ignores } = {}) => {
+  str = str.trim()
+  if (!str) return ''
+  str = str.replace(/{([^{}]+)}/g, (...args) => {
+    const match = args[1].trim()
+    if (ignores && ignores.includes(match)) {
+      return args[0]
+    }
+    if (match === 'notename' && notename) {
+      return notename
+    } else if (match === 'date') {
+      return moment().format('YYYY-MM-DD')
+    } else if (match === 'time') {
+      return moment().format('HH:mm:ss')
+    } else if (match === 'datetime') {
+      return moment().format('YYYY-MM-DD HH:mm:ss')
+    } else if (match === 'random') {
+      return Math.random()
+        .toString(36)
+        .substring(2, 8)
+    } else if (match.startsWith('date:') && match.slice(5).trim()) {
+      return moment().format(match.slice(5).trim())
+    }
+    return args[0]
+  })
+  return str
+}
+
+export const fragWithHTML = html => {
+  return createFragment(frag => (frag.createDiv().innerHTML = html))
 }

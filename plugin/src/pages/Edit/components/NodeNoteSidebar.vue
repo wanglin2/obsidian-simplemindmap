@@ -68,7 +68,6 @@ export default {
       }
     },
 
-    // 初始化编辑器
     initEditor() {
       if (!this.editor) {
         this.editor = new Viewer({

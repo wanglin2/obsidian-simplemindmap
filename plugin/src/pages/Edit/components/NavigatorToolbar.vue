@@ -20,7 +20,7 @@
       :aria-label="$t('navigatorToolbar.searchReplace')"
       data-tooltip-position="top"
     >
-      <div class="btn iconfont iconsousuo" @click="showSearch"></div>
+      <div class="btn iconfont iconsousuo1" @click="showSearch"></div>
     </div>
     <div class="item" v-if="!isMobile">
       <MouseAction :isDark="isDark" :mindMap="mindMap"></MouseAction>
@@ -81,7 +81,7 @@
     <Count
       :mindMap="mindMap"
       v-if="!isZenMode"
-      style="margin-left: 6px"
+      style="margin-left: 6px;"
     ></Count>
   </div>
 </template>
@@ -95,7 +95,6 @@ import { mapState, mapMutations } from 'vuex'
 import pkg from 'simple-mind-map/package.json'
 import Count from './Count.vue'
 
-// 导航器工具栏
 export default {
   components: {
     Scale,

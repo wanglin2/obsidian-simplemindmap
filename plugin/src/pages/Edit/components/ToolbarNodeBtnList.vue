@@ -146,7 +146,7 @@
         v-if="item === 'associativeLine'"
         class="toolbarBtn"
         :class="{
-          disabled: activeNodes.length <= 0 || hasGeneralization
+          disabled: activeNodes.length <= 0
         }"
         @click="$root.$bus.$emit('createAssociativeLine')"
       >
@@ -159,11 +159,21 @@
         v-if="item === 'formula'"
         class="toolbarBtn"
         :class="{
-          disabled: activeNodes.length <= 0 || hasGeneralization
+          disabled: activeNodes.length <= 0
         }"
         @click="showFormula"
       >
         <span class="icon iconfont icongongshi" style="font-size: 19px;"></span>
+      </div>
+      <div
+        v-if="item === 'attachment'"
+        class="toolbarBtn"
+        :class="{
+          disabled: activeNodes.length <= 0
+        }"
+        @click="selectAttachmentFile"
+      >
+        <span class="icon iconfont iconfujian" style="font-size: 20px;"></span>
       </div>
       <div
         v-if="item === 'outerFrame'"
@@ -190,7 +200,7 @@ export default {
   props: {
     dir: {
       type: String,
-      default: 'h' // h（水平排列）、v（垂直排列）
+      default: 'h'
     },
     list: {
       type: Array,
@@ -249,41 +259,38 @@ export default {
   methods: {
     ...mapMutations(['setActiveSidebar']),
 
-    // 监听模式切换
     onModeChange(mode) {
       this.readonly = mode === 'readonly'
     },
 
-    // 监听节点激活
     onNodeActive(...args) {
       this.activeNodes = [...args[1]]
     },
 
-    // 监听前进后退
     onBackForward(index, len) {
       this.backEnd = index <= 0
       this.forwardEnd = index >= len - 1
     },
 
-    // 开始格式刷
     onPainterStart() {
       this.isInPainter = true
     },
 
-    // 格式刷结束
     onPainterEnd() {
       this.isInPainter = false
     },
 
-    // 显示节点图标侧边栏
     showNodeIcon() {
       this.$root.$bus.$emit('close_node_icon_toolbar')
       this.setActiveSidebar('nodeIconSidebar')
     },
 
-    // 打开公式侧边栏
     showFormula() {
       this.setActiveSidebar('formulaSidebar')
+    },
+
+    selectAttachmentFile() {
+      this.$root.$bus.$emit('selectAttachment', this.activeNodes)
     }
   }
 }

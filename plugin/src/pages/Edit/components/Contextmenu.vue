@@ -7,46 +7,56 @@
     :class="{ isDark: isDark, isMobile: isMobile }"
   >
     <template v-if="type === 'node'">
-      <div
-        class="item"
-        @click="exec('INSERT_NODE', insertNodeBtnDisabled)"
-        :class="{ disabled: insertNodeBtnDisabled }"
-      >
-        <span class="name">{{ $t('contextmenu.insertSiblingNode') }}</span>
-        <span class="desc"></span>
+      <div class="item">
+        <span class="name">{{ $t('contextmenu.insertNode') }}</span>
+        <span class="el-icon-arrow-right"></span>
+        <div
+          class="subItems listBox"
+          :class="{ isDark: isDark }"
+          style="width: 200px; top: -10px;"
+          :style="{ left: subItemsShowLeft ? '-200px' : '100%' }"
+        >
+          <div
+            class="item"
+            @click="exec('INSERT_NODE', insertNodeBtnDisabled)"
+            :class="{ disabled: insertNodeBtnDisabled }"
+          >
+            <span class="name">{{ $t('contextmenu.insertSiblingNode') }}</span>
+            <span class="desc">Enter</span>
+          </div>
+          <div
+            class="item"
+            @click="exec('INSERT_CHILD_NODE')"
+            :class="{ disabled: isGeneralization }"
+          >
+            <span class="name">{{ $t('contextmenu.insertChildNode') }}</span>
+            <span class="desc">Tab</span>
+          </div>
+          <div
+            class="item"
+            @click="exec('INSERT_PARENT_NODE')"
+            :class="{ disabled: insertNodeBtnDisabled }"
+          >
+            <span class="name">{{ $t('contextmenu.insertParentNode') }}</span>
+            <span class="desc">Shift + Tab</span>
+          </div>
+          <div
+            class="item"
+            @click="exec('ADD_GENERALIZATION')"
+            :class="{ disabled: insertNodeBtnDisabled }"
+          >
+            <span class="name">{{ $t('contextmenu.insertSummary') }}</span>
+            <span class="desc">Ctrl + G</span>
+          </div>
+        </div>
       </div>
-      <div
-        class="item"
-        @click="exec('INSERT_CHILD_NODE')"
-        :class="{ disabled: isGeneralization }"
-      >
-        <span class="name">{{ $t('contextmenu.insertChildNode') }}</span>
-        <span class="desc"></span>
-      </div>
-      <div
-        class="item"
-        @click="exec('INSERT_PARENT_NODE')"
-        :class="{ disabled: insertNodeBtnDisabled }"
-      >
-        <span class="name">{{ $t('contextmenu.insertParentNode') }}</span>
-        <span class="desc"></span>
-      </div>
-      <div
-        class="item"
-        @click="exec('ADD_GENERALIZATION')"
-        :class="{ disabled: insertNodeBtnDisabled }"
-      >
-        <span class="name">{{ $t('contextmenu.insertSummary') }}</span>
-        <span class="desc"></span>
-      </div>
-      <div class="splitLine"></div>
       <div
         class="item"
         @click="exec('UP_NODE')"
         :class="{ disabled: upNodeBtnDisabled }"
       >
         <span class="name">{{ $t('contextmenu.moveUpNode') }}</span>
-        <span class="desc"></span>
+        <span class="desc">Ctrl + ↑</span>
       </div>
       <div
         class="item"
@@ -54,7 +64,7 @@
         :class="{ disabled: downNodeBtnDisabled }"
       >
         <span class="name">{{ $t('contextmenu.moveDownNode') }}</span>
-        <span class="desc"></span>
+        <span class="desc">Ctrl + ↓</span>
       </div>
       <div class="item" @click="exec('UNEXPAND_ALL')">
         <span class="name">{{ $t('contextmenu.unExpandNodeChild') }}</span>
@@ -62,35 +72,61 @@
       <div class="item" @click="exec('EXPAND_ALL')">
         <span class="name">{{ $t('contextmenu.expandNodeChild') }}</span>
       </div>
+      <div class="item">
+        <span class="name">选择</span>
+        <span class="el-icon-arrow-right"></span>
+        <div
+          class="subItems listBox"
+          :class="{ isDark: isDark, showLeft: subItemsShowLeft }"
+          style="top: -10px"
+        >
+          <div class="item" @click="selectNodes('brother')">同层级所有节点</div>
+          <div class="item" @click="selectNodes('selfAll')">自身及下级节点</div>
+          <div class="item" @click="selectNodes('children')">子节点</div>
+        </div>
+      </div>
       <div class="splitLine"></div>
       <div class="item danger" @click="exec('REMOVE_NODE')">
         <span class="name">{{ $t('contextmenu.deleteNode') }}</span>
-        <span class="desc"></span>
+        <span class="desc">Delete</span>
       </div>
       <div class="item danger" @click="exec('REMOVE_CURRENT_NODE')">
         <span class="name">{{ $t('contextmenu.deleteCurrentNode') }}</span>
-        <span class="desc"></span>
+        <span class="desc">Shift + Backspace</span>
       </div>
       <div class="splitLine"></div>
-      <div
-        class="item"
-        @click="exec('COPY_NODE')"
-        :class="{ disabled: isGeneralization }"
-      >
-        <span class="name">{{ $t('contextmenu.copyNode') }}</span>
-        <span class="desc"></span>
+      <div class="item">
+        <span class="name">复制粘贴</span>
+        <span class="el-icon-arrow-right"></span>
+        <div
+          class="subItems listBox"
+          :class="{ isDark: isDark, showLeft: subItemsShowLeft }"
+          style="top: -10px"
+        >
+          <div
+            class="item"
+            @click="exec('COPY_NODE')"
+            :class="{ disabled: isGeneralization }"
+          >
+            <span class="name">{{ $t('contextmenu.copyNode') }}</span>
+            <span class="desc">Ctrl + C</span>
+          </div>
+          <div
+            class="item"
+            @click="exec('CUT_NODE')"
+            :class="{ disabled: isGeneralization }"
+          >
+            <span class="name">{{ $t('contextmenu.cutNode') }}</span>
+            <span class="desc">Ctrl + X</span>
+          </div>
+          <div class="item" @click="exec('PASTE_NODE')">
+            <span class="name">{{ $t('contextmenu.pasteNode') }}</span>
+            <span class="desc">Ctrl + V</span>
+          </div>
+        </div>
       </div>
-      <div
-        class="item"
-        @click="exec('CUT_NODE')"
-        :class="{ disabled: isGeneralization }"
-      >
-        <span class="name">{{ $t('contextmenu.cutNode') }}</span>
-        <span class="desc"></span>
-      </div>
-      <div class="item" @click="exec('PASTE_NODE')">
-        <span class="name">{{ $t('contextmenu.pasteNode') }}</span>
-        <span class="desc"></span>
+      <div class="item" @click="copyNodeToTxt">
+        <span class="name">{{ $t('contextmenu.copyNodeToTxt') }}</span>
       </div>
       <div class="splitLine"></div>
       <div class="item" @click="exec('REMOVE_HYPERLINK')" v-if="hasHyperlink">
@@ -134,7 +170,7 @@
     <template v-if="type === 'svg'">
       <div class="item" @click="exec('RETURN_CENTER')">
         <span class="name">{{ $t('contextmenu.backCenter') }}</span>
-        <span class="desc"></span>
+        <span class="desc">Ctrl + Enter</span>
       </div>
       <div class="splitLine"></div>
       <div class="item" @click="exec('EXPAND_ALL')">
@@ -163,18 +199,31 @@
           </div>
         </div>
       </div>
+      <div class="item">
+        <span class="name">选择</span>
+        <span class="el-icon-arrow-right"></span>
+        <div
+          class="subItems listBox"
+          :class="{ isDark: isDark, showLeft: subItemsShowLeft }"
+          style="top: -10px"
+        >
+          <div class="item" @click="selectNodes('all')">所有节点</div>
+          <div class="item" @click="selectNodes('second')">二级节点</div>
+          <div class="item" @click="selectNodes('third')">三级节点</div>
+        </div>
+      </div>
       <div class="splitLine"></div>
       <div class="item" @click="exec('RESET_LAYOUT')" v-if="!isReadonly">
         <span class="name">{{ $t('contextmenu.arrangeLayout') }}</span>
-        <span class="desc"></span>
+        <span class="desc">Ctrl + R</span>
       </div>
       <div class="item" @click="exec('FIT_CANVAS')">
         <span class="name">{{ $t('contextmenu.fitCanvas') }}</span>
-        <span class="desc"></span>
+        <span class="desc">Ctrl + Shift + i</span>
       </div>
       <div class="item" @click="exec('TOGGLE_ZEN_MODE')">
         <span class="name">{{ $t('contextmenu.zenMode') }}</span>
-        {{ isZenMode ? '√' : '' }}
+        <span class="el-icon-check" v-if="isZenMode"></span>
       </div>
       <div class="splitLine"></div>
       <div
@@ -224,12 +273,15 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import { getTextFromHtml, imgToDataUrl } from 'simple-mind-map/src/utils'
+import {
+  getTextFromHtml,
+  imgToDataUrl,
+  copyNodeTree
+} from 'simple-mind-map/src/utils'
 import { transformToMarkdown } from 'simple-mind-map/src/parse/toMarkdown'
-import { transformToTxt } from 'simple-mind-map/src/parse/toTxt'
+import txt from 'simple-mind-map/src/parse/txt'
 import { setDataToClipboard, setImgToClipboard, copy } from '@/utils'
 
-// 右键菜单
 export default {
   props: {
     mindMap: {
@@ -247,6 +299,8 @@ export default {
       mosuedownX: 0,
       mosuedownY: 0,
       enableCopyToClipboardApi: navigator.clipboard,
+      numberType: '',
+      numberLevel: '',
       subItemsShowLeft: false,
       isNodeMousedown: false,
       listBoxWidth: '250px'
@@ -376,7 +430,6 @@ export default {
   methods: {
     ...mapMutations(['setLocalConfig']),
 
-    // 计算右键菜单元素的显示位置
     getShowPosition(x, y) {
       if (this.isMobile) {
         this.listBoxWidth =
@@ -400,11 +453,15 @@ export default {
       return { x, y }
     },
 
-    // 节点右键显示
     show(e, node) {
       this.type = 'node'
       this.isShow = true
       this.node = node
+      const number = this.node.getData('number')
+      if (number) {
+        this.numberType = number.type || 1
+        this.numberLevel = number.level === '' ? 1 : number.level
+      }
       this.$nextTick(() => {
         const { x, y } = this.getShowPosition(e.clientX + 10, e.clientY + 10)
         this.left = x
@@ -416,7 +473,6 @@ export default {
       this.isNodeMousedown = true
     },
 
-    // 鼠标按下事件
     onMousedown(e) {
       if (!e || e.which !== 3) {
         return
@@ -426,7 +482,6 @@ export default {
       this.isMousedown = true
     },
 
-    // 鼠标松开事件
     onMouseup(e) {
       if (!this.isMousedown) {
         return
@@ -446,7 +501,6 @@ export default {
       this.show2(e)
     },
 
-    // 画布右键显示
     show2(e) {
       this.type = 'svg'
       this.isShow = true
@@ -457,16 +511,16 @@ export default {
       })
     },
 
-    // 隐藏
     hide() {
       this.isShow = false
       this.left = -9999
       this.top = -9999
       this.type = ''
       this.node = ''
+      this.numberType = ''
+      this.numberLevel = ''
     },
 
-    // 执行命令
     exec(key, disabled, ...args) {
       if (disabled) {
         return
@@ -532,7 +586,6 @@ export default {
           break
         case 'COPY_NODE_TO_OB_LINK':
           const link2 = this.$root.$obsidianAPI.getObInternalLink(
-            '',
             '#^' + this.node.getData('uid')
           )
           copy(link2)
@@ -559,12 +612,28 @@ export default {
         this.$root.$obsidianAPI.showTip(this.$t('contextmenu.copySuccess'))
         this.hide()
       } catch (error) {
-        console.log(error)
         this.$root.$obsidianAPI.showTip(this.$t('contextmenu.copyFail'))
       }
     },
 
-    // 复制到剪贴板
+    copyNodeToTxt() {
+      const text = txt.toTxt(
+        copyNodeTree({
+          tree: {},
+          root: this.node,
+          removeActiveState: true
+        })
+      )
+      if (text) {
+        if (this.enableCopyToClipboardApi) {
+          setDataToClipboard(text)
+        } else {
+          copy(text)
+        }
+      }
+      this.hide()
+    },
+
     async copyToClipboard(type) {
       try {
         this.hide()
@@ -577,12 +646,15 @@ export default {
             str = JSON.stringify(data)
             break
           case 'md':
+            const {
+              nodeTextToMarkdownTitleMaxLevel
+            } = this.$root.$obsidianAPI.getSettings()
             data = this.mindMap.getData()
-            str = transformToMarkdown(data)
+            str = transformToMarkdown(data, nodeTextToMarkdownTitleMaxLevel)
             break
           case 'txt':
             data = this.mindMap.getData()
-            str = transformToTxt(data)
+            str = txt.toTxt(data)
             break
           case 'png':
             const png = await this.mindMap.export('png', false)
@@ -601,9 +673,30 @@ export default {
         }
         this.$root.$obsidianAPI.showTip(this.$t('contextmenu.copySuccess'))
       } catch (error) {
-        console.log(error)
         this.$root.$obsidianAPI.showTip(this.$t('contextmenu.copyFail'))
       }
+    },
+
+    aiCreate() {
+      this.$root.$bus.$emit('ai_create_part', this.node)
+      this.hide()
+    },
+
+    selectNodes(type) {
+      if (type === 'all') {
+        this.mindMap.execCommand('SELECT_ALL')
+      } else if (type === 'second') {
+        this.mindMap.execCommand('SELECT_ONE_LEVEL', 2)
+      } else if (type === 'third') {
+        this.mindMap.execCommand('SELECT_ONE_LEVEL', 3)
+      } else if (type === 'brother') {
+        this.mindMap.execCommand('SELECT_ONE_LEVEL', this.node.layerIndex + 1)
+      } else if (type === 'selfAll') {
+        this.mindMap.execCommand('SELECT_SELF_AND_CHILDREN')
+      } else if (type === 'children') {
+        this.mindMap.execCommand('SELECT_CHILDREN')
+      }
+      this.hide()
     }
   }
 }
@@ -623,6 +716,18 @@ export default {
 
   &.subItems {
     width: 250px;
+  }
+}
+.listBox {
+  width: 250px;
+  background: #fff;
+  box-shadow: 0 4px 12px 0 hsla(0, 0%, 69%, 0.5);
+  border-radius: 4px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+
+  &.isDark {
+    background: #363b3f;
   }
 }
 .contextmenuContainer {
@@ -725,6 +830,7 @@ export default {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      display: none;
     }
 
     .subItems {

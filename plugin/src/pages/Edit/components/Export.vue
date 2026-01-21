@@ -11,11 +11,11 @@
     :width="'90%'"
     :top="isMobile ? '20px' : '15vh'"
     :modal-append-to-body="false"
+    :close-on-click-modal="false"
+    :show-close="false"
   >
     <div class="exportContainer" :class="{ isDark: isDark }">
-      <!-- 导出类型选择 -->
       <div class="downloadTypeSelectBox">
-        <!-- 类型列表 -->
         <div class="downloadTypeList smmCustomScrollbar">
           <div
             class="downloadTypeItem"
@@ -31,9 +31,7 @@
             <div class="icon checked el-icon-check"></div>
           </div>
         </div>
-        <!-- 类型内容 -->
         <div class="downloadTypeContent">
-          <!-- 文件名称输入 -->
           <div class="nameInputBox">
             <div class="nameInput">
               <span class="name">{{ $t('export.filename') }}</span>
@@ -46,7 +44,6 @@
             </div>
             <span class="closeBtn el-icon-close" @click="cancel"></span>
           </div>
-          <!-- 配置 -->
           <div class="contentBox smmCustomScrollbar">
             <div class="contentRow">
               <div class="contentName">{{ $t('export.format') }}</div>
@@ -116,7 +113,7 @@
                   </div>
                   <div class="valueSubItem">
                     <el-checkbox
-                      v-show="['png', 'pdf'].includes(exportType)"
+                      v-show="['png', 'pdf', 'svg'].includes(exportType)"
                       v-model="isTransparent"
                       >{{ $t('export.isTransparent') }}</el-checkbox
                     >
@@ -130,7 +127,6 @@
               </div>
             </div>
           </div>
-          <!-- 按钮 -->
           <div class="btnList">
             <el-button @click="cancel" size="small" class="smmElButtonSmall">{{
               $t('dialog.cancel')
@@ -156,7 +152,6 @@ import { createUid } from 'simple-mind-map/src/utils/index'
 import MarkdownIt from 'markdown-it'
 import { isHyperlink, isNormalUrl, imageUrlToBase64 } from '@/utils'
 
-// 导出
 let md = null
 export default {
   data() {
@@ -197,7 +192,9 @@ export default {
     },
 
     noOptions() {
-      return ['md', 'xmind', 'txt'].includes(this.exportType)
+      return ['md', 'xmind', 'txt', 'xlsx', 'mm'].includes(
+        this.exportType
+      )
     }
   },
   created() {
@@ -225,6 +222,12 @@ export default {
     },
 
     confirm() {
+      if (this.exportType === 'xlsx') {
+        if (this.fileName.length > 31) {
+          this.$message.error('导出Excel文件名称长度不能超过31个字符')
+          return
+        }
+      }
       this.setExtraTextOnExport(this.extraText)
       if (this.exportType === 'svg') {
         this.$root.$bus.$emit(
@@ -232,11 +235,7 @@ export default {
           this.exportType,
           true,
           this.fileName,
-          `* {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-          }`
+          this.isTransparent
         )
       } else if (['smm', 'json'].includes(this.exportType)) {
         this.$root.$bus.$emit(
@@ -266,6 +265,22 @@ export default {
           this.isTransparent,
           this.isFitBg
         )
+      } else if (this.exportType === 'mm') {
+        this.$root.$bus.$emit('export', this.exportType, true, this.fileName, {
+          transformNote: note => {
+            if (!md) {
+              md = new MarkdownIt()
+            }
+            return md.render(note)
+          },
+          transformImage: img => {
+            if (isHyperlink(img)) {
+              return img
+            } else {
+              return ''
+            }
+          }
+        })
       } else if (this.exportType === 'xmind') {
         this.$root.$bus.$emit(
           'export',
@@ -273,6 +288,17 @@ export default {
           true,
           this.fileName,
           this.transformMindMapData
+        )
+      } else if (this.exportType === 'md') {
+        const {
+          nodeTextToMarkdownTitleMaxLevel
+        } = this.$root.$obsidianAPI.getSettings()
+        this.$root.$bus.$emit(
+          'export',
+          this.exportType,
+          true,
+          this.fileName,
+          nodeTextToMarkdownTitleMaxLevel
         )
       } else {
         this.$root.$bus.$emit('export', this.exportType, true, this.fileName)
@@ -304,7 +330,6 @@ export default {
                     root.data.image = key
                     resolve()
                   } catch (error) {
-                    console.log(error)
                     resolve()
                   }
                 })

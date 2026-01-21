@@ -5,6 +5,8 @@
     :visible.sync="dialogVisible"
     width="500"
     :modal-append-to-body="false"
+    :close-on-click-modal="false"
+    :show-close="false"
   >
     <div class="item" v-for="item in nodeIconList" :key="item.name">
       <div class="title">{{ item.name }}</div>
@@ -28,7 +30,6 @@
 import { nodeIconList } from 'simple-mind-map/src/svg/icons'
 import icon from '@/config/icon'
 
-// 节点图标内容设置
 export default {
   data() {
     return {
@@ -70,18 +71,15 @@ export default {
       let index = this.iconList.findIndex(item => {
         return item === key
       })
-      // 删除icon
       if (index !== -1) {
         this.iconList.splice(index, 1)
       } else {
         let typeIndex = this.iconList.findIndex(item => {
           return item.split('_')[0] === type
         })
-        // 替换icon
         if (typeIndex !== -1) {
           this.iconList.splice(typeIndex, 1, key)
         } else {
-          // 增加icon
           this.iconList.push(key)
         }
       }

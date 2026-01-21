@@ -1,5 +1,9 @@
 <template>
-  <div class="imgUploadContainer" :class="{ isDark: isDark }">
+  <div
+    class="imgUploadContainer"
+    :class="{ isDark: isDark }"
+    v-loading="loading"
+  >
     <div class="imgUploadPanel">
       <div class="upBtn" v-if="!value">
         <label
@@ -29,50 +33,13 @@
 </template>
 
 <script>
-import { compressImage, isNormalUrl } from '@/utils'
+import { isNormalUrl } from '@/utils'
 import { mapState } from 'vuex'
-
-const getDroppedText = item => {
-  return new Promise(resolve => {
-    item.getAsString(resolve)
-  })
-}
-
-const handleFiles = files => {
-  if (!files || files.length === 0) return
-  let res = null
-  Array.from(files).forEach(file => {
-    if (/^image\//.test(file.type)) {
-      res = file
-    }
-  })
-  return res
-}
-
-// 读取文字和图片
-const getDataFromDt = async dt => {
-  let text = null
-  let file = null
-  // 检查是否有拖拽的文件
-  if (dt.files && dt.files.length > 0) {
-    file = handleFiles(dt.files)
-  }
-  // 检查是否有拖拽的文本内容
-  else if (dt.items && dt.items.length > 0) {
-    for (let i = 0; i < dt.items.length; i++) {
-      const item = dt.items[i]
-      if (item.kind === 'string' && item.type === 'text/plain') {
-        text = await getDroppedText(item)
-      }
-    }
-  }
-  return {
-    text,
-    file
-  }
-}
+import { getDataFromDt } from './utils'
+import imgHostingUpload from '@/mixins/imgHostingUpload'
 
 export default {
+  mixins: [imgHostingUpload],
   model: {
     prop: 'value',
     event: 'change'
@@ -85,7 +52,8 @@ export default {
   },
   data() {
     return {
-      file: null
+      file: null,
+      loading: false
     }
   },
   computed: {
@@ -94,15 +62,15 @@ export default {
     })
   },
   methods: {
-    // 图片选择事件
     onImgUploadInputChange(e) {
       let file = e.target.files[0]
       this.selectImg(file)
     },
 
-    // 拖动上传图片
     async onDrop(e) {
-      const { file, text } = await getDataFromDt(e.dataTransfer)
+      const { file, text } = await getDataFromDt(e.dataTransfer, f => {
+        return /^image\//.test(f.type)
+      })
       if (file) {
         this.selectImg(file)
       } else if (text) {
@@ -114,34 +82,18 @@ export default {
       }
     },
 
-    // 选择图片
     async selectImg(file) {
       try {
-        const {
-          compressImage: isCompress,
-          compressImageOptionsMaxWidth,
-          compressImageOptionsMaxHeight,
-          compressImageOptionsQuality
-        } = this.$root.$obsidianAPI.getSettings()
-        if (isCompress) {
-          file = await compressImage(file, {
-            exportType: 'file',
-            maxWidth: compressImageOptionsMaxWidth,
-            maxHeight: compressImageOptionsMaxHeight,
-            quality: compressImageOptionsQuality
-          })
-        }
-        const result = await this.$root.$obsidianAPI.saveFileToVault(file)
-        if (!result) {
-          throw new Error(this.$t('imageUpload.failTip'))
-        }
+        this.loading = true
+        const result = await this.compressAndUploadImg(file)
         this.$emit('change', result)
+        this.loading = false
       } catch (error) {
         this.$root.$obsidianAPI.showTip(error)
+        this.loading = false
       }
     },
 
-    // 获取图片大小
     getSize() {
       return new Promise(resolve => {
         let img = new Image()
@@ -161,7 +113,6 @@ export default {
       })
     },
 
-    // 删除图片
     deleteImg() {
       this.$emit('change', '')
     },

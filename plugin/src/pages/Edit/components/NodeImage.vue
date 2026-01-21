@@ -8,57 +8,64 @@
     :top="isMobile ? '20px' : '15vh'"
     :modal-append-to-body="false"
     :close-on-click-modal="false"
+    :show-close="false"
   >
-    <div class="tip">{{ $t('nodeImage.tip') }}</div>
-    <div class="title">1.{{ $t('nodeImage.selectLocal') }}</div>
-    <ImgUpload
-      ref="ImgUpload"
-      v-model="img"
-      style="margin-bottom: 12px;"
-      @selectObFile="onImgUploadSelectObFile"
-    ></ImgUpload>
-    <div class="inputBox">
-      <span class="inputTitle" :title="$t('nodeImage.selectVault')"
-        >2.{{ $t('nodeImage.selectVault') }}</span
-      >
-      <el-select
-        v-model="obFile"
-        filterable
-        :placeholder="''"
-        class="obFileSelect"
-        popper-class="smmObFileSelectPopper"
-        clearable
-        :remote-method="getObFileList"
-        @change="onObFileChange"
-      >
-        <el-option
-          v-for="item in obFileList"
-          :key="item.path"
-          :label="item.basename"
-          :value="item.path"
+    <div v-if="dialogVisible">
+      <div class="tip">{{ $t('nodeImage.tip') }}</div>
+      <div class="title">1.{{ $t('nodeImage.selectLocal') }}</div>
+      <ImgUpload
+        ref="ImgUpload"
+        v-model="img"
+        style="margin-bottom: 12px;"
+        @selectObFile="onImgUploadSelectObFile"
+      ></ImgUpload>
+      <div class="inputBox">
+        <span class="inputTitle" :title="$t('nodeImage.selectVault')"
+          >2.{{ $t('nodeImage.selectVault') }}</span
         >
-          <div class="fileName">{{ item.basename }}</div>
-          <div class="folder">{{ item.folder }}</div>
-        </el-option>
-      </el-select>
-    </div>
-    <div class="inputBox">
-      <span class="inputTitle" :title="$t('nodeImage.selectUrl')"
-        >3.{{ $t('nodeImage.selectUrl') }}</span
-      >
-      <el-input
-        v-model="imgUrl"
-        size="mini"
-        placeholder="http://xxx.com/xx.jpg"
-        @keydown.native.stop
-        @change="onImgUrlChange"
-      ></el-input>
-    </div>
-    <div class="inputBox">
-      <span class="inputTitle" :title="$t('nodeImage.imgTitle')">{{
-        $t('nodeImage.imgTitle')
-      }}</span>
-      <el-input v-model="imgTitle" size="mini" @keydown.native.stop></el-input>
+        <el-select
+          v-model="obFile"
+          filterable
+          :placeholder="''"
+          class="obFileSelect"
+          popper-class="smmObFileSelectPopper"
+          clearable
+          :remote-method="getObFileList"
+          @change="onObFileChange"
+        >
+          <el-option
+            v-for="item in obFileList"
+            :key="item.path"
+            :label="item.basename"
+            :value="item.path"
+          >
+            <div class="fileName">{{ item.basename }}</div>
+            <div class="folder">{{ item.folder }}</div>
+          </el-option>
+        </el-select>
+      </div>
+      <div class="inputBox">
+        <span class="inputTitle" :title="$t('nodeImage.selectUrl')"
+          >3.{{ $t('nodeImage.selectUrl') }}</span
+        >
+        <el-input
+          v-model="imgUrl"
+          size="mini"
+          placeholder="http://xxx.com/xx.jpg"
+          @keydown.native.stop
+          @change="onImgUrlChange"
+        ></el-input>
+      </div>
+      <div class="inputBox">
+        <span class="inputTitle" :title="$t('nodeImage.imgTitle')">{{
+          $t('nodeImage.imgTitle')
+        }}</span>
+        <el-input
+          v-model="imgTitle"
+          size="mini"
+          @keydown.native.stop
+        ></el-input>
+      </div>
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="cancel" size="small" class="smmElButtonSmall">{{
@@ -81,7 +88,6 @@ import { getImageSize } from 'simple-mind-map/src/utils/index'
 import { mapState } from 'vuex'
 import { isNormalUrl } from '@/utils'
 
-// 节点图片内容设置
 export default {
   components: {
     ImgUpload
@@ -113,12 +119,10 @@ export default {
     this.$root.$bus.$off('showNodeImage', this.handleShowNodeImage)
   },
   methods: {
-    // 保存激活的节点
     handleNodeActive(...args) {
       this.activeNodes = [...args[1]]
     },
 
-    // 显示节点图片设置对话框
     handleShowNodeImage() {
       if (!this.activeNodes || this.activeNodes.length === 0) return
       this.reset()
@@ -127,9 +131,8 @@ export default {
         const firstNode = this.activeNodes[0]
         let img = firstNode.getData('image') || ''
         img =
-          (firstNode.mindMap.renderer.renderTree.data.imgMap || {})[img] || img
+          (firstNode.mindMap.renderer.treeRender.renderTree.data.imgMap || {})[img] || img
         if (img) {
-          // 网络图片
           if (isNormalUrl(img)) {
             this.imgUrl = img
             this.img = img
@@ -161,7 +164,6 @@ export default {
 
     async confirm() {
       try {
-        // 删除图片
         if (!this.img && !this.imgUrl && !this.obFile) {
           this.cancel()
           this.activeNodes.forEach(node => {
@@ -188,7 +190,6 @@ export default {
         })
         this.cancel()
       } catch (error) {
-        console.log(error)
       }
     },
 
@@ -196,7 +197,6 @@ export default {
       return this.obFileList.find(item => item.path === filePath)
     },
 
-    // 从Vault获取图片文件列表
     getObFileList(searchText) {
       let list = []
       if (this.allObFileList) {
@@ -221,7 +221,6 @@ export default {
       this.obFileList = list.slice(0, 50)
     },
 
-    // 从Vault选择图片
     onObFileChange() {
       if (this.obFile) {
         this.img = this.obFile
@@ -234,7 +233,6 @@ export default {
       this.onObFileChange()
     },
 
-    // 网络图片地址输入
     onImgUrlChange() {
       if (this.imgUrl) {
         this.img = this.imgUrl

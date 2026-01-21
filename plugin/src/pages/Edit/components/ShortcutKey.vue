@@ -15,7 +15,6 @@
           </div>
         </div>
       </div>
-      <div class="tip">{{ $t('shortcutKey.tip') }}</div>
     </div>
   </Sidebar>
 </template>
@@ -25,7 +24,6 @@ import Sidebar from './Sidebar.vue'
 import { shortcutKeyList } from '@/config'
 import { mapState } from 'vuex'
 
-// 快捷键
 export default {
   components: {
     Sidebar
@@ -115,13 +113,6 @@ export default {
         text-overflow: ellipsis;
       }
     }
-  }
-
-  .tip {
-    font-size: 14px;
-    color: #909090;
-    margin-top: 20px;
-    margin-bottom: 12px;
   }
 }
 </style>

@@ -14,7 +14,6 @@
       v-if="configData"
     >
       <div class="smmSidebarGroupTitle noTop">{{ $t('setting.title1') }}</div>
-      <!-- 根节点是否允许收起下级 -->
       <div class="row">
         <div class="rowItem">
           <el-checkbox
@@ -24,7 +23,6 @@
           >
         </div>
       </div>
-      <!-- 配置开启自由拖拽 -->
       <div class="row">
         <div class="rowItem">
           <el-checkbox
@@ -36,9 +34,14 @@
             "
             >{{ $t('setting.enableFreeDrag') }}</el-checkbox
           >
+          <span
+            class="iconfont iconbangzhu"
+            style="margin-left: 4px;"
+            :aria-label="$t('setting.enableFreeDragTip')"
+            data-tooltip-position="left"
+          ></span>
         </div>
       </div>
-      <!-- 节点连线样式是否允许继承祖先的连线样式 -->
       <div class="row">
         <div class="rowItem">
           <el-checkbox
@@ -50,7 +53,6 @@
           >
         </div>
       </div>
-      <!-- 是否一直显示展开收起按钮 -->
       <div class="row">
         <div class="rowItem">
           <el-checkbox
@@ -60,7 +62,6 @@
           >
         </div>
       </div>
-      <!-- 图片和文本内容的间距 -->
       <div class="row" style="margin-bottom: 0;">
         <div class="rowItem">
           <span
@@ -80,7 +81,6 @@
           ></el-slider>
         </div>
       </div>
-      <!-- 文本各内容的间距 -->
       <div class="row">
         <div class="rowItem">
           <span
@@ -101,7 +101,6 @@
         </div>
       </div>
       <div class="smmSidebarGroupTitle">{{ $t('setting.title2') }}</div>
-      <!-- 是否开启文本编辑时实时更新节点大小 -->
       <div class="row">
         <div class="rowItem">
           <el-checkbox
@@ -111,9 +110,14 @@
             "
             >{{ $t('setting.openRealtimeRenderOnNodeTextEdit') }}</el-checkbox
           >
+          <span
+            class="iconfont iconbangzhu"
+            style="margin-left: 4px;"
+            :aria-label="$t('setting.openRealtimeRenderOnNodeTextEditTip')"
+            data-tooltip-position="left"
+          ></span>
         </div>
       </div>
-      <!-- 是否在键盘输入时自动进入节点文本编辑模式 -->
       <div class="row">
         <div class="rowItem">
           <el-checkbox
@@ -125,7 +129,6 @@
           >
         </div>
       </div>
-      <!-- 配置鼠标滚轮行为 -->
       <div class="row">
         <div class="rowItem">
           <span class="name" :title="$t('setting.mousewheelAction')">{{
@@ -150,7 +153,6 @@
           </el-select>
         </div>
       </div>
-      <!-- 配置鼠标缩放行为 -->
       <div class="row" v-if="config.mousewheelAction === 'zoom'">
         <div class="rowItem">
           <span
@@ -180,7 +182,6 @@
           </el-select>
         </div>
       </div>
-      <!-- 配置创建新节点时的行为 -->
       <div class="row">
         <div class="rowItem">
           <span class="name" :title="$t('setting.createNewNodeBehavior')">{{
@@ -213,9 +214,7 @@
         </div>
       </div>
       <div class="smmSidebarGroupTitle">{{ $t('setting.title3') }}</div>
-      <!-- 水印 -->
       <div class="row">
-        <!-- 是否显示水印 -->
         <div class="rowItem">
           <el-checkbox
             v-model="watermarkConfig.show"
@@ -225,7 +224,6 @@
         </div>
       </div>
       <div class="watermarkBox" v-if="watermarkConfig.show">
-        <!-- 是否仅在导出时显示 -->
         <div class="row">
           <div class="rowItem">
             <el-checkbox
@@ -235,7 +233,6 @@
             >
           </div>
         </div>
-        <!-- 是否在节点下方 -->
         <div class="row">
           <div class="rowItem">
             <el-checkbox
@@ -245,7 +242,6 @@
             >
           </div>
         </div>
-        <!-- 水印文字 -->
         <div class="row">
           <div class="rowItem">
             <span class="name">{{ $t('setting.watermarkText') }}</span>
@@ -257,7 +253,6 @@
             ></el-input>
           </div>
         </div>
-        <!-- 水印文字颜色 -->
         <div class="row">
           <div class="rowItem">
             <span class="name">{{ $t('setting.watermarkTextColor') }}</span>
@@ -279,7 +274,6 @@
             </el-popover>
           </div>
         </div>
-        <!-- 水印文字透明度 -->
         <div class="row">
           <div class="rowItem" style="margin-bottom: 0;">
             <span class="name">{{ $t('setting.watermarkTextOpacity') }}</span>
@@ -293,7 +287,6 @@
             ></el-slider>
           </div>
         </div>
-        <!-- 水印文字字号 -->
         <div class="row">
           <div class="rowItem">
             <span class="name">{{ $t('setting.watermarkTextFontSize') }}</span>
@@ -308,7 +301,6 @@
             ></el-input-number>
           </div>
         </div>
-        <!-- 旋转角度 -->
         <div class="row">
           <div class="rowItem">
             <span class="name">{{ $t('setting.watermarkAngle') }}</span>
@@ -323,7 +315,6 @@
             ></el-input-number>
           </div>
         </div>
-        <!-- 水印行间距 -->
         <div class="row">
           <div class="rowItem">
             <span class="name">{{ $t('setting.watermarkLineSpacing') }}</span>
@@ -336,7 +327,6 @@
             ></el-input-number>
           </div>
         </div>
-        <!-- 水印文字间距 -->
         <div class="row" style="margin-bottom: 0;">
           <div class="rowItem" style="margin-bottom: 0;">
             <span class="name">{{ $t('setting.watermarkTextSpacing') }}</span>
@@ -350,7 +340,6 @@
           </div>
         </div>
       </div>
-      <!-- 是否显示滚动条 -->
       <div class="row">
         <div class="rowItem">
           <el-checkbox
@@ -360,7 +349,6 @@
           >
         </div>
       </div>
-      <!-- 是否显示底部工具栏 -->
       <div class="row">
         <div class="rowItem">
           <el-checkbox
@@ -371,7 +359,6 @@
         </div>
       </div>
       <div class="smmSidebarGroupTitle">{{ $t('setting.title4') }}</div>
-      <!-- 配置性能模式 -->
       <div class="row">
         <div class="rowItem">
           <el-checkbox
@@ -383,6 +370,12 @@
             "
             >{{ $t('setting.openPerformance') }}</el-checkbox
           >
+          <span
+            class="iconfont iconbangzhu"
+            style="margin-left: 4px;"
+            :aria-label="$t('setting.openPerformanceTip')"
+            data-tooltip-position="left"
+          ></span>
         </div>
       </div>
     </div>
@@ -425,7 +418,10 @@ export default {
         imgTextMargin: 0,
         textContentMargin: 0,
         enableInheritAncestorLineStyle: false,
-        rootEnableUnExpand: false
+        rootEnableUnExpand: false,
+        demonstrateConfig: {
+          openBlankMode: false
+        }
       },
       watermarkConfig: {
         show: false,
@@ -471,7 +467,6 @@ export default {
   methods: {
     ...mapMutations(['setLocalConfig']),
 
-    // 初始化其他配置
     initConfig() {
       Object.keys(this.config).forEach(key => {
         if (typeof this.config[key] === 'object') {
@@ -484,14 +479,12 @@ export default {
       })
     },
 
-    // 初始化本地配置
     initLoacalConfig() {
       Object.keys(this.localConfigs).forEach(key => {
         this.localConfigs[key] = this.localConfig[key]
       })
     },
 
-    // 初始化水印配置
     initWatermark() {
       const config = this.mindMap.getConfig('watermarkConfig')
       ;['text', 'lineSpacing', 'textSpacing', 'angle', 'onlyExport'].forEach(
@@ -503,12 +496,24 @@ export default {
       this.watermarkConfig.textStyle = { ...config.textStyle }
     },
 
-    // 更新其他配置
     updateOtherConfig(key, value) {
-      this.mindMap.updateConfig({
-        [key]: value
-      })
-      this.configData[key] = value
+      if (key === 'openBlankMode') {
+        this.mindMap.updateConfig({
+          demonstrateConfig: {
+            ...(this.mindMap.getConfig('demonstrateConfig') || {}),
+            openBlankMode: value
+          }
+        })
+        if (!this.configData.demonstrateConfig) {
+          this.configData.demonstrateConfig = {}
+        }
+        this.configData.demonstrateConfig[key] = value
+      } else {
+        this.mindMap.updateConfig({
+          [key]: value
+        })
+        this.configData[key] = value
+      }
       this.$root.$obsidianAPI.saveMindMapConfig(this.configData)
       if (
         [
@@ -522,7 +527,6 @@ export default {
       }
     },
 
-    // 更新水印配置
     updateWatermarkConfig() {
       clearTimeout(this.updateWatermarkTimer)
       this.updateWatermarkTimer = setTimeout(() => {
@@ -537,7 +541,6 @@ export default {
       }, 300)
     },
 
-    // 切换显示水印与否
     watermarkShowChange(value) {
       if (value) {
         let text =
@@ -549,14 +552,12 @@ export default {
       this.updateWatermarkConfig()
     },
 
-    // 本地配置
     updateLocalConfig(key, value) {
       this.setLocalConfig({
         [key]: value
       })
     },
 
-    // 导出配置
     getOutputConfig() {
       return {
         localConfig: this.localConfigs || {},
@@ -564,7 +565,6 @@ export default {
       }
     },
 
-    // 导入配置
     setConfig({ localConfig, config }) {
       Object.keys(localConfig).forEach(key => {
         const value = localConfig[key]
@@ -573,7 +573,10 @@ export default {
       })
       Object.keys(config).forEach(key => {
         const value = config[key]
-        if (key === 'watermarkConfig') {
+        if (key === 'demonstrateConfig') {
+          this.config[key] = value
+          this.updateOtherConfig('openBlankMode', value.openBlankMode)
+        } else if (key === 'watermarkConfig') {
           Object.keys(value).forEach(key2 => {
             this.watermarkConfig[key2] = value[key2]
           })

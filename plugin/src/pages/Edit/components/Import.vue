@@ -6,7 +6,20 @@
       :visible.sync="dialogVisible"
       width="350px"
       :modal-append-to-body="false"
+      :close-on-click-modal="false"
+      :show-close="false"
     >
+      <div class="dragUploadBox">
+        <div class="dragUploadAreaBox">
+          <label
+            class="dragUploadInputArea"
+            @dragenter.stop.prevent
+            @dragover.stop.prevent
+            @drop.stop.prevent="onDrop"
+            >{{ $t('import.dragTip') }}</label
+          >
+        </div>
+      </div>
       <el-upload
         action="x"
         :accept="supportFileStr"
@@ -24,7 +37,18 @@
           }}</el-button>
         </div>
         <div slot="tip" class="el-upload__tip">
-          {{ $t('import.support') }}{{ supportFileStr }}{{ $t('import.file') }}
+          <div>
+            <el-checkbox
+              v-model="transformFormula"
+              style="margin-bottom: 5px;margin-top: 6px;"
+              >转换数学公式</el-checkbox
+            >
+          </div>
+          <div class="tip">
+            {{ $t('import.support') }}{{ supportFileStr
+            }}{{ $t('import.file') }}
+          </div>
+          <div class="warningTip">{{ $t('import.warningTip') }}</div>
         </div>
       </el-upload>
       <span slot="footer" class="dialog-footer">
@@ -45,8 +69,9 @@
       :title="$t('import.xmindCanvasSelectDialogTitle')"
       :visible.sync="xmindCanvasSelectDialogVisible"
       width="300px"
-      :show-close="false"
       :modal-append-to-body="false"
+      :close-on-click-modal="false"
+      :show-close="false"
     >
       <el-radio-group v-model="selectCanvas" class="canvasList">
         <el-radio
@@ -72,10 +97,17 @@
 <script>
 import xmind from 'simple-mind-map/src/parse/xmind.js'
 import markdown from 'simple-mind-map/src/parse/markdown.js'
+import txt from 'simple-mind-map/src/parse/txt.js'
 import { mapMutations } from 'vuex'
-import { base64ToFile } from '@/utils'
+import { base64ToFile, tFileToFile } from '@/utils'
+import { getDataFromDt } from '@/components/ImgUpload/utils'
 
-// 导入
+const mimeTypes = {
+  md: 'text/markdown',
+  json: 'application/json',
+  xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+}
+
 export default {
   data() {
     return {
@@ -84,12 +116,13 @@ export default {
       selectPromiseResolve: null,
       xmindCanvasSelectDialogVisible: false,
       selectCanvas: '',
-      canvasList: []
+      canvasList: [],
+      transformFormula: true
     }
   },
   computed: {
     supportFileStr() {
-      return '.smm,.json,.xmind,.md'
+      return '.smm,.json,.xmind,.md,.txt'
     }
   },
   watch: {
@@ -115,10 +148,32 @@ export default {
     },
 
     getRegexp() {
-      return new RegExp(`\.(smm|json|xmind|md)$`)
+      return new RegExp(`\.(smm|json|xmind|md|txt)$`)
     },
 
-    // 文件选择
+    async onDrop(e) {
+      const { file, text } = await getDataFromDt(e.dataTransfer)
+      if (file) {
+        this.onChange({
+          raw: file,
+          name: file.name
+        })
+      } else if (text) {
+        const tFile = this.$root.$obsidianAPI.getFileFromUri(text)
+        if (tFile) {
+          const fileRaw = await tFileToFile(
+            tFile,
+            this.$root.$obsidianAPI.getObsidianApp(),
+            mimeTypes
+          )
+          this.onChange({
+            raw: fileRaw,
+            name: fileRaw.name
+          })
+        }
+      }
+    },
+
     onChange(file) {
       if (!this.getRegexp().test(file.name)) {
         this.$root.$obsidianAPI.showTip(
@@ -132,22 +187,18 @@ export default {
       }
     },
 
-    // 移除文件
     onRemove(file, fileList) {
       this.fileList = fileList
     },
 
-    // 数量超出限制
     onExceed() {
       this.$root.$obsidianAPI.showTip(this.$t('import.maxFileNum'))
     },
 
-    // 取消
     cancel() {
       this.dialogVisible = false
     },
 
-    // 确定
     confirm() {
       if (this.fileList.length <= 0) {
         return this.$root.$obsidianAPI.showTip(this.$t('import.notSelectTip'))
@@ -160,12 +211,13 @@ export default {
         this.handleXmind(file)
       } else if (/\.md$/.test(file.name)) {
         this.handleMd(file)
+      } else if (/\.txt$/.test(file.name)) {
+        this.handleTxt(file)
       }
       this.cancel()
       this.setActiveSidebar(null)
     },
 
-    // 处理.smm文件
     handleSmm(file) {
       let fileReader = new FileReader()
       fileReader.readAsText(file.raw)
@@ -179,13 +231,11 @@ export default {
           this.$root.$bus.$emit('setData', data)
           this.$root.$obsidianAPI.showTip(this.$t('import.importSuccess'))
         } catch (error) {
-          console.log(error)
           this.$root.$obsidianAPI.showTip(this.$t('import.fileParsingFailed'))
         }
       }
     },
 
-    // 处理.xmind文件
     async handleXmind(file) {
       try {
         let data = await xmind.parseXmindFile(file.raw, content => {
@@ -194,23 +244,38 @@ export default {
             this.selectPromiseResolve = resolve
           })
         })
+        this.handleDataFormula(data)
         await this.transformImgToFile(data)
         this.$root.$bus.$emit('setData', data)
         this.$root.$obsidianAPI.showTip(this.$t('import.importSuccess'))
       } catch (error) {
-        console.log(error)
         this.$root.$obsidianAPI.showTip(this.$t('import.fileParsingFailed'))
       }
     },
 
-    // 显示xmind文件的多个画布选择弹窗
+    handleTxt(file) {
+      const fileReader = new FileReader()
+      fileReader.readAsText(file.raw)
+      fileReader.onload = async evt => {
+        try {
+          const data = txt.txtTo(evt.target.result)
+          this.handleDataFormula(data)
+          this.$root.$bus.$emit('setData', data)
+          this.$root.$obsidianAPI.showTip(this.$t('import.importSuccess'))
+        } catch (error) {
+          this.$root.$obsidianAPI.showTip(
+            error || this.$t('import.fileParsingFailed')
+          )
+        }
+      }
+    },
+
     showSelectXmindCanvasDialog(content) {
       this.canvasList = content
       this.selectCanvas = 0
       this.xmindCanvasSelectDialogVisible = true
     },
 
-    // 确认导入指定的画布
     confirmSelect() {
       this.selectPromiseResolve(this.canvasList[this.selectCanvas])
       this.xmindCanvasSelectDialogVisible = false
@@ -218,7 +283,31 @@ export default {
       this.selectCanvas = 0
     },
 
-    // 处理markdown文件
+    convertMathFormula(text) {
+      const html = text.replace(/\$([^\$]+)\$/g, (match, p1) => {
+        return `<span class="ql-formula" data-value="${p1}">
+        ${this.$root.$getCurrentMindMap().formula.renderToString(p1)}
+        </span>`
+      })
+      return `<p>
+        ${html}
+      </p>`
+    },
+
+    handleDataFormula(data) {
+      if (!this.transformFormula) return
+      const walk = node => {
+        if (node.data.text && /\$([^\$]+)\$/g.test(node.data.text)) {
+          node.data.text = this.convertMathFormula(node.data.text)
+          node.data.richText = true
+        }
+        if (node.children && node.children.length > 0) {
+          node.children.forEach(walk)
+        }
+      }
+      walk(data)
+    },
+
     async handleMd(file) {
       let fileReader = new FileReader()
       fileReader.readAsText(file.raw)
@@ -229,6 +318,7 @@ export default {
             false,
             file.raw.name
           )
+          this.handleDataFormula(data)
           if (!data) {
             this.$root.$obsidianAPI.showTip(this.$t('import.mdImportFailTip'))
             this.$root.$bus.$emit('hideLoading')
@@ -237,13 +327,11 @@ export default {
           this.$root.$bus.$emit('setData', data)
           this.$root.$obsidianAPI.showTip(this.$t('import.importSuccess'))
         } catch (error) {
-          console.log(error)
           this.$root.$obsidianAPI.showTip(this.$t('import.fileParsingFailed'))
         }
       }
     },
 
-    // 导入指定文件
     handleImportFile(file) {
       this.onChange({
         raw: file,
@@ -279,7 +367,6 @@ export default {
                 root.data.image = res
                 resolve()
               } catch (error) {
-                console.log(error)
                 resolve()
               }
             })
@@ -303,6 +390,53 @@ export default {
 
 <style lang="less" scoped>
 .nodeImportDialog {
+  /deep/ .el-dialog__body {
+    padding-top: 0;
+  }
+
+  .warningTip {
+    color: #f56c6c;
+    margin-top: 4px;
+  }
+
+  .dragUploadBox {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    margin-bottom: 12px;
+
+    &.isDark {
+      .dragUploadAreaBox {
+        .dragUploadInputArea {
+          background-color: #363b3f;
+          color: hsla(0, 0%, 100%, 0.6);
+        }
+      }
+    }
+
+    .dragUploadAreaBox {
+      width: 100%;
+      height: 100%;
+
+      .dragUploadInputArea {
+        display: block;
+        width: 100%;
+        height: 100%;
+        font-size: 20px;
+        color: rgba(51, 51, 51, 0.4);
+        background-color: hsla(0, 0%, 87%, 0.6);
+        border: none;
+        outline: none;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        white-space: normal;
+        padding: 10px;
+      }
+    }
+  }
+
   .btnList {
     display: flex;
     align-items: center;

@@ -110,7 +110,7 @@ export default {
         let list = [...group.list]
         if (!this.supportRightFishbone) {
           list = list.filter(item => {
-            return !['rightFishbone', 'rightFishbone2'].includes(item)
+            return !['rightFishbone'].includes(item)
           })
         }
         list.forEach((item2, index) => {

@@ -1,4 +1,5 @@
-// Danh sách phông chữ
+import { checkIsMac } from '@/utils/index.js'
+
 export const fontFamilyList = [
   {
     name: 'Song Thân',
@@ -54,7 +55,6 @@ export const fontFamilyList = [
   }
 ]
 
-// Kiểu viền
 export const borderDasharrayList = [
   {
     name: 'Dòng rắn',
@@ -90,7 +90,6 @@ export const borderDasharrayList = [
   }
 ]
 
-// Kiểu kết nối
 export const lineStyleList = [
   {
     name: 'Đường thẳng',
@@ -101,12 +100,15 @@ export const lineStyleList = [
     value: 'curve'
   },
   {
+    name: 'Đường cong2',
+    value: 'curve2'
+  },
+  {
     name: 'Trực tiếp',
     value: 'direct'
   }
 ]
 
-// Trong một kiểu đường cong, kiểu nút gốc có giống với các nút khác hay không
 export const rootLineKeepSameInCurveList = [
   {
     name: 'ngoặc đơn',
@@ -118,7 +120,17 @@ export const rootLineKeepSameInCurveList = [
   }
 ]
 
-// Cách lặp lại hình ảnh
+export const rootLineKeepSameInCurveList2 = [
+  {
+    name: 'ngoặc đơn',
+    value: true
+  },
+  {
+    name: 'ngoặc nhọn',
+    value: false
+  }
+]
+
 export const backgroundRepeatList = [
   {
     name: 'Không lặp lại',
@@ -138,7 +150,6 @@ export const backgroundRepeatList = [
   }
 ]
 
-// Định vị ảnh nền
 export const backgroundPositionList = [
   {
     name: 'Mặc định',
@@ -182,7 +193,6 @@ export const backgroundPositionList = [
   }
 ]
 
-// Cỡ ảnh nền
 export const backgroundSizeList = [
   {
     name: 'Tự động',
@@ -198,24 +208,167 @@ export const backgroundSizeList = [
   }
 ]
 
-// Lưu trữ dữ liệu
 export const store = {
-  sidebarZIndex: 1 //Thanh bên zIndex
+  sidebarZIndex: 1
 }
-const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0
+const isMac = checkIsMac()
 const ctrl = isMac ? '⌘' : 'Ctrl'
 const enter = isMac ? 'Return' : 'Enter'
 const macFn = isMac ? 'fn + ' : ''
 
-// Danh sách phím tắt
 export const shortcutKeyList = [
+  {
+    type: 'Obsidian đặc biệt',
+    list: [
+      {
+        icon: 'iconbaocun',
+        name: 'Lưu và cập nhật dữ liệu hình ảnh',
+        value: `${ctrl} + Shfit + S`
+      },
+      {
+        icon: 'iconxinbiaoqianyedakai',
+        name: 'Trang nhãn mới Mở siêu kết nối',
+        value: `${ctrl} + Trái`
+      }
+    ]
+  },
   {
     type: 'Hoạt động nút',
     list: [
       {
+        icon: 'icontianjiazijiedian',
+        name: 'Chèn nút thấp hơn',
+        value: 'Tab | Insert'
+      },
+      {
+        icon: 'iconjiedian',
+        name: 'Chèn nút ngang hàng',
+        value: enter
+      },
+      {
+        icon: 'icondodeparent',
+        name: 'Chèn nút cha',
+        value: 'Shift + Tab'
+      },
+      {
+        icon: 'iconshangyi',
+        name: 'Chuyển nút lên',
+        value: `${ctrl} + ↑`
+      },
+      {
+        icon: 'iconxiayi',
+        name: 'Di chuyển nút xuống',
+        value: `${ctrl} + ↓`
+      },
+      {
+        icon: 'icongaikuozonglan',
+        name: 'Chèn tóm tắt',
+        value: `${ctrl} + G`
+      },
+      {
+        icon: 'iconzhankai',
+        name: 'Mở rộng/thu gọn các nút',
+        value: '/'
+      },
+      {
+        icon: 'iconshanchu',
+        name: 'Xóa nút',
+        value: 'Delete | Backspace'
+      },
+      {
+        icon: 'iconshanchu',
+        name: 'Chỉ xóa nút hiện tại',
+        value: 'Shift + Backspace'
+      },
+      {
+        icon: 'iconbianji',
+        name: 'Sửa nút',
+        value: macFn + 'F2'
+      },
+      {
+        icon: 'iconzhengli',
+        name: 'Name',
+        value: `${ctrl} + R`
+      },
+      {
+        icon: 'iconzuoyouduiqi',
+        name: 'Căn chỉnh một nút cùng cấps',
+        value: `${ctrl} + E`
+      },
+      {
+        icon: 'iconsousuo',
+        name: 'Tìm kiếm và thay thế',
+        value: `${ctrl} + F`
+      }
+    ]
+  },
+  {
+    type: 'Sửa hành động',
+    list: [
+      {
+        icon: 'iconhoutui-shi',
+        name: 'Lùi lại',
+        value: `${ctrl} + Z`
+      },
+      {
+        icon: 'iconqianjin1',
+        name: 'Tiến lên!',
+        value: `${ctrl} + Y`
+      },
+      {
         icon: 'iconhuanhang',
         name: 'Dòng mới',
         value: `Shift + ${enter}`
+      },
+      {
+        icon: 'iconcase',
+        name: 'Mở cỡ',
+        value: `${ctrl} + Shift + +`
+      },
+      {
+        icon: 'iconcase',
+        name: 'Giảm cỡ',
+        value: `${ctrl} + Shift + -`
+      },
+      {
+        icon: 'iconzitijiacu',
+        name: 'Thô',
+        value: `${ctrl} + B`
+      },
+      {
+        icon: 'iconzitixieti',
+        name: 'Nghiêng',
+        value: `${ctrl} + I`
+      },
+      {
+        icon: 'iconzitixiahuaxian',
+        name: 'Thêm dòng xóa',
+        value: `${ctrl} + U`
+      },
+      {
+        icon: 'iconshanchuxian',
+        name: 'Thêm dòng xóa',
+        value: `${ctrl} + [`
+      },
+      {
+        icon: 'iconfuzhi',
+        name: 'Sao chép nút',
+        value: `${ctrl} + C`
+      },
+      {
+        icon: 'iconjianqie',
+        name: 'Cắt nút',
+        value: `${ctrl} + X`
+      },
+      {
+        icon: 'iconniantie',
+        name: 'Dán nút',
+        value: `${ctrl} + V`
+      },
+      {
+        icon: 'iconquanxuan',
+        name: 'Chọn tất cả',
+        value: `${ctrl} + A`
       },
       {
         icon: 'iconquanxuan',
@@ -229,8 +382,28 @@ export const shortcutKeyList = [
     list: [
       {
         icon: 'iconfangda',
+        name: 'Phóng to',
+        value: `${ctrl} + +`
+      },
+      {
+        icon: 'iconsuoxiao',
+        name: 'Thu nhỏ',
+        value: `${ctrl} + -`
+      },
+      {
+        icon: 'iconfangda',
         name: 'Phóng to/Thu nhỏ',
         value: `${ctrl} + Cuộn chuột`
+      },
+      {
+        icon: 'icondingwei',
+        name: 'Trở lại Root node',
+        value: `${ctrl} + ${enter}`
+      },
+      {
+        icon: 'iconquanping1',
+        name: 'Thích nghi với Canvas',
+        value: `${ctrl} + Shift + I`
       },
       {
         icon: 'iconshubiaoyidong',
@@ -263,25 +436,29 @@ export const shortcutKeyList = [
         value: 'Delete'
       },
       {
-        icon: 'icontianjiazijiedian',
-        name: 'Chèn nút thấp hơn',
-        value: 'Tab'
-      },
-      {
         icon: 'iconjiedian',
         name: 'Chèn nút ngang hàng',
         value: enter
       },
       {
+        icon: 'icondodechild',
+        name: 'Di chuyển một bậc xuống',
+        value: 'Tab'
+      },
+      {
         icon: 'icondodeparent',
         name: 'Di chuyển lên một cấp',
         value: 'Shift + Tab'
+      },
+      {
+        icon: 'iconjiedian',
+        name: 'Tạo nội dung sau con trỏ là nút cùng cấp',
+        value: `Ctrl + ${enter}`
       }
     ]
   }
 ]
 
-// Danh sách hình dạng
 export const shapeList = [
   {
     name: 'Hình chữ nhật',
@@ -321,7 +498,6 @@ export const shapeList = [
   }
 ]
 
-// Danh sách thanh bên
 export const sidebarTriggerList = [
   {
     name: 'Kiểu nút',
@@ -355,7 +531,6 @@ export const sidebarTriggerList = [
   }
 ]
 
-// Danh sách các loại tải xuống
 export const downTypeList = [
   {
     name: '思绪Tài liệu',
@@ -409,7 +584,6 @@ export const downTypeList = [
   }
 ]
 
-// Hướng gradient nền
 export const linearGradientDirList = [
   {
     name: 'Từ trái sang phải',
@@ -461,7 +635,6 @@ export const linearGradientDirList = [
   }
 ]
 
-// Căn lề văn bản
 export const alignList = [
   {
     name: 'Trái:',
@@ -477,7 +650,6 @@ export const alignList = [
   }
 ]
 
-// Danh sách cấu trúc
 export const layoutGroupList = [
   {
     name: 'Sơ đồ cấu trúc logic',
@@ -497,7 +669,11 @@ export const layoutGroupList = [
   },
   {
     name: 'Dòng thời gian',
-    list: ['timeline', 'timeline2', 'verticalTimeline']
+    list: [
+      'timeline',
+      'timeline2',
+      'verticalTimeline'
+    ]
   },
   {
     name: 'Bản đồ Fishbone',
@@ -517,8 +693,6 @@ export const iconNameMap = {
   summary: 'Chèn tóm tắt',
   associativeLine: 'Thêm đường liên kết',
   formula: 'Chèn công thức toán',
-  // "attachment": "Chèn tệp đính kèm",
   outerFrame: 'Thêm khung viền',
-  annotation: 'Thêm chú thích',
   ai: 'AI tạo tự động'
 }

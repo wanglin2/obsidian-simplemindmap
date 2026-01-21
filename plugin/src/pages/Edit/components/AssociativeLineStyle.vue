@@ -221,11 +221,11 @@ import Sidebar from './Sidebar.vue'
 import Color from './Color.vue'
 import {
   lineWidthList,
-  fontFamilyList,
   fontSizeList,
   borderDasharrayList
 } from '@/config'
 import { mapState, mapMutations } from 'vuex'
+import fontFamilyMixin from '@/mixins/fontFamily'
 
 const defaultStyle = {
   associativeLineColor: '',
@@ -239,6 +239,7 @@ const defaultStyle = {
 }
 
 export default {
+  mixins: [fontFamilyMixin],
   components: {
     Sidebar,
     Color
@@ -264,10 +265,6 @@ export default {
       activeSidebar: state => state.activeSidebar,
       isDark: state => state.localConfig.isDark
     }),
-
-    fontFamilyList() {
-      return fontFamilyList[this.$i18n.locale] || fontFamilyList.en
-    },
 
     borderDasharrayList() {
       return borderDasharrayList[this.$i18n.locale] || borderDasharrayList.en

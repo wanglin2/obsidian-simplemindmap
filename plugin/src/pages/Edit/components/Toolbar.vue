@@ -1,10 +1,8 @@
 <template>
   <div class="toolbarContainer" :class="{ isDark: isDark }">
     <div class="toolbar" ref="toolbarRef">
-      <!-- 节点操作 -->
       <div class="toolbarBlock">
         <ToolbarNodeBtnList :list="horizontalList"></ToolbarNodeBtnList>
-        <!-- 更多 -->
         <el-popover
           v-model="popoverShow"
           placement="bottom"
@@ -46,7 +44,6 @@ import { mapState } from 'vuex'
 import ToolbarNodeBtnList from './ToolbarNodeBtnList.vue'
 import { throttle } from 'simple-mind-map/src/utils/index'
 
-// 工具栏
 const defaultBtnList = [
   'back',
   'forward',
@@ -127,7 +124,6 @@ export default {
     this.$root.$bus.$off('node_note_dblclick', this.onNodeNoteDblclick)
   },
   methods: {
-    // 计算工具按钮如何显示
     computeToolbarShow() {
       if (!this.$refs.toolbarRef) return
       const windowWidth = this.getContainerSize().width - 40

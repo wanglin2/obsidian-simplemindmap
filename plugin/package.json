@@ -1,5 +1,5 @@
 {
-  "name": "obsidian-simple-mind-map",
+  "name": "simple-mind-map",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -45,7 +45,6 @@
     "katex": "^0.16.9",
     "lz-string": "^1.5.0",
     "monkey-around": "^3.0.0",
-    "simple-mind-map": "^0.14.0-fix.1",
     "simple-mind-map-plugin-themes": "^1.0.0",
     "v-viewer": "^1.6.4",
     "vue": "^2.6.14",

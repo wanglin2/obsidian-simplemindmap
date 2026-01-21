@@ -37,7 +37,6 @@
 import { mapState, mapMutations } from 'vuex'
 import { sidebarTriggerList } from '@/config'
 
-// 侧边栏触发器
 export default {
   props: {
     mindMap: {

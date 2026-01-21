@@ -1,16 +1,17 @@
 import { PluginSettingTab, Setting, Notice } from 'obsidian'
 import themeList from 'simple-mind-map-plugin-themes/themeList'
 import { layoutGroupList } from '../src/config'
-import { GITHUB_ICON, DEFAULT_SETTINGS, COMMUNITY_ICON } from './constant'
+import { GITHUB_ICON, COMMUNITY_ICON } from './constant'
+import { DEFAULT_SETTINGS } from './constant'
 import { SuggestionModal } from './SuggestionModal'
-import { checkVersion } from './utils'
+import { TextInfoDialog } from './TextInfoDialog'
+import { fragWithHTML } from './utils'
 
 const validateInteger = (value, defaultValue = 0, errorTip) => {
   value = Number(value)
   if (!Number.isNaN(value) && value > 0) {
     return value
   } else {
-    // 请输入大于0的数字
     new Notice(errorTip)
     return defaultValue
   }
@@ -28,6 +29,7 @@ export default class SmmSettingTab extends PluginSettingTab {
     this.compressImageOptionsMaxWidthSettings = null
     this.compressImageOptionsMaxHeightSettings = null
     this.compressImageOptionsQualitySettings = null
+    this.embedImageIsSeparateFileFolderSettings = null
   }
 
   display() {
@@ -40,6 +42,8 @@ export default class SmmSettingTab extends PluginSettingTab {
 
     this._addCompressSetting()
 
+    this._addImageHostingSetting()
+
     this._addEmbedSetting()
 
     this._addOtherSetting()
@@ -47,16 +51,14 @@ export default class SmmSettingTab extends PluginSettingTab {
     this._addHelpInfo()
   }
 
-  // 基本设置
   _addBaseSetting() {
     const { containerEl } = this
 
     containerEl.createEl('h2', { text: this.plugin._t('setting.title.title1') })
 
-    // 自动保存时间设置
     new Setting(containerEl)
-      .setName(this.plugin._t('setting.autoSave.title')) // 自动保存时间
-      .setDesc(this.plugin._t('setting.autoSave.desc')) // 无操作自动保存时间，单位：秒
+      .setName(this.plugin._t('setting.autoSave.title'))
+      .setDesc(this.plugin._t('setting.autoSave.desc'))
       .addText(text => {
         text
           .setValue(String(this.plugin.settings.autoSaveTime))
@@ -71,22 +73,21 @@ export default class SmmSettingTab extends PluginSettingTab {
           })
       })
 
-    // 主题模式设置
     new Setting(containerEl)
-      .setName(this.plugin._t('setting.themeMode.title')) // 主题模式
-      .setDesc(this.plugin._t('setting.themeMode.desc')) // '设置深色、浅色模式'
+      .setName(this.plugin._t('setting.themeMode.title'))
+      .setDesc(this.plugin._t('setting.themeMode.desc'))
       .addDropdown(dropdown => {
         ;[
           {
-            name: this.plugin._t('setting.themeMode.option1'), // 跟随obsidian
+            name: this.plugin._t('setting.themeMode.option1'),
             value: 'follow'
           },
           {
-            name: this.plugin._t('setting.themeMode.option2'), // 浅色模式
+            name: this.plugin._t('setting.themeMode.option2'),
             value: 'light'
           },
           {
-            name: this.plugin._t('setting.themeMode.option3'), // 深色模式
+            name: this.plugin._t('setting.themeMode.option3'),
             value: 'dark'
           }
         ].forEach(item => {
@@ -100,19 +101,17 @@ export default class SmmSettingTab extends PluginSettingTab {
           })
       })
 
-    // 默认主题设置
     const allThemeList = [
       {
-        name: this.plugin._t('setting.theme.title'), // 默认主题
+        name: this.plugin._t('setting.theme.title'),
         value: 'default',
         dark: false
       },
       ...themeList
     ].reverse()
-    // 浅色模式的默认主题
     new Setting(containerEl)
       .setName(this.plugin._t('setting.theme.title'))
-      .setDesc(this.plugin._t('setting.theme.desc')) // '设置默认主题'
+      .setDesc(this.plugin._t('setting.theme.desc'))
       .addDropdown(dropdown => {
         allThemeList.forEach(item => {
           dropdown.addOption(item.value, item.name)
@@ -124,10 +123,9 @@ export default class SmmSettingTab extends PluginSettingTab {
             await this.plugin._saveSettings()
           })
       })
-    // 深色模式的默认主题
     new Setting(containerEl)
       .setName(this.plugin._t('setting.theme.title2'))
-      .setDesc(this.plugin._t('setting.theme.desc2')) // '设置默认主题'
+      .setDesc(this.plugin._t('setting.theme.desc2'))
       .addDropdown(dropdown => {
         allThemeList.forEach(item => {
           dropdown.addOption(item.value, item.name)
@@ -140,7 +138,6 @@ export default class SmmSettingTab extends PluginSettingTab {
           })
       })
 
-    // 默认结构设置
     const allLayoutList = []
     ;(layoutGroupList[this.plugin.settings.lang] || layoutGroupList.en).forEach(
       item => {
@@ -154,10 +151,9 @@ export default class SmmSettingTab extends PluginSettingTab {
         )
       }
     )
-    // 默认结构
     new Setting(containerEl)
       .setName(this.plugin._t('setting.layout.title'))
-      .setDesc(this.plugin._t('setting.layout.desc')) // '设置默认结构'
+      .setDesc(this.plugin._t('setting.layout.desc'))
       .addDropdown(dropdown => {
         allLayoutList.forEach(item => {
           dropdown.addOption(item.value, item.name)
@@ -171,44 +167,64 @@ export default class SmmSettingTab extends PluginSettingTab {
       })
   }
 
-  // 文件创建、保存相关设置
   _addFileSaveSetting() {
     const { containerEl } = this
 
     containerEl.createEl('h2', { text: this.plugin._t('setting.title.title2') })
 
-    // 新建文件名的前缀
     new Setting(containerEl)
-      .setName(this.plugin._t('setting.file.title1')) // 新建思维导图的文件名前缀
-      .setDesc(this.plugin._t('setting.file.desc1')) // 新建思维导图文件名默认的命名格式为：前缀 + 空格 + 日期时间戳
+      .setName(this.plugin._t('setting.file.title1'))
+      .setDesc(this.plugin._t('setting.file.desc1'))
       .addText(text => {
         text
-          .setValue(this.plugin.settings.fileNamePrefix)
+          .setValue(this.plugin.settings.fileNameFormat)
           .onChange(async value => {
-            this.plugin.settings.fileNamePrefix = value
+            this.plugin.settings.fileNameFormat = value.trim()
+              ? value.trim()
+              : DEFAULT_SETTINGS.fileNameFormat
             await this.plugin._saveSettings()
           })
       })
+      .addExtraButton(button =>
+        button
+          .setIcon('help')
+          .setTooltip(this.plugin._t('setting.file.filenameFormatDesc'))
+          .onClick(async () => {
+            new TextInfoDialog(this.app, {
+              title: this.plugin._t('setting.file.filenameFormatDesc'),
+              html: this.plugin._t('html.filenameFormatDesc')
+            }).open()
+          })
+      )
 
-    // 新建文件名的日期时间戳格式
-    const fileNameDateFormatSetting = new Setting(containerEl)
-      .setName(this.plugin._t('setting.file.title2')) // 新建思维导图的文件名日期时间戳格式
-      .setDesc(this.plugin._t('setting.file.desc2')) // 默认为：YYYY-MM-DD HH.mm.ss，实际示例：2025-01-01 23.59.59，如你不清楚该格式的具体含义及如何修改，请参考：https://day.js.org/docs/en/parse/string-format
+    new Setting(containerEl)
+      .setName(this.plugin._t('setting.file.title3'))
+      .setDesc(this.plugin._t('setting.file.desc3'))
       .addText(text => {
         text
-          .setValue(this.plugin.settings.fileNameDateFormat)
+          .setValue(this.plugin.settings.nodePasteImageNameFormat)
           .onChange(async value => {
-            this.plugin.settings.fileNameDateFormat = value
+            this.plugin.settings.nodePasteImageNameFormat = value.trim()
+              ? value.trim()
+              : DEFAULT_SETTINGS.nodePasteImageNameFormat
             await this.plugin._saveSettings()
           })
       })
-    fileNameDateFormatSetting.settingEl.className +=
-      ' smm-setting-item-enable-select'
+      .addExtraButton(button =>
+        button
+          .setIcon('help')
+          .setTooltip(this.plugin._t('setting.file.filenameFormatDesc'))
+          .onClick(async () => {
+            new TextInfoDialog(this.app, {
+              title: this.plugin._t('setting.file.filenameFormatDesc'),
+              html: this.plugin._t('html.filenameFormatDesc')
+            }).open()
+          })
+      )
 
-    // 文件存储位置
     new Setting(containerEl)
-      .setName(this.plugin._t('setting.folder.title4')) // 文件存储位置
-      .setDesc(this.plugin._t('setting.folder.desc4')) // 设置SimpleMindMap文件存储位置，默认为仓库根路径
+      .setName(this.plugin._t('setting.folder.title4'))
+      .setDesc(this.plugin._t('setting.folder.desc4'))
       .addDropdown(dropdown => {
         this._getFilePathOptions().forEach(item => {
           dropdown.addOption(item.value, item.name)
@@ -221,10 +237,9 @@ export default class SmmSettingTab extends PluginSettingTab {
             this._updateFilePathSettingsVisibility()
           })
       })
-    // 文件存储路径设置
     this.filePathSettings = new Setting(containerEl)
-      .setName(this.plugin._t('setting.folder.title1')) // 文件存储路径
-      .setDesc(this.plugin._t('setting.folder.desc1')) // 设置SimpleMindMap文件存储路径，默认为仓库根路径
+      .setName(this.plugin._t('setting.folder.title1'))
+      .setDesc(this.plugin._t('setting.folder.desc1'))
       .addText(text => {
         text.setValue(this.plugin.settings.filePath).onChange(async value => {
           this.plugin.settings.filePath = value
@@ -238,10 +253,9 @@ export default class SmmSettingTab extends PluginSettingTab {
     this.filePathSettings.settingEl.className += ' smm-setting-sub-item'
     this._updateFilePathSettingsVisibility()
 
-    // 图片存储位置
     new Setting(containerEl)
-      .setName(this.plugin._t('setting.folder.title5')) // 图片存储位置
-      .setDesc(this.plugin._t('setting.folder.desc5')) // 图片存储位置
+      .setName(this.plugin._t('setting.folder.title5'))
+      .setDesc(this.plugin._t('setting.folder.desc5'))
       .addDropdown(dropdown => {
         this._getFilePathOptions(true).forEach(item => {
           dropdown.addOption(item.value, item.name)
@@ -254,10 +268,9 @@ export default class SmmSettingTab extends PluginSettingTab {
             this._updateImagePathSettingsVisibility()
           })
       })
-    // 自定义图片存储目录
     this.imagePathSettings = new Setting(containerEl)
-      .setName(this.plugin._t('setting.folder.title2')) // 图片存储路径
-      .setDesc(this.plugin._t('setting.folder.desc2')) // 设置上传的图片文件（节点图片、背景图片）存储路径
+      .setName(this.plugin._t('setting.folder.title2'))
+      .setDesc(this.plugin._t('setting.folder.desc2'))
       .addText(text => {
         text.setValue(this.plugin.settings.imagePath).onChange(async value => {
           this.plugin.settings.imagePath = value
@@ -269,10 +282,9 @@ export default class SmmSettingTab extends PluginSettingTab {
         })
       })
     this.imagePathSettings.settingEl.className += ' smm-setting-sub-item'
-    // 自定义子文件夹
     this.imageSubPathSettings = new Setting(containerEl)
-      .setName(this.plugin._t('setting.folder.title6')) // 图片存储路径
-      .setDesc(this.plugin._t('setting.folder.desc6')) // 设置上传的图片文件（节点图片、背景图片）存储路径
+      .setName(this.plugin._t('setting.folder.title6'))
+      .setDesc(this.plugin._t('setting.folder.desc6'))
       .addText(text => {
         text
           .setValue(this.plugin.settings.imageSubPath)
@@ -288,7 +300,6 @@ export default class SmmSettingTab extends PluginSettingTab {
     this.imageSubPathSettings.settingEl.className += ' smm-setting-sub-item'
     this._updateImagePathSettingsVisibility()
 
-    // 附件存储位置
     new Setting(containerEl)
       .setName(this.plugin._t('setting.folder.title7'))
       .setDesc(this.plugin._t('setting.folder.desc7'))
@@ -304,7 +315,6 @@ export default class SmmSettingTab extends PluginSettingTab {
             this._updateAttachmentPathSettingsVisibility()
           })
       })
-    // 附件存储路径设置
     this.attachmentPathSettings = new Setting(containerEl)
       .setName(this.plugin._t('setting.folder.title3'))
       .setDesc(this.plugin._t('setting.folder.desc3'))
@@ -321,7 +331,6 @@ export default class SmmSettingTab extends PluginSettingTab {
         })
       })
     this.attachmentPathSettings.settingEl.className += ' smm-setting-sub-item'
-    // 自定义子文件夹
     this.attachmentSubPathSettings = new Setting(containerEl)
       .setName(this.plugin._t('setting.folder.title6'))
       .setDesc(this.plugin._t('setting.folder.desc6'))
@@ -341,7 +350,6 @@ export default class SmmSettingTab extends PluginSettingTab {
       ' smm-setting-sub-item'
     this._updateAttachmentPathSettingsVisibility()
 
-    // 是否支持ob搜索
     new Setting(containerEl)
       .setName(this.plugin._t('setting.folder.title8'))
       .setDesc(this.plugin._t('setting.folder.desc8'))
@@ -354,7 +362,6 @@ export default class SmmSettingTab extends PluginSettingTab {
           })
       })
 
-    // 是否存储画布位置和缩放数据
     new Setting(containerEl)
       .setName(this.plugin._t('setting.folder.title9'))
       .setDesc(this.plugin._t('setting.folder.desc9'))
@@ -366,18 +373,31 @@ export default class SmmSettingTab extends PluginSettingTab {
             await this.plugin._saveSettings()
           })
       })
+
+    new Setting(containerEl)
+      .setName(this.plugin._t('setting.folder.title10'))
+      .setDesc(this.plugin._t('setting.folder.desc10'))
+      .addDropdown(dropdown => {
+        new Array(6).fill(0).forEach((_, index) => {
+          dropdown.addOption(index + 1, index + 1)
+        })
+        dropdown
+          .setValue(this.plugin.settings.nodeTextToMarkdownTitleMaxLevel)
+          .onChange(async value => {
+            this.plugin.settings.nodeTextToMarkdownTitleMaxLevel = value
+            await this.plugin._saveSettings()
+          })
+      })
   }
 
-  // 图片压缩设置
   _addCompressSetting() {
     const { containerEl } = this
 
     containerEl.createEl('h2', { text: this.plugin._t('setting.title.title3') })
 
-    // 是否压缩图片设置
     new Setting(containerEl)
-      .setName(this.plugin._t('setting.compress.title1')) // 是否压缩图片
-      .setDesc(this.plugin._t('setting.compress.desc1')) // 设置上传的图片文件（节点图片、背景图片）存储路径
+      .setName(this.plugin._t('setting.compress.title1'))
+      .setDesc(this.plugin._t('setting.compress.desc1'))
       .addToggle(toggle => {
         toggle
           .setValue(this.plugin.settings.compressImage)
@@ -388,10 +408,9 @@ export default class SmmSettingTab extends PluginSettingTab {
           })
       })
 
-    // 压缩参数设置
     this.compressImageOptionsMaxWidthSettings = new Setting(containerEl)
-      .setName(this.plugin._t('setting.compress.title2')) // 最大压缩宽度
-      .setDesc(this.plugin._t('setting.compress.desc2')) // 设置图片压缩后的最大宽度
+      .setName(this.plugin._t('setting.compress.title2'))
+      .setDesc(this.plugin._t('setting.compress.desc2'))
       .addText(text => {
         text
           .setValue(String(this.plugin.settings.compressImageOptionsMaxWidth))
@@ -408,8 +427,8 @@ export default class SmmSettingTab extends PluginSettingTab {
     this.compressImageOptionsMaxWidthSettings.settingEl.className +=
       ' smm-setting-sub-item'
     this.compressImageOptionsMaxHeightSettings = new Setting(containerEl)
-      .setName(this.plugin._t('setting.compress.title3')) // 最大压缩高度
-      .setDesc(this.plugin._t('setting.compress.desc3')) // 设置图片压缩后的最大高度
+      .setName(this.plugin._t('setting.compress.title3'))
+      .setDesc(this.plugin._t('setting.compress.desc3'))
       .addText(text => {
         text
           .setValue(String(this.plugin.settings.compressImageOptionsMaxHeight))
@@ -426,15 +445,15 @@ export default class SmmSettingTab extends PluginSettingTab {
     this.compressImageOptionsMaxHeightSettings.settingEl.className +=
       ' smm-setting-sub-item'
     this.compressImageOptionsQualitySettings = new Setting(containerEl)
-      .setName(this.plugin._t('setting.compress.title4')) // 图片质量
+      .setName(this.plugin._t('setting.compress.title4'))
       .setDesc(
         `${this.plugin._t('setting.compress.desc4')}，${this.plugin._t(
           'setting.compress.curValue'
         )}: ${this.plugin.settings.compressImageOptionsQuality}`
-      ) // 显示当前值
+      )
       .addSlider(slider =>
         slider
-          .setLimits(0, 1, 0.1) // 最小值0，最大值1，步长0.1
+          .setLimits(0, 1, 0.1)
           .setValue(this.plugin.settings.compressImageOptionsQuality)
           .onChange(async value => {
             this.plugin.settings.compressImageOptionsQuality = value
@@ -472,16 +491,46 @@ export default class SmmSettingTab extends PluginSettingTab {
     this._updateCompressImageSettingsVisibility()
   }
 
-  // 嵌入设置
   _addEmbedSetting() {
     const { containerEl } = this
 
     containerEl.createEl('h2', { text: this.plugin._t('setting.title.title4') })
 
-    // 嵌入预览的图像背景是否透明
     new Setting(containerEl)
-      .setName(this.plugin._t('setting.embed.title2')) // 嵌入预览的图像背景是否透明
-      .setDesc(this.plugin._t('setting.embed.desc2')) // 嵌入预览的图像背景是否透明
+      .setName(this.plugin._t('setting.embed.title3'))
+      .setDesc(this.plugin._t('setting.embed.desc3'))
+      .addToggle(toggle => {
+        toggle
+          .setValue(this.plugin.settings.embedImageIsSeparateFile)
+          .onChange(async value => {
+            this.plugin.settings.embedImageIsSeparateFile = value
+            this._updateEmbedImageFileFolderSettingsVisibility()
+            await this.plugin._saveSettings()
+          })
+      })
+
+    this.embedImageIsSeparateFileFolderSettings = new Setting(containerEl)
+      .setName(this.plugin._t('setting.embed.title4'))
+      .setDesc(this.plugin._t('setting.embed.desc4'))
+      .addText(text => {
+        text
+          .setValue(this.plugin.settings.embedImageIsSeparateFileFolder)
+          .onChange(async value => {
+            this.plugin.settings.embedImageIsSeparateFileFolder = value
+            await this.plugin._saveSettings()
+          })
+        this._addFolderSelectBtn(text, selected => {
+          this.plugin.settings.embedImageIsSeparateFileFolder = selected
+          this.plugin._saveSettings()
+        })
+      })
+    this.embedImageIsSeparateFileFolderSettings.settingEl.className +=
+      ' smm-setting-sub-item'
+    this._updateEmbedImageFileFolderSettingsVisibility()
+
+    new Setting(containerEl)
+      .setName(this.plugin._t('setting.embed.title2'))
+      .setDesc(this.plugin._t('setting.embed.desc2'))
       .addToggle(toggle => {
         toggle
           .setValue(this.plugin.settings.compressImageIsTransparent)
@@ -491,10 +540,9 @@ export default class SmmSettingTab extends PluginSettingTab {
           })
       })
 
-    // 嵌入预览双击是否新窗口打开
     new Setting(containerEl)
-      .setName(this.plugin._t('setting.embed.title1')) // 嵌入预览双击是否新窗口打开
-      .setDesc(this.plugin._t('setting.embed.desc1')) // ![[]]格式嵌入md文档时双击预览图像是否新窗口打开文件
+      .setName(this.plugin._t('setting.embed.title1'))
+      .setDesc(this.plugin._t('setting.embed.desc1'))
       .addToggle(toggle => {
         toggle
           .setValue(this.plugin.settings.embedDblClickNewWindow)
@@ -503,9 +551,20 @@ export default class SmmSettingTab extends PluginSettingTab {
             await this.plugin._saveSettings()
           })
       })
+
+    new Setting(containerEl)
+      .setName(this.plugin._t('setting.embed.title5'))
+      .setDesc(this.plugin._t('setting.embed.desc5'))
+      .addToggle(toggle => {
+        toggle
+          .setValue(this.plugin.settings.embedLinkNewWindowOpen)
+          .onChange(async value => {
+            this.plugin.settings.embedLinkNewWindowOpen = value
+            await this.plugin._saveSettings()
+          })
+      })
   }
 
-  // 给目录输入框控件添加选择按钮
   _addFolderSelectBtn(text, callback = () => {}) {
     const inputEl = text.inputEl
     const suggestionButton = inputEl.parentElement?.createEl('button', {
@@ -526,32 +585,39 @@ export default class SmmSettingTab extends PluginSettingTab {
     })
   }
 
-  // 获取文件路径选项
   _getFilePathOptions(full = false) {
     const res = [
       {
-        name: this.plugin._t('setting.folder.option1'), // 仓库的根目录
+        name: this.plugin._t('setting.folder.option1'),
         value: 'root'
       },
       {
-        name: this.plugin._t('setting.folder.option2'), // 指定文件夹
+        name: this.plugin._t('setting.folder.option2'),
         value: 'custom'
       },
       {
-        name: this.plugin._t('setting.folder.option3'), // 当前文件所在的文件夹
+        name: this.plugin._t('setting.folder.option3'),
         value: 'currentFileFolder'
       }
     ]
     if (full) {
       res.push({
-        name: this.plugin._t('setting.folder.option4'), // 当前文件所在的文件夹的子文件夹
+        name: this.plugin._t('setting.folder.option4'),
         value: 'currentFileFolderSubFolder'
       })
     }
     return res
   }
 
-  // 切换文件路径设置的显示状态
+  _updateEmbedImageFileFolderSettingsVisibility() {
+    const isVisible = this.plugin.settings.embedImageIsSeparateFile
+    if (this.embedImageIsSeparateFileFolderSettings) {
+      this.embedImageIsSeparateFileFolderSettings.settingEl.style.display = isVisible
+        ? ''
+        : 'none'
+    }
+  }
+
   _updateFilePathSettingsVisibility() {
     const isVisible = this.plugin.settings.filePathType === 'custom'
     if (this.filePathSettings) {
@@ -559,7 +625,6 @@ export default class SmmSettingTab extends PluginSettingTab {
     }
   }
 
-  // 切换图片路径设置的显示状态
   _updateImagePathSettingsVisibility() {
     const isVisible = this.plugin.settings.imagePathType === 'custom'
     if (this.imagePathSettings) {
@@ -574,7 +639,6 @@ export default class SmmSettingTab extends PluginSettingTab {
     }
   }
 
-  // 切换附件路径设置的显示状态
   _updateAttachmentPathSettingsVisibility() {
     const isVisible = this.plugin.settings.attachmentPathType === 'custom'
     if (this.attachmentPathSettings) {
@@ -591,7 +655,6 @@ export default class SmmSettingTab extends PluginSettingTab {
     }
   }
 
-  // 切换压缩图片设置的显示状态
   _updateCompressImageSettingsVisibility() {
     const isVisible = this.plugin.settings.compressImage
     if (this.compressImageOptionsMaxWidthSettings) {
@@ -611,43 +674,87 @@ export default class SmmSettingTab extends PluginSettingTab {
     }
   }
 
+  _addImageHostingSetting() {
+    const { containerEl } = this
+
+    containerEl.createEl('h2', { text: this.plugin._t('setting.title.title6') })
+
+    // 是否开启图床
+    new Setting(containerEl)
+      .setName(this.plugin._t('setting.imageHosting.title1'))
+      .setDesc(this.plugin._t('setting.imageHosting.desc1'))
+      .addToggle(toggle => {
+        toggle
+          .setValue(this.plugin.settings.useImgHosting)
+          .onChange(async value => {
+            if (
+              value &&
+              (!this.plugin.settings.imgHostingUrl ||
+                !this.plugin.settings.imgHostingFormField ||
+                !this.plugin.settings.imgHostingResponseField)
+            ) {
+              toggle.setValue(false)
+              new Notice(this.plugin._t('setting.imageHosting.tip1'))
+              return
+            }
+            this.plugin.settings.useImgHosting = value
+            await this.plugin._saveSettings()
+          })
+      })
+
+    // 图床url
+    new Setting(containerEl)
+      .setName(this.plugin._t('setting.imageHosting.title2'))
+      .setDesc(this.plugin._t('setting.imageHosting.desc2'))
+      .addText(text => {
+        text
+          .setValue(String(this.plugin.settings.imgHostingUrl))
+          .onChange(async value => {
+            this.plugin.settings.imgHostingUrl = value
+            await this.plugin._saveSettings()
+          })
+      })
+
+    // 表单字段
+    new Setting(containerEl)
+      .setName(this.plugin._t('setting.imageHosting.title3'))
+      .setDesc(this.plugin._t('setting.imageHosting.desc3'))
+      .addText(text => {
+        text
+          .setValue(String(this.plugin.settings.imgHostingFormField))
+          .onChange(async value => {
+            this.plugin.settings.imgHostingFormField = value
+            await this.plugin._saveSettings()
+          })
+      })
+
+    // 接口响应结构
+    new Setting(containerEl)
+      .setName(this.plugin._t('setting.imageHosting.title4'))
+      .setDesc(
+        fragWithHTML(
+          this.plugin._t('setting.imageHosting.desc4') +
+            '<a href="https://github.com/wanglin2/obsidian-simplemindmap/blob/main/docs/imageHosting.md" target="_blank">' +
+            this.plugin._t('setting.imageHosting.desc5') +
+            '</a>。'
+        )
+      )
+      .addText(text => {
+        text
+          .setValue(String(this.plugin.settings.imgHostingResponseField))
+          .onChange(async value => {
+            this.plugin.settings.imgHostingResponseField = value
+            await this.plugin._saveSettings()
+          })
+      })
+  }
+
   _addOtherSetting() {
     const { containerEl } = this
 
     containerEl.createEl('h2', { text: this.plugin._t('setting.title.title5') })
-
-    // 是否开启版本检查
-    new Setting(containerEl)
-      .setName(this.plugin._t('setting.other.title1')) // 是否开启版本检查
-      .setDesc(this.plugin._t('setting.other.desc1')) // 是否开启版本检查
-      .addToggle(toggle => {
-        toggle
-          .setValue(this.plugin.settings.openVersionCheck)
-          .onChange(async value => {
-            this.plugin.settings.openVersionCheck = value
-            await this.plugin._saveSettings()
-          })
-      })
-      .addExtraButton(button => {
-        button.setIcon('refresh-cw').onClick(async () => {
-          checkVersion(
-            version => {
-              if (version) {
-                new Notice(this.plugin._t('tip.pluginNewVersion') + version)
-              } else {
-                new Notice(this.plugin._t('tip.pluginNoNewVersion'))
-              }
-            },
-            true,
-            () => {
-              new Notice(this.plugin._t('tip.pluginVersionCheckError'))
-            }
-          )
-        })
-      })
   }
 
-  // 添加辅助信息
   _addHelpInfo() {
     const { containerEl } = this
     const linkEl = containerEl.createDiv('setting-item smm-setting-link-list')

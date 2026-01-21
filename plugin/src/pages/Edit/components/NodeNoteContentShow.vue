@@ -24,7 +24,6 @@ import { mapState } from 'vuex'
 import { toastUiEditorLangMap } from '@/config/constant'
 import noteMixin from '@/mixins/note'
 
-// 节点备注内容显示
 export default {
   mixins: [noteMixin],
   props: {
@@ -82,7 +81,6 @@ export default {
       }
     },
 
-    // 显示备注浮层
     onShowNoteContent(content, left, top, width, height, node) {
       this.initEditor(() => {
         this.node = node
@@ -98,7 +96,6 @@ export default {
       })
     },
 
-    // 超链接新窗口打开
     handleALink() {
       const list = this.$refs.noteContentViewer.querySelectorAll('a')
       Array.from(list).forEach(a => {
@@ -106,7 +103,6 @@ export default {
       })
     },
 
-    // 更新位置
     updateNoteContentPosition(left, top, width, height) {
       const boxRect = this.$refs.noteContentViewer.getBoundingClientRect()
       const elRect = this.mindMap.elRect
@@ -128,19 +124,16 @@ export default {
       this.top = top
     },
 
-    // 画布缩放事件
     onScale() {
       if (!this.node || !this.show) return
       const { left, top, width, height } = this.node.getNoteContentPosition()
       this.updateNoteContentPosition(left, top, width, height)
     },
 
-    // 隐藏备注浮层
     hideNoteContent() {
       this.show = false
     },
 
-    // 初始化编辑器
     initEditor(callback) {
       if (!this.editor) {
         this.mindMap.el.appendChild(this.$refs.noteContentViewer)

@@ -31,7 +31,7 @@ export default {
     associativeLineColor: 'Màu sắc',
     associativeLineActiveWidth: 'Độ rộng khi kích hoạt',
     associativeLineActiveColor: 'Màu sắc khi kích hoạt',
-    rootStyle: 'Nút gốc',
+    rootStyle: 'Kiểu kết nối nút gốc',
     associativeLineText: 'Văn bản đường liên kết',
     fontFamily: 'Phông chữ',
     fontSize: 'Cỡ chữ',
@@ -63,9 +63,6 @@ export default {
     openRealtimeRenderOnNodeTextEdit:
       'Bật hiệu ứng kết xuất thời gian thực cho chỉnh sửa văn bản',
     isShowScrollbar: 'Hiển thị thanh cuộn',
-    isUseHandDrawnLikeStyle: 'Sử dụng kiểu vẽ tay',
-    isUseMomentum: 'Mở động lượng kéo',
-    isUseSameNodeAlign: 'Sử dụng căn chỉnh nút cùng cấp',
     openBlankMode: 'Mở chế độ trống cho trình diễn',
     watermark: 'Hình mờ',
     showWatermark: 'Hiển thị hình mờ',
@@ -89,12 +86,10 @@ export default {
     changeRichTextTip2: 'Bạn có muốn chuyển sang chế độ văn bản phong phú?',
     changeRichTextTip3:
       'Bạn có muốn chuyển sang chế độ không phải văn bản phong phú?',
-    enableDragImport: 'Cho phép kéo và thả tệp trực tiếp vào trang để nhập',
     imgTextMargin: 'Khoảng cách giữa hình ảnh và văn bản nút',
     textContentMargin: 'Khoảng cách nội dung nút',
     enableInheritAncestorLineStyle:
       'Kiểu kết nối nút kế thừa kiểu của nút tổ tiên',
-    enableAi: 'Bật chức năng AI',
     isShowBottomToolbar: 'Hiện thanh công cụ dưới cùng',
     rootEnableUnExpand:
       'Liệu root node có cho phép thu hồi cấp dưới hay không?',
@@ -102,16 +97,28 @@ export default {
     title1: 'Nút',
     title2: 'Chỉnh sửa',
     title3: 'Hiển thị',
-    title4: 'Khác'
+    title4: 'Khác',
+    sameNodeAlignInitWidth: 'Các nút cùng cấp căn chỉnh chiều rộng ban đầu',
+    enableFreeDragTip:
+      'Sau khi tắt cài đặt, nếu muốn khôi phục bố cục mặc định, vui lòng nhấp chuột phải vào vùng vẽ và chọn menu - [Tổ chức lại bố cục tự động]',
+    isUseSameNodeAlignTip1:
+      '1. Sau khi chỉnh sửa nút, chiều rộng sẽ không tự động căn chỉnh; cần thủ công nhấp vào menu chuột phải vùng vẽ - [Căn chỉnh tự động các nút cùng cấp]',
+    isUseSameNodeAlignTip2:
+      '2. Sau khi tắt cài đặt, nếu muốn khôi phục chiều rộng mặc định, vui lòng nhấp chuột phải vào vùng vẽ và chọn menu - [Xóa toàn bộ chiều rộng tùy chỉnh của các nút]',
+    openRealtimeRenderOnNodeTextEditTip:
+      'Bật tính năng này có thể gây giảm hiệu suất; khuyến nghị tắt khi số lượng nút nhiều',
+    openPerformanceTip:
+      'Nếu số lượng nút nhiều, có thể thử bật chế độ hiệu suất để tăng tốc độ hiển thị'
   },
   color: {
     moreColor: 'Thêm màu'
   },
   contextmenu: {
-    insertSiblingNode: 'Chèn nút cùng cấp',
-    insertChildNode: 'Chèn nút con',
-    insertParentNode: 'Chèn nút cha',
-    insertSummary: 'Chèn tóm tắt',
+    insertNode: 'Chèn nút',
+    insertSiblingNode: 'Node tương đương',
+    insertChildNode: 'Các nút con',
+    insertParentNode: 'Nút cha',
+    insertSummary: 'Giới thiệu',
     moveUpNode: 'Di chuyển nút lên',
     moveDownNode: 'Di chuyển nút xuống',
     deleteNode: 'Xóa nút',
@@ -160,7 +167,8 @@ export default {
     copyAsInternalUrl: 'Sao chép như một chuỗi bên trong',
     removeAllCustomWidth:
       'Loại bỏ tất cả các nút chiều rộng tùy chỉnh với một cú nhấp chuột',
-    download: 'Tải xuống'
+    download: 'Tải xuống',
+    copyNodeToTxt: 'Sao chép thành văn bản thuần túy'
   },
   count: {
     words: 'Từ',
@@ -219,7 +227,10 @@ export default {
     mdPlaceholder: 'Vui lòng nhập nội dung ở định dạng Markdown',
     mdEmptyTip: 'Nội dung không được trống',
     mdImportFailTip: 'Nhập thất bại, không phân tích cú pháp để nhập nội dung. Chỉ hỗ trợ cú pháp như tiêu đề, danh sách, v.v.',
-    rootNodeName: 'Nút gốc'
+    rootNodeName: 'Nút gốc',
+    importTip: 'Trong đó .mm, .xlsx thành viên có sẵn',
+    dragTip: 'Kéo tập tin cục bộ kho hoặc máy tính đến đây',
+    warningTip: 'Lưu ý: Việc nhập sẽ ghi đè lên nội dung hiện có và không thể khôi phục, hãy sao lưu trước!'
   },
   navigatorToolbar: {
     openMiniMap: 'Mở bản đồ thu nhỏ',
@@ -281,7 +292,8 @@ export default {
   },
   nodeTag: {
     title: 'Thẻ',
-    addTip: 'Vui lòng nhấn Enter để thêm tối đa 5 tab'
+    addTip: 'Vui lòng nhấn Enter để thêm tối đa 5 tab',
+    add: 'Thêm'
   },
   outline: {
     title: 'Dàn bài',
@@ -289,7 +301,7 @@ export default {
     print: 'In',
     fullscreen: 'Toàn màn hình',
     tip1: 'Chèn nút huynh đệ:',
-    tip2: 'Chèn nút con:',
+    tip2: 'Nút xuống cấp:',
     tip3: 'Nâng cấp nút:',
     tip4: 'Xóa nút:',
     tip5: 'Giữ nút để kéo'
@@ -299,8 +311,7 @@ export default {
     zoomOut: 'Thu nhỏ'
   },
   shortcutKey: {
-    title: 'Phím tắt',
-    tip: 'Các thao tác khác xin vui lòng thông qua lệnh, cũng có thể đặt lối tắt cho lệnh của bạn'
+    title: 'Phím tắt'
   },
   strusture: {
     title: 'Cấu trúc'
@@ -438,7 +449,10 @@ export default {
     defaultGeneralizationText: 'Giới thiệu',
     defaultAssociativeLineText: 'Liên kết',
     defaultOuterFrameText: 'Khung ngoài',
-    pasteImage: 'Dán-hình-ảnh'
+    pasteImage: 'Dán-hình-ảnh',
+    notSplit: 'Không phân chia',
+    keepLevel: 'Cấp độ dự trữ',
+    ignoreLevel: 'Bỏ qua phân cấp'
   },
   mouseAction: {
     tip1:
@@ -496,15 +510,6 @@ export default {
   attachment: {
     deleteAttachment: 'Xóa đính kèm',
     tip: 'Chức năng đính kèm chỉ có sẵn ở phía máy khách'
-  },
-  annotation: {
-    mark: 'Đánh dấu',
-    show: 'Hiển thị đánh dấu',
-    type: 'Loại',
-    color: 'Màu sắc',
-    lineWidth: 'Độ rộng đường kẻ',
-    padding: 'Đệm',
-    animate: 'Hoạt ảnh'
   },
   nodeOuterFrame: {
     outerFrameSetting: 'Cài đặt khung ngoài',

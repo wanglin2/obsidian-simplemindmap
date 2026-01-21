@@ -9,6 +9,7 @@ import LZString from 'lz-string'
 import { SMM_VIEW_TYPE, SMM_TAG } from './constant.js'
 import { around } from 'monkey-around'
 import markdown from 'simple-mind-map/src/parse/markdown.js'
+import { showConfirmationDialog } from './ConfirmDialog.js'
 import SmmEditView from '../SmmEditView.js'
 
 export default class Menus {
@@ -23,12 +24,10 @@ export default class Menus {
     return this.plugin._t(key)
   }
 
-  // 添加右键菜单
   _addFileMenus() {
     this.plugin.registerEvent(
       this.app.workspace.on('file-menu', (menu, file) => {
         if (file instanceof TFolder) {
-          // 新建思维导图
           menu.addItem(item => {
             item
               .setTitle(this._t('action.createMindMap'))
@@ -41,7 +40,6 @@ export default class Menus {
           if (this.plugin._isSmmFile(file)) {
             hideTargetMenu(menu, '在新窗口中打开')
             hideTargetMenu(menu, '移动至新窗口')
-            // 打开为Markdown文档
             menu.addItem(item =>
               item
                 .setTitle(this._t('action.openAsMd'))
@@ -50,8 +48,9 @@ export default class Menus {
                 .onClick(async () => {
                   await this.app.workspace.openLinkText(file.path, '')
                   const leaf = this.app.workspace.getLeaf(false)
-                  const mdViewType =
-                    this.app.viewRegistry.getTypeByExtension('md')
+                  const mdViewType = this.app.viewRegistry.getTypeByExtension(
+                    'md'
+                  )
                   await leaf.setViewState({
                     type: mdViewType,
                     state: {
@@ -63,13 +62,18 @@ export default class Menus {
                   this.app.workspace.revealLeaf(leaf)
                 })
             )
-            // 转换为md文档
             menu.addItem(item =>
               item
                 .setTitle(this._t('action.changeToMdFile'))
                 .setIcon('refresh-cw')
                 .setSection('open')
                 .onClick(async () => {
+                  const confirmed = await showConfirmationDialog(this.app, {
+                    content: this._t('tip.mindMapToMdTip')
+                  })
+                  if (!confirmed) {
+                    return
+                  }
                   const content = await this.app.vault.read(file)
                   const result = parseMarkdownText(content)
                   const mindMapData = LZString.decompressFromBase64(
@@ -91,18 +95,24 @@ export default class Menus {
                   if (mdStr) {
                     mdStr = '---\n' + mdStr + '---\n'
                   }
+                  const {
+                    nodeTextToMarkdownTitleMaxLevel
+                  } = this.plugin.settings
                   const mdMindMap = markdown.transformToMarkdown(
-                    JSON.parse(mindMapData).root
+                    JSON.parse(mindMapData).root,
+                    nodeTextToMarkdownTitleMaxLevel
                   )
                   mdStr += mdMindMap
-                  let newPath = file.path.replace('.smm.md', '.md')
+                  let newPath = file.path.replace(/\.smm.*\.md$/g, '.md')
                   newPath = await this.plugin._getAvailableFilaName(newPath)
                   await this.app.vault.rename(file, newPath)
                   const renamedFile = this.app.vault.getFileByPath(newPath)
                   if (renamedFile) {
-                    // 关闭当前标签页
-                    const markdownLeafs =
-                      this.app.workspace.getLeavesOfType(SMM_VIEW_TYPE)
+                    this.plugin.markdownPostProcessor.deletePreviewSvgFile(file)
+                    this.app.noSaveOnClose = true
+                    const markdownLeafs = this.app.workspace.getLeavesOfType(
+                      SMM_VIEW_TYPE
+                    )
                     for (const leaf of markdownLeafs) {
                       if (
                         leaf.view instanceof SmmEditView &&
@@ -112,9 +122,8 @@ export default class Menus {
                         break
                       }
                     }
-                    // 修改文件内容
                     await this.app.vault.modify(renamedFile, mdStr)
-                    // 重新打开
+                    this.app.noSaveOnClose = false
                     const ref = this.app.metadataCache.on(
                       'changed',
                       changedFile => {
@@ -140,15 +149,13 @@ export default class Menus {
 
   addMarkdownFileMenus() {
     const self = this
-    // 在md视图下的smm文件右上角菜单增加切换为思维导图菜单
     this.plugin.register(
       around(MarkdownView.prototype, {
         onPaneMenu(next) {
-          return function (menu, source) {
+          return function(menu, source) {
             const res = next.apply(this, [menu, source])
             if (self.plugin._isSmmFile(this.file)) {
               if (source === 'more-options') {
-                // 打开为思维导图文档
                 menu.addItem(item =>
                   item
                     .setTitle(self._t('action.openAsMindMap'))
@@ -161,7 +168,6 @@ export default class Menus {
               }
             } else {
               if (source === 'more-options') {
-                // 预览为思维导图
                 menu.addItem(item =>
                   item
                     .setTitle(self._t('action.previewAsMindMap'))
@@ -177,13 +183,18 @@ export default class Menus {
                       })
                     })
                 )
-                // 转换为思维导图文档
                 menu.addItem(item =>
                   item
                     .setTitle(self._t('action.changeToMindMapFile'))
                     .setIcon('refresh-cw')
                     .setSection('pane')
                     .onClick(async () => {
+                      const confirmed = await showConfirmationDialog(this.app, {
+                        content: self._t('tip.mdToMindMapTip')
+                      })
+                      if (!confirmed) {
+                        return
+                      }
                       let yaml = ''
                       const tagList = []
                       await this.app.fileManager.processFrontMatter(
@@ -229,9 +240,9 @@ export default class Menus {
                         linkdata: []
                       })
                       if (renamedFile) {
-                        // 关闭当前标签页
-                        const markdownLeafs =
-                          this.app.workspace.getLeavesOfType('markdown')
+                        const markdownLeafs = this.app.workspace.getLeavesOfType(
+                          'markdown'
+                        )
                         for (const leaf of markdownLeafs) {
                           if (
                             leaf.view instanceof MarkdownView &&
@@ -241,9 +252,7 @@ export default class Menus {
                             break
                           }
                         }
-                        // 修改文件内容
                         await this.app.vault.modify(renamedFile, str)
-                        // 重新打开
                         const ref = this.app.metadataCache.on(
                           'changed',
                           changedFile => {

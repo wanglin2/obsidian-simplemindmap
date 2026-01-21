@@ -5,9 +5,9 @@ export const SMM_TAG = 'simplemindmap'
 export const getDefaultSmmData = (options = {}) => {
   const theme = options.theme || 'classic13'
   const layout = options.layout || 'logicalStructure'
-  const rootNodeDefaultText = options.rootNodeDefaultText || 'Root Node' // 根节点
-  const secondNodeDefaultText = options.secondNodeDefaultText || 'Second Node' // 二级节点
-  const branchNodeDefaultText = options.branchNodeDefaultText || 'Branch Node' // 分支主题
+  const rootNodeDefaultText = options.rootNodeDefaultText || 'Root node' // 根节点
+  const secondNodeDefaultText = options.secondNodeDefaultText || 'Second node' // 二级节点
+  const branchNodeDefaultText = options.branchNodeDefaultText || 'Branch node' // 分支主题
   return {
     root: {
       data: { text: rootNodeDefaultText },
@@ -27,36 +27,46 @@ export const getDefaultSmmData = (options = {}) => {
 }
 
 export const DEFAULT_SETTINGS = {
-  isFirstUse: true, // 是否是第一次使用插件
-  fileNamePrefix: 'MindMap', // 新建思维导图的文件名前缀
-  fileNameDateFormat: 'YYYY-MM-DD HH.mm.ss', // 新建思维导图的文件名日期时间戳格式
-  lang: 'zh', // 语言
-  themeMode: 'follow', // 主题模式
-  defaultLayout: 'logicalStructure', // 默认布局
-  defaultTheme: 'classic13', // 浅色模式的默认主题
-  defaultThemeDark: 'classic', // 深色模式的默认主题
-  filePathType: 'root', // 文件存储位置
-  filePath: '', // 文件存储路径
-  imagePathType: 'currentFileFolder', // 图片存储位置
-  imagePath: '', // 图片存储路径
-  imageSubPath: '', // 自定义子文件夹
-  attachmentPathType: 'currentFileFolder', // 附件存储位置
-  attachmentPath: '', // 附件存储路径
-  attachmentSubPath: '', // 自定义子文件夹
-  compressImage: true, // 是否压缩图片
-  compressImageOptionsMaxWidth: 1200, // 图片压缩后的最大宽度
-  compressImageOptionsMaxHeight: 1200, // 图片压缩后的最大高度
-  compressImageOptionsQuality: 0.8, // 图片质量
-  attachmentPath: 'assets/files', // 附件存储路径
-  compressImageIsTransparent: false, // 嵌入预览的图像背景是否透明
-  embedDblClickNewWindow: true, // 嵌入预览双击是否新窗口打开
-  autoSaveTime: 5, // 无操作自动保存时间，单位s
+  isFirstUse: true,
+  fileNameFormat: 'MindMap {date:YYYY-MM-DD HH.mm.ss}',
+  lang: 'zh',
+  themeMode: 'follow',
+  defaultLayout: 'logicalStructure',
+  defaultTheme: 'classic13',
+  defaultThemeDark: 'classic',
+  filePathType: 'root',
+  filePath: '',
+  imagePathType: 'currentFileFolder',
+  imagePath: '',
+  imageSubPath: '',
+  attachmentPathType: 'currentFileFolder',
+  attachmentPath: '',
+  attachmentSubPath: '',
+  compressImage: true,
+  compressImageOptionsMaxWidth: 1200,
+  compressImageOptionsMaxHeight: 1200,
+  compressImageOptionsQuality: 0.8,
+  compressImageIsTransparent: false,
+  embedDblClickNewWindow: true,
+  autoSaveTime: 5,
   mindMapConfig: null,
   mindMapLocalConfig: null,
-  codeBlockInitHeight: 300, // smm代码块方式嵌入时初始高度，单位：px
-  supportObSearch: false, // 是否支持ob搜索
-  openVersionCheck: true, // 是否开启版本检查
-  saveCanvasViewData: true // 是否存储画布位置和缩放数据
+  supportObSearch: true,
+  saveCanvasViewData: true,
+  nodeTextToMarkdownTitleMaxLevel: 3,
+  embedImageIsSeparateFile: true,
+  embedImageIsSeparateFileFolder: '.smm-embed-image-files',
+  nodePasteImageNameFormat: '{notename}_pasteImage',
+  embedLinkNewWindowOpen: true,
+  useImgHosting: false,
+  imgHostingUrl: 'http://127.0.0.1:36677/upload',
+  imgHostingFormField: 'files',
+  imgHostingResponseField: 'data.result[0]'
+}
+
+let smmEditViewCount = 0
+export const getSmmEditViewCount = () => {
+  return smmEditViewCount++
 }
 
 export const IGNORE_CHECK_SMM = 'ignoreCheckSmm'

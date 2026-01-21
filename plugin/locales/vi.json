@@ -23,6 +23,10 @@
     "changeToMindMapFile": "Chuyển đổi sang tài liệu bản đồ tư duy"
   },
   "tip": {
+    "tip": "Mẹo",
+    "confirm": "Xác nhận",
+    "cancel": "Hủy bỏ",
+    "close": "Đóng cửa",
     "fileExist": "Tệp đã tồn tại",
     "createMindMapFail": "Tạo sơ đồ tư duy thất bại",
     "fileIsNotMd": "Tệp hiện tại không phải tệp markdown",
@@ -40,7 +44,14 @@
     "pluginNoNewVersion": "Hiện tại là phiên bản mới nhất",
     "pluginVersionCheckError": "Kiểm tra thất bại",
     "changeSuccess": "Hoàn thành chuyển đổi",
-    "mdToMindMapFail": "Chuyển đổi thất bại, không có dữ liệu được phân tích để có thể được chuyển đổi thành Bản đồ tư duy"
+    "mdToMindMapFail": "Chuyển đổi thất bại, không có dữ liệu được phân tích để có thể được chuyển đổi thành Bản đồ tư duy",
+    "imgCreateFail": "Lỗi tạo tập tin ảnh",
+    "mdModifyTip": "Không thay đổi bất kỳ thông tin nào khác ngoài YAML",
+    "fileNameEmpty": "Tên tập tin không được để trống",
+    "fileNameIllegal": "Tên tập tin chứa ký tự không hợp lệ",
+    "fileRenameFail": "Lỗi đổi tên tập tin",
+    "mindMapToMdTip": "Sau khi chuyển đổi sang tài liệu Markdown, chỉ một số nội dung sẽ được giữ lại, chẳng hạn như văn bản nút, văn bản tóm tắt, ghi chú, v.v., những nội dung khác sẽ bị loại bỏ và không thể khôi phục, hãy sao lưu trước.",
+    "mdToMindMapTip": "Chỉ hỗ trợ chuyển đổi tiêu đề, danh sách và cú pháp khác thành bản đồ tư duy, các nội dung khác sẽ bị loại bỏ và không thể phục hồi, hãy sao lưu trước."
   },
   "setting": {
     "title": {
@@ -48,7 +59,8 @@
       "title2": "Tệp",
       "title3": "Nén hình ảnh",
       "title4": "Hình ảnh",
-      "title5": "Khác"
+      "title5": "Khác",
+      "title6": "Hình ảnh hosting"
     },
     "themeMode": {
       "title": "Chế độ chủ đề",
@@ -89,7 +101,9 @@
       "title8": "Hỗ trợ tìm kiếm OB",
       "desc8": "Tư duy bản đồ dữ liệu là mã hóa nén sau khi lưu trữ, vì vậy không thể tìm kiếm trong ob, nếu bạn muốn trong ob có thể tìm kiếm nội dung văn bản nút của bản đồ tư duy, bạn có thể mở tùy chọn này, sau khi mở sẽ lưu thêm tất cả các nút trong các tập tin nội dung văn bản để tìm kiếm, mang lại tác dụng phụ sẽ dẫn đến khối lượng tập tin lớn hơn, có thể ảnh hưởng đến tốc độ mở và lưu tập tin",
       "title9": "Lưu trữ vị trí canvas và dữ liệu thu phóng",
-      "desc9": "Vị trí khung và dữ liệu thu phóng được lưu trong tệp sau khi mở để bạn có thể khôi phục lại vị trí và trạng thái thu phóng của lần đóng cuối cùng khi mở tiếp theo. Nhược điểm là chỉ cần di chuyển và phóng to canvas sẽ làm thay đổi tập tin."
+      "desc9": "Vị trí khung và dữ liệu thu phóng được lưu trong tệp sau khi mở để bạn có thể khôi phục lại vị trí và trạng thái thu phóng của lần đóng cuối cùng khi mở tiếp theo. Nhược điểm là chỉ cần di chuyển và phóng to canvas sẽ làm thay đổi tập tin.",
+      "title10": "Mức tối đa của văn bản nút đến tiêu đề Markdown",
+      "desc10": "Văn bản nút nhỏ hơn hoặc bằng cấp này được chuyển thành tiêu đề Markdown và phần còn lại được chuyển thành danh sách không có thứ tự."
     },
     "compress": {
       "title1": "Có nén ảnh không",
@@ -109,7 +123,9 @@
     },
     "codeBlock": {
       "title": "Chiều cao ban đầu của khối mã nhúng",
-      "desc": "Chiều cao ban đầu khi nhúng bằng khối mã smm, đơn vị: px"
+      "desc": "Chiều cao ban đầu khi nhúng bằng khối mã smm, đơn vị: px",
+      "title2": "Nền nhúng khối mã có trong suốt hay không",
+      "desc2": "Nền có trong suốt khi nhúng khối mã smm hay không, nếu không nó sẽ theo màu nền của chủ đề bản đồ tư duy đã chọn"
     },
     "linkInfo": {
       "issues": "Gửi bug hoặc gợi ý",
@@ -120,13 +136,29 @@
       "title1": "Nhúng xem thử Nhấp đúp vào cửa sổ mới để mở",
       "desc1": "![[]] Định dạng Nhấp đúp vào ô xem thử ảnh khi nhúng tài liệu md có cửa sổ mới Mở tập tin không",
       "title2": "Hình nền nhúng xem thử có trong suốt không",
-      "desc2": "Thiết lập hình nền nhúng xem thử có trong suốt không"
+      "desc2": "![[]] Định dạng Nền ảnh được nhúng trong ô xem thử có trong suốt không",
+      "title3": "Cho dù hình ảnh nhúng được lưu trữ dưới dạng tệp riêng biệt",
+      "desc3": "Hình ảnh được sử dụng mặc định để nhúng xem trước ở định dạng ![[]] được lưu trữ riêng biệt trong kho dưới dạng tệp svg để chỉ đường dẫn tệp được lưu trữ trong tệp Bản đồ Tư duy có thể làm giảm đáng kể khối lượng tệp và tăng tốc độ đọc và lưu tệp. Nếu tắt, dữ liệu hình ảnh sẽ được lưu trữ trong tệp Bản đồ Tư duy và khối lượng sẽ tăng lên đáng kể.",
+      "title4": "Nhúng thư mục lưu trữ tập tin ảnh",
+      "desc4": "Nhúng xem trước hình ảnh tập tin lưu trữ thư mục, liên quan đến thư mục gốc kho, không nên để trống và thư mục bắt đầu bằng . như một thư mục ẩn",
+      "title5": "Trang nhãn mới Mở liên kết nút",
+      "desc5": "Nhấp vào liên kết nút được chèn (không chứa liên kết mạng) để mở trên trang tab mới. Bạn cũng có thể mở tab mới bằng Ctrl+chuột trái sau khi đóng"
     },
     "file": {
-      "title1": "Tiền tố tên tệp sơ đồ tư duy mới",
-      "desc1": "Định dạng đặt tên mặc định cho tên tệp sơ đồ tư duy mới là: Tiền tố + Dấu cách + Dấu thời gian ngày tháng",
-      "title2": "Định dạng dấu thời gian ngày tháng cho tên tệp sơ đồ tư duy mới",
-      "desc2": "Mặc định: YYYY-MM-DD HH.mm.ss, Ví dụ thực tế: 2025-01-01 23.59.59. Nếu không rõ ý nghĩa cụ thể của định dạng này và cách sửa đổi, vui lòng tham khảo: https://day.js.org/docs/en/parse/string-format"
+      "title1": "Định dạng tên tập tin cho bản đồ tư duy mới",
+      "desc1": "Dạng thức đặt tên cho tên tệp bản đồ tư duy mới. Hỗ trợ các biến khác ngoài notename",
+      "title3": "Định dạng có tên cho ảnh dán",
+      "desc3": "Định dạng có tên của ảnh được dán trên nút",
+      "filenameFormatDesc": "Mô tả định dạng tên tập tin"
+    },
+    "font": {
+      "title": "Phông chữ",
+      "desc": "Phông chữ mặc định khi tạo bản đồ tư duy mới",
+      "btn": "Quản lý",
+      "placeholder": "Tìm kiếm phông chữ. Bạn cũng có thể nhấn Enter để thêm các phông chữ nhập trực tiếp",
+      "empty": "Không có phông chữ",
+      "noMatch": "Không tìm thấy phông chữ",
+      "noFont": "Không có phông chữ"
     },
     "button": {
       "select": "Chọn"
@@ -134,48 +166,21 @@
     "other": {
       "title1": "Kiểm tra phiên bản mới",
       "desc1": "Khi plugin khởi động, bạn sẽ kiểm tra xem có phiên bản mới không và nếu mạng của bạn không truy cập được Github, bạn nên tắt tùy chọn này."
+    },
+    "imageHosting": {
+      "title1": "Mở giường",
+      "desc1": "Sau khi mở, tất cả hình ảnh sẽ được tải lên giường.",
+      "tip1": "Vui lòng hoàn thiện thông tin cấu hình giường",
+      "title2": "Giường Url",
+      "desc2": "Điền địa chỉ giao diện tải lên tương ứng với công cụ giường chiếu mà bạn sử dụng",
+      "title3": "Trường mẫu",
+      "desc3": "Tên trường trong biểu mẫu khi tải lên hình ảnh",
+      "title4": "Cấu trúc phản hồi",
+      "desc4": "Cấu trúc phản hồi khi tải lên hình ảnh. Hãy tham khảo thêm tại:",
+      "desc5": "Hướng dẫn sử dụng giường"
     }
   },
-  "commands": {
-    "save": "Thao tác chỉnh sửa - Lưu",
-    "saveAndUpdateImage": "Thao tác chỉnh sửa - Lưu và cập nhật hình ảnh",
-    "undo": "Thao tác chỉnh sửa - Quay lại",
-    "redo": "Thao tác chỉnh sửa - Tiến tới",
-    "searchReplace": "Thao tác chỉnh sửa - Tìm kiếm và thay thế",
-    "insertChildNode": "Thao tác nút - Chèn nút con",
-    "insertSiblingNode": "Thao tác nút - Chèn nút cùng cấp",
-    "insertParentNode": "Thao tác nút - Chèn nút cha",
-    "moveUpNode": "Thao tác nút - Di chuyển nút lên",
-    "moveDownNode": "Thao tác nút - Di chuyển nút xuống",
-    "insertSummary": "Thao tác nút - Chèn tóm tắt",
-    "toggleExpandNode": "Thao tác nút - Mở rộng/Thu gọn nút",
-    "deleteNode": "Thao tác nút - Xóa nút",
-    "deleteNodeOnly": "Thao tác nút - Chỉ xóa nút hiện tại",
-    "copyNode": "Thao tác nút - Sao chép nút",
-    "cutNode": "Thao tác nút - Cắt nút",
-    "pasteNode": "Thao tác nút - Dán nút",
-    "selectAllNode": "Thao tác nút - Chọn tất cả",
-    "organizeLayout": "Thao tác nút - Sắp xếp bố cục một lần",
-    "toggleBoldNode": "Thao tác nút - Chuyển đổi in đậm",
-    "toggleItalicNode": "Thao tác nút - Chuyển đổi in nghiêng",
-    "toggleUnderlineNode": "Thao tác nút - Chuyển đổi gạch chân",
-    "toggleStrikethroughNode": "Thao tác nút - Chuyển đổi gạch ngang",
-    "increaseFontSizeNode": "Thao tác nút - Tăng kích thước chữ",
-    "decreaseFontSizeNode": "Thao tác nút - Giảm kích thước chữ",
-    "zoomInCanvas": "Thao tác canvas - Phóng to",
-    "zoomOutCanvas": "Thao tác canvas - Thu nhỏ",
-    "backToRootCanvas": "Thao tác canvas - Quay về nút gốc",
-    "activateLeftCanvas": "Thao tác canvas - Di chuyển tiêu điểm sang trái",
-    "activateTopCanvas": "Thao tác canvas - Di chuyển tiêu điểm lên trên",
-    "activateRightCanvas": "Thao tác canvas - Di chuyển tiêu điểm sang phải",
-    "activateBottomCanvas": "Thao tác canvas - Di chuyển tiêu điểm xuống dưới",
-    "zoomFitCanvas": "Thao tác canvas - Vừa với canvas",
-    "enterDemonstrate": "Thao tác hỗ trợ - Vào chế độ trình diễn",
-    "openImageEdit": "Thao tác giao diện - Mở hộp thoại chỉnh sửa hình ảnh",
-    "openHyperlinkEdit": "Thao tác giao diện - Mở hộp thoại chỉnh sửa siêu liên kết",
-    "openRemarkEdit": "Thao tác giao diện - Mở hộp thoại chỉnh sửa ghi chú",
-    "openTagEdit": "Thao tác giao diện - Mở hộp thoại chỉnh sửa thẻ",
-    "openImport": "Thao tác giao diện - Mở hộp thoại nhập",
-    "openExport": "Thao tác giao diện - Mở hộp thoại xuất"
+  "html": {
+    "filenameFormatDesc": "<p>Ngoài các tên cố định, bạn cũng có thể sử dụng các biến, được đặt trong dấu ngoặc nhọn {}, các biến khả dụng như sau:</p><p>1.{notename}: Tên tệp hiện tại, không bao gồm phần mở rộng;</p><p>2.{date}: Ngày hiện tại, định dạng YYYY-MM-DD;</p><p>3.{time}: Thời gian hiện tại, định dạng HH:mm:ss;</p><p>4.{datatime}: Ngày giờ hiện tại, định dạng: YYYY-MM-DD HH:mm:ss;</p><p>5.{date:Format}: Chỉ định định dạng ngày giờ, ví dụ: MM-DD HH:mm, tham khảo thêm tại: <a href='https://day.js.org/docs/en/parse/string-format'>hướng dẫn định dạng</a>;</p><p>6.{random}: Chuỗi ngẫu nhiên, độ dài 6 ký tự;</p>"
   }
 }

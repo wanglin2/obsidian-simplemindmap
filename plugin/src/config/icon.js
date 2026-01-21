@@ -129,8 +129,8 @@ const weatherList = [
 
 export default [
   {
-    name: '多彩标记图标', // 分组名称
-    type: 'sign2', // 分组的值
+    name: '多彩标记图标',
+    type: 'sign2',
     list: iconList.map((item, index) => {
       return {
         name: String(index + 1),
@@ -139,8 +139,8 @@ export default [
     })
   },
   {
-    name: '星期', // 分组名称
-    type: 'weekday', // 分组的值
+    name: '星期',
+    type: 'weekday',
     list: weekdayList.map((item, index) => {
       return {
         name: String(index + 1),
@@ -149,8 +149,8 @@ export default [
     })
   },
   {
-    name: '头像', // 分组名称
-    type: 'avatar', // 分组的值
+    name: '头像',
+    type: 'avatar',
     list: avatarList.map((item, index) => {
       return {
         name: String(index + 1),
@@ -159,8 +159,8 @@ export default [
     })
   },
   {
-    name: '五角星', // 分组名称
-    type: 'star', // 分组的值
+    name: '五角星',
+    type: 'star',
     list: starList.map((item, index) => {
       return {
         name: String(index + 1),
@@ -169,8 +169,8 @@ export default [
     })
   },
   {
-    name: '旗帜', // 分组名称
-    type: 'flag', // 分组的值
+    name: '旗帜',
+    type: 'flag',
     list: flagList.map((item, index) => {
       return {
         name: String(index + 1),
@@ -179,8 +179,8 @@ export default [
     })
   },
   {
-    name: '天气', // 分组名称
-    type: 'weather', // 分组的值
+    name: '天气',
+    type: 'weather',
     list: weatherList.map((item, index) => {
       return {
         name: String(index + 1),

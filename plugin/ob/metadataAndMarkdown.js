@@ -1,14 +1,16 @@
 import { getDefaultSmmData, SMM_TAG } from './constant'
 import LZString from 'lz-string'
+import i18n from 'i18next'
 
 export const parseMarkdownText = text => {
   const result = {
     metadata: { path: '', tags: [], yaml: '', content: '' },
     svgdata: '',
-    linkdata: []
+    svgdataUpdateAt: '',
+    linkdata: [],
+    textdata: []
   }
 
-  // Split text into lines
   const lines = text.split('\n')
   let currentSection = ''
   let inCodeBlock = false
@@ -17,13 +19,11 @@ export const parseMarkdownText = text => {
   let codeBlockContent = []
 
   for (const line of lines) {
-    // Handle YAML header
     if (line.trim() === '---') {
       inYamlHeader = !inYamlHeader
       continue
     }
 
-    // Check for section headers
     if (line.startsWith('# metadata')) {
       currentSection = 'metadata'
       continue
@@ -34,11 +34,9 @@ export const parseMarkdownText = text => {
       currentSection = 'linkdata'
       continue
     } else if (line.startsWith('# textdata')) {
-      // 用于搜索的节点文本数据，遍历到这个即可结束
       break
     }
 
-    // Handle code blocks
     if (line.trim() === '```metadata' || line.trim() === '```svgData') {
       inCodeBlock = true
       continue
@@ -57,13 +55,17 @@ export const parseMarkdownText = text => {
       continue
     }
 
-    // Collect content
     if (inCodeBlock) {
       codeBlockContent.push(line)
     } else if (currentSection === 'linkdata' && line.startsWith('- ')) {
       result.linkdata.push(line.replace('- ', '').trim())
+    } else if (currentSection === 'svgdata') {
+      if (line.startsWith('![[')) {
+        result.svgdata = line.trim()
+      } else if (line.startsWith('> updateAt:')) {
+        result.svgdataUpdateAt = line.match(/> updateAt:\s*(.*)/)[1]
+      }
     } else if (inYamlHeader) {
-      // 解析YAML
       if (line.startsWith('tags:')) {
         inTags = true
       } else if (inTags && line.startsWith('  -')) {
@@ -85,7 +87,6 @@ export const parseMarkdownText = text => {
 export const assembleMarkdownText = obj => {
   let result = '---\n'
 
-  // Assemble YAML header
   result += `path: ${obj.metadata.path}\n`
   result += 'tags:\n'
   for (const tag of obj.metadata.tags) {
@@ -96,30 +97,32 @@ export const assembleMarkdownText = obj => {
   }
   result += '---\n'
 
-  // Assemble metadata section
+  result += '> ' + i18n.t('tip.mdModifyTip') + '\n'
+
   result += '# metadata\n'
   result += '```metadata\n'
   result += obj.metadata.content
   result += '\n```\n'
 
-  // Assemble svgdata section
   result += '# svgdata\n'
-  result += '```svgData\n'
-  result += obj.svgdata
-  result += '\n```\n'
+  if (obj.svgdata && /^!\[\[/.test(obj.svgdata)) {
+    result += obj.svgdata + '\n'
+    result += '> updateAt: ' + (obj.svgdataUpdateAt || '') + '\n'
+  } else {
+    result += '```svgData\n'
+    result += obj.svgdata
+    result += '\n```\n'
+  }
 
-  // Assemble linkdata section
   result += '# linkdata\n'
   for (const item of obj.linkdata) {
     result += `- ${item}\n`
   }
 
-  // Assemble textdata section
   result += '# textdata\n'
   if (obj.textdata && Array.isArray(obj.textdata)) {
     result += obj.textdata.join('\n\n')
   }
-
   return result
 }
 
@@ -137,6 +140,8 @@ export const createDefaultText = (filePath, options) => {
       content: createDefaultMindMapData(options)
     },
     svgdata: '',
-    linkdata: []
+    svgdataUpdateAt: '',
+    linkdata: [],
+    textdata: []
   })
 }

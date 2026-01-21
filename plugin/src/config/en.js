@@ -1,4 +1,5 @@
-// 字体列表
+import { checkIsMac } from '@/utils/index.js'
+
 export const fontFamilyList = [
   {
     name: 'Song Ti',
@@ -54,7 +55,6 @@ export const fontFamilyList = [
   }
 ]
 
-// 边框样式
 export const borderDasharrayList = [
   {
     name: 'Solid',
@@ -90,7 +90,6 @@ export const borderDasharrayList = [
   }
 ]
 
-// 连线风格
 export const lineStyleList = [
   {
     name: 'Straight',
@@ -101,12 +100,15 @@ export const lineStyleList = [
     value: 'curve'
   },
   {
+    name: 'Curve2',
+    value: 'curve2'
+  },
+  {
     name: 'Direct',
     value: 'direct'
   }
 ]
 
-// 曲线风格中，根节点样式是否和其他节点保持一致
 export const rootLineKeepSameInCurveList = [
   {
     name: 'Bracket',
@@ -118,7 +120,17 @@ export const rootLineKeepSameInCurveList = [
   }
 ]
 
-// 图片重复方式
+export const rootLineKeepSameInCurveList2 = [
+  {
+    name: 'Bracket',
+    value: true
+  },
+  {
+    name: 'Brace',
+    value: false
+  }
+]
+
 export const backgroundRepeatList = [
   {
     name: 'No repeat',
@@ -138,7 +150,6 @@ export const backgroundRepeatList = [
   }
 ]
 
-// 背景图片定位
 export const backgroundPositionList = [
   {
     name: 'Default',
@@ -182,12 +193,11 @@ export const backgroundPositionList = [
   }
 ]
 
-const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0
+const isMac = checkIsMac()
 const ctrl = isMac ? '⌘' : 'Ctrl'
 const enter = isMac ? 'Return' : 'Enter'
 const macFn = isMac ? 'fn + ' : ''
 
-// 背景图片大小
 export const backgroundSizeList = [
   {
     name: 'Auto',
@@ -203,15 +213,159 @@ export const backgroundSizeList = [
   }
 ]
 
-// 快捷键列表
 export const shortcutKeyList = [
+  {
+    type: 'Obsidian specific',
+    list: [
+      {
+        icon: 'iconbaocun',
+        name: 'Save and update image data',
+        value: `${ctrl} + Shfit + S`
+      },
+      {
+        icon: 'iconxinbiaoqianyedakai',
+        name: 'New tab opens hyperlink',
+        value: `${ctrl} + Left key`
+      }
+    ]
+  },
   {
     type: 'Node operation',
     list: [
       {
+        icon: 'icontianjiazijiedian',
+        name: 'Inert child node',
+        value: 'Tab | Insert'
+      },
+      {
+        icon: 'iconjiedian',
+        name: 'Insert sibling node',
+        value: enter
+      },
+      {
+        icon: 'icondodeparent',
+        name: 'Insert parent node',
+        value: 'Shift + Tab'
+      },
+      {
+        icon: 'iconshangyi',
+        name: 'Move up node',
+        value: `${ctrl} + ↑`
+      },
+      {
+        icon: 'iconxiayi',
+        name: 'Move down node',
+        value: `${ctrl} + ↓`
+      },
+      {
+        icon: 'icongaikuozonglan',
+        name: 'Insert summary',
+        value: `${ctrl} + G`
+      },
+      {
+        icon: 'iconzhankai',
+        name: 'Expand/UnExpand node',
+        value: '/'
+      },
+      {
+        icon: 'iconshanchu',
+        name: 'Delete node',
+        value: 'Delete | Backspace'
+      },
+      {
+        icon: 'iconshanchu',
+        name: 'Delete current node',
+        value: 'Shift + Backspace'
+      },
+      {
+        icon: 'iconbianji',
+        name: 'Edit node',
+        value: macFn + 'F2'
+      },
+      {
+        icon: 'iconzhengli',
+        name: 'Arrange layout',
+        value: `${ctrl} + R`
+      },
+      {
+        icon: 'iconzuoyouduiqi',
+        name: 'One click same level node alignment',
+        value: `${ctrl} + E`
+      },
+      {
+        icon: 'iconsousuo',
+        name: 'Search and Replace',
+        value: `${ctrl} + F`
+      }
+    ]
+  },
+  {
+    type: 'Edit operation',
+    list: [
+      {
+        icon: 'iconhoutui-shi',
+        name: 'Undo',
+        value: `${ctrl} + Z`
+      },
+      {
+        icon: 'iconqianjin1',
+        name: 'Redo',
+        value: `${ctrl} + Y`
+      },
+      {
         icon: 'iconhuanhang',
-        name: 'Text Wrap',
+        name: 'Text wrap',
         value: `Shift + ${enter}`
+      },
+      {
+        icon: 'iconcase',
+        name: 'Increase font size',
+        value: `${ctrl} + Shift + +`
+      },
+      {
+        icon: 'iconcase',
+        name: 'Decrease font size',
+        value: `${ctrl} + Shift + -`
+      },
+      {
+        icon: 'iconzitijiacu',
+        name: 'Bold',
+        value: `${ctrl} + B`
+      },
+      {
+        icon: 'iconzitixieti',
+        name: 'Italic',
+        value: `${ctrl} + I`
+      },
+      {
+        icon: 'iconzitixiahuaxian',
+        name: 'Underline',
+        value: `${ctrl} + U`
+      },
+      {
+        icon: 'iconshanchuxian',
+        name: 'Strikethrough',
+        value: `${ctrl} + [`
+      },
+      {
+        icon: 'iconfuzhi',
+        name: 'Copy node',
+        value: `${ctrl} + C`
+      },
+      {
+        icon: 'iconjianqie',
+        name: 'Cut node',
+        value: `${ctrl} + X`
+      },
+      {
+        icon: 'iconniantie',
+        name: 'Paste node',
+        value: `${ctrl} + V`
+      },
+      {
+        icon: 'iconquanxuan',
+        name: 'Select all',
+        value: `${ctrl} + A`
       },
       {
         icon: 'iconquanxuan',
@@ -225,15 +379,35 @@ export const shortcutKeyList = [
     list: [
       {
         icon: 'iconfangda',
+        name: 'Zoom in',
+        value: `${ctrl} + +`
+      },
+      {
+        icon: 'iconsuoxiao',
+        name: 'Zoom out',
+        value: `${ctrl} + -`
+      },
+      {
+        icon: 'iconfangda',
         name: 'Zoom in/Zoom out',
         value: `${ctrl} + Mouse wheel`
+      },
+      {
+        icon: 'icondingwei',
+        name: 'Back root node',
+        value: `${ctrl} + ${enter}`
+      },
+      {
+        icon: 'iconquanping1',
+        name: 'Fit canvas',
+        value: `${ctrl} + Shift + I`
       },
       {
         icon: 'iconshubiaoyidong',
         name: 'Moving canvas',
         value: `Left click / Right click / Space bar + Left click`
       },
-       {
+      {
         icon: 'iconshangxiayidong',
         name: 'Move the canvas up and down',
         value: `Mouse wheel`
@@ -250,7 +424,7 @@ export const shortcutKeyList = [
     list: [
       {
         icon: 'iconhuanhang',
-        name: 'Text Wrap',
+        name: 'Text wrap',
         value: `Shift + ${enter}`
       },
       {
@@ -259,25 +433,29 @@ export const shortcutKeyList = [
         value: 'Delete'
       },
       {
-        icon: 'icontianjiazijiedian',
-        name: 'Inert child node',
-        value: 'Tab'
-      },
-      {
         icon: 'iconjiedian',
         name: 'Insert sibling node',
         value: enter
       },
       {
+        icon: 'icondodechild',
+        name: 'Move down one level',
+        value: 'Tab'
+      },
+      {
         icon: 'icondodeparent',
         name: 'Move up one level',
         value: 'Shift + Tab'
+      },
+      {
+        icon: 'iconjiedian',
+        name: 'Create the content behind the cursor as a peer node',
+        value: `Ctrl + ${enter}`
       }
     ]
   }
 ]
 
-// 形状列表
 export const shapeList = [
   {
     name: 'Rectangle',
@@ -317,7 +495,6 @@ export const shapeList = [
   }
 ]
 
-// 侧边栏列表
 export const sidebarTriggerList = [
   {
     name: 'Node style',
@@ -351,7 +528,6 @@ export const sidebarTriggerList = [
   }
 ]
 
-// 下载类型列表
 export const downTypeList = [
   {
     name: '思绪 file',
@@ -404,7 +580,6 @@ export const downTypeList = [
   }
 ]
 
-// 背景渐变方向
 export const linearGradientDirList = [
   {
     name: 'Left to right',
@@ -456,7 +631,6 @@ export const linearGradientDirList = [
   }
 ]
 
-// 文本对齐方式
 export const alignList = [
   {
     name: 'Align left',
@@ -472,7 +646,6 @@ export const alignList = [
   }
 ]
 
-// 结构列表
 export const layoutGroupList = [
   {
     name: 'Logical structure',
@@ -492,7 +665,11 @@ export const layoutGroupList = [
   },
   {
     name: 'Timeline',
-    list: ['timeline', 'timeline2', 'verticalTimeline']
+    list: [
+      'timeline',
+      'timeline2',
+      'verticalTimeline'
+    ]
   },
   {
     name: 'Fishbone',
@@ -503,17 +680,15 @@ export const layoutGroupList = [
 export const iconNameMap = {
   back: 'Back',
   forward: 'Forward',
-  painter: 'Format Painter',
-  image: 'Insert Image',
-  icon: 'Insert Icon',
-  link: 'Insert Hyperlink',
-  note: 'Insert Note',
-  tag: 'Insert Tag',
-  summary: 'Insert Summary',
-  associativeLine: 'Add Connector Line',
-  formula: 'Insert Math Formula',
-  // "attachment": "Insert Attachment",
-  outerFrame: 'Add Border Frame',
-  annotation: 'Add Annotation',
-  ai: 'AI Generate'
+  painter: 'Format painter',
+  image: 'Insert image',
+  icon: 'Insert icon',
+  link: 'Insert hyperlink',
+  note: 'Insert note',
+  tag: 'Insert tag',
+  summary: 'Insert summary',
+  associativeLine: 'Add connector line',
+  formula: 'Insert math formula',
+  outerFrame: 'Add border frame',
+  ai: 'AI generate'
 }

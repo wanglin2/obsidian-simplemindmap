@@ -7,6 +7,8 @@
     :width="'90%'"
     :top="isMobile ? '20px' : '15vh'"
     :modal-append-to-body="false"
+    :close-on-click-modal="false"
+    :show-close="false"
   >
     <el-tabs v-model="activeType" @tab-click="handleTypeClick">
       <el-tab-pane
@@ -120,7 +122,6 @@
 import { mapState } from 'vuex'
 import { isHyperlink, isObLinkText } from '@/utils'
 
-// 节点超链接内容设置
 export default {
   data() {
     return {
@@ -135,7 +136,7 @@ export default {
       selectedFilePath: '',
       searchFileText: '',
       searchTimer: null,
-      localFileList: [] // 本地文件列表
+      localFileList: []
     }
   },
   computed: {
@@ -216,7 +217,6 @@ export default {
         }
         this.fileList = list.slice(0, 50)
       } catch (error) {
-        console.log(error)
       }
     },
 
@@ -308,17 +308,14 @@ export default {
       this.localFileList = []
     },
 
-    // 文件选择
     onChange(file) {
       this.localFileList.push(file)
     },
 
-    // 移除文件
     onRemove(file, fileList) {
       this.localFileList = fileList
     },
 
-    // 数量超出限制
     onExceed() {
       this.$root.$obsidianAPI.showTip(this.$t('import.maxFileNum'))
     }

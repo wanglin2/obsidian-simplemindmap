@@ -31,7 +31,7 @@ export default {
     associativeLineColor: 'Color',
     associativeLineActiveWidth: 'Active width',
     associativeLineActiveColor: 'Active color',
-    rootStyle: 'Root Node',
+    rootStyle: 'Root node connection style',
     associativeLineText: 'Associative line text',
     fontFamily: 'Font family',
     fontSize: 'Font size',
@@ -43,7 +43,7 @@ export default {
     outerFramePadding: 'Outer frame padding',
     associativeLineStyle: 'Associative line style',
     builtInBackgroundImage: 'Built in background image',
-    baseStyleConfig: 'BasicStyleConfigurationForMindMapping'
+    baseStyleConfig: 'Basic style configuration for mind mapping'
   },
   setting: {
     title: 'Setting',
@@ -53,7 +53,7 @@ export default {
     mousewheelAction: 'Mouse wheel behavior',
     zoomView: 'Zoom view',
     moveViewUpDown: 'Move view up and down',
-    mousewheelZoomActionReverse: 'Mouse Wheel Zoom',
+    mousewheelZoomActionReverse: 'Mouse wheel zoom',
     mousewheelZoomActionReverse1: 'Zoom out forward and zoom in back',
     mousewheelZoomActionReverse2: 'Zoom in forward and zoom out back',
     createNewNodeBehavior: 'Behavior of creating new node',
@@ -63,9 +63,6 @@ export default {
     openRealtimeRenderOnNodeTextEdit:
       'Enable real-time rendering effect for text editing',
     isShowScrollbar: 'Is show scrollbar',
-    isUseHandDrawnLikeStyle: 'Is use hand drawn like style',
-    isUseMomentum: 'Is open drag momentum',
-    isUseSameNodeAlign: 'Is use same node align',
     openBlankMode: 'Is open blank mode of the demonstrate',
     watermark: 'Watermark',
     showWatermark: 'Is show watermark',
@@ -87,29 +84,38 @@ export default {
       'This operation will clear all historical modification records and modify the mind map data. Do you want to continue?',
     changeRichTextTip2: 'Do you want to switch to rich text mode?',
     changeRichTextTip3: 'Do you want to switch to non rich text mode?',
-    enableDragImport:
-      'Is it allowed to directly drag and drop files to the page for import',
     imgTextMargin: 'Node image and text margin',
     textContentMargin: 'Node contents margin',
     enableInheritAncestorLineStyle:
       'Node connection style inherits the style of ancestor nodes',
-    enableAi: 'Is enable AI function',
     isShowBottomToolbar: 'Display the bottom toolbar',
     rootEnableUnExpand: 'Does the root node allow the collapse of subordinates',
-    settingConfig: 'MindmapSetting',
+    settingConfig: 'Mind map setting',
     title1: 'Node',
     title2: 'Edit',
     title3: 'Display',
-    title4: 'Other'
+    title4: 'Other',
+    sameNodeAlignInitWidth: 'Align same level nodes with initial width',
+    enableFreeDragTip:
+      'After disabling the setting, if you want to restore the default layout, please right-click on the canvas and select the context menu option - [Organize Layout Automatically]',
+    isUseSameNodeAlignTip1:
+      '1. Node width will not automatically align after editing; manually click the canvas right-click menu - [Align Sibling Nodes Automatically]',
+    isUseSameNodeAlignTip2:
+      '2. After disabling the setting, if you want to restore default width, please right-click on the canvas and select the context menu option - [Remove Custom Width from All Nodes]',
+    openRealtimeRenderOnNodeTextEditTip:
+      'Enabling this may cause performance degradation; it is recommended to disable it when there are many nodes',
+    openPerformanceTip:
+      'If there are many nodes, try enabling performance mode to speed up rendering'
   },
   color: {
     moreColor: 'More color'
   },
   contextmenu: {
-    insertSiblingNode: 'Insert sibling node',
-    insertChildNode: 'Insert child node',
-    insertParentNode: 'Insert parent node',
-    insertSummary: 'Insert summary',
+    insertNode: 'Insert node',
+    insertSiblingNode: 'Sibling node',
+    insertChildNode: 'Child node',
+    insertParentNode: 'Parent node',
+    insertSummary: 'Summary',
     moveUpNode: 'Move up node',
     moveDownNode: 'Move down node',
     deleteNode: 'Delete node',
@@ -157,7 +163,8 @@ export default {
     removeCustomWidth: 'Remove custom width',
     copyAsInternalUrl: 'Copy as internal url',
     removeAllCustomWidth: 'One click removal of custom width for all nodes',
-    download: 'Download to local'
+    download: 'Download to local',
+    copyNodeToTxt: 'Copy as plain text'
   },
   count: {
     words: 'Words',
@@ -172,11 +179,11 @@ export default {
     filename: 'Filename',
     include: 'Is include config like theme and structure',
     dedicatedFile: 'Dedicated file',
-    jsonFile: 'json file',
+    jsonFile: 'Json file',
     imageFile: 'Image file',
-    svgFile: 'svg file',
-    pdfFile: 'pdf file',
-    markdownFile: 'markdown file',
+    svgFile: 'Svg file',
+    pdfFile: 'Pdf file',
+    markdownFile: 'Markdown file',
     isTransparent: 'Background is transparent',
     transformingDomToImages: 'Converting nodes: ',
     notifyTitle: 'Info',
@@ -214,16 +221,19 @@ export default {
     importSuccess: 'Import success',
     fileParsingFailed: 'File parsing failed',
     xmindCanvasSelectDialogTitle: 'Select the canvas to import',
-    mdImportDialogTitle: 'Paste Markdown content to import',
-    mdPlaceholder: 'Please enter the content in Markdown format',
+    mdImportDialogTitle: 'Paste markdown content to import',
+    mdPlaceholder: 'Please enter the content in markdown format',
     mdEmptyTip: 'The content cannot be empty',
     mdImportFailTip: 'Import failed, no content was parsed for import. Only supports syntax such as titles and lists',
-    rootNodeName: 'Root node'
+    rootNodeName: 'Root node',
+    importTip: 'Among them, .mm and .xlsx members are available',
+    dragTip: 'Drag warehouse or local computer files here',
+    warningTip: 'Attention: Importing will overwrite existing content and cannot be restored. Please make a backup first!'
   },
   navigatorToolbar: {
     openMiniMap: 'Open mini map',
     closeMiniMap: 'Close mini map',
-    readonly: 'Change to Readonly',
+    readonly: 'Change to readonly',
     edit: 'Change to edit',
     backToRoot: 'Back to root node',
     changeSourceCodeEdit: 'Switch to source code editing mode',
@@ -236,7 +246,7 @@ export default {
     searchReplace: 'Search for replacement',
     exitDarkMode: 'Exit dark mode',
     darkMode: 'Switch to dark mode',
-    darkModeFailTip: 'Switching failed, currently following Obsidian mode',
+    darkModeFailTip: 'Switching failed, currently following obsidian mode',
     export: 'Export',
     help: 'Help'
   },
@@ -254,7 +264,7 @@ export default {
     tip1: 'Please enter the link address',
     tip2: 'Insertion failed, file does not exist',
     tip3: 'Please select a local file',
-    tip4: 'File upload to Vault failed',
+    tip4: 'File upload to vault failed',
     tip5: 'Insertion failed'
   },
   nodeIcon: {
@@ -270,7 +280,7 @@ export default {
     tip2: 'Please enter the image address',
     optional: 'Optional',
     selectLocal: 'Select locally',
-    selectVault: 'Select from Vault',
+    selectVault: 'Select from vault',
     selectUrl: 'Network images',
     imgTitle: 'Image title (optional)'
   },
@@ -279,7 +289,8 @@ export default {
   },
   nodeTag: {
     title: 'Tag',
-    addTip: 'Please press Enter to add, up to five labels can be added'
+    addTip: 'Please press Enter to add, up to five labels can be added',
+    add: 'Add'
   },
   outline: {
     title: 'Outline',
@@ -287,7 +298,7 @@ export default {
     print: 'Print',
     fullscreen: 'Fullscreen',
     tip1: 'Insert sibling node:',
-    tip2: 'Insert child node:',
+    tip2: 'Node Downward Level:',
     tip3: 'Node up hierarchy:',
     tip4: 'Delete node:',
     tip5: 'Press and hold the node to drag and drop'
@@ -297,8 +308,7 @@ export default {
     zoomOut: 'Zoom out'
   },
   shortcutKey: {
-    title: 'Shortcut key',
-    tip: 'For other operations, please use commands, or you can set shortcut keys for commands yourself'
+    title: 'Shortcut key'
   },
   strusture: {
     title: 'Strusture'
@@ -435,11 +445,14 @@ export default {
     savingTip3: 'Successfully saved',
     savingTip4: 'Save failed',
     defaultInsertSecondLevelNodeText: 'Secondary node',
-    defaultInsertBelowSecondLevelNodeText: 'Branch Topic',
+    defaultInsertBelowSecondLevelNodeText: 'Branch topic',
     defaultGeneralizationText: 'Summary',
     defaultAssociativeLineText: 'Association',
     defaultOuterFrameText: 'Outer frame',
-    pasteImage: 'Paste-image'
+    pasteImage: 'Paste-image',
+    notSplit: 'Not split',
+    keepLevel: 'Keep level',
+    ignoreLevel: 'Ignore level'
   },
   mouseAction: {
     tip1:
@@ -476,7 +489,7 @@ export default {
     fontSize: 'Font size',
     color: 'Color',
     backgroundColor: 'Background color',
-    removeFormat: 'Clear Style',
+    removeFormat: 'Clear style',
     textAlign: 'Text align'
   },
   other: {
@@ -496,15 +509,6 @@ export default {
   attachment: {
     deleteAttachment: 'Delete attachment',
     tip: 'The attachment function is only available on the client side'
-  },
-  annotation: {
-    mark: 'Mark',
-    show: 'Show mark',
-    type: 'Type',
-    color: 'Color',
-    lineWidth: 'Line width',
-    padding: 'Padding',
-    animate: 'Animate'
   },
   nodeOuterFrame: {
     outerFrameSetting: 'Outer frame setting',
@@ -610,7 +614,7 @@ export default {
     tip5: 'The link node does not exist. Weather to delete the link?'
   },
   ciod: {
-    outputConfig: 'Export Configuration',
+    outputConfig: 'Export configuration',
     importConfig: 'Import configuration',
     tip1: 'Please select a JSON file',
     tip2: 'The file content format is incorrect',
@@ -635,7 +639,7 @@ export default {
     tip5: 'Here are some auxiliary functions (mini map, demo mode...)'
   },
   previewMode: {
-    emptyTitle: 'No renderable data parsed',
+    emptyTitle: 'No render able data parsed',
     emptyDesc:
       'Currently, only partial markdown syntax can be parsed, such as titles and lists',
     close: 'Close'

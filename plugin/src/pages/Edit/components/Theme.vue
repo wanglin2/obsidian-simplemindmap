@@ -33,7 +33,6 @@ import { mapState, mapMutations } from 'vuex'
 import themeImgMap from 'simple-mind-map-plugin-themes/themeImgMap'
 import themeList from 'simple-mind-map-plugin-themes/themeList'
 
-// 主题
 export default {
   components: {
     Sidebar

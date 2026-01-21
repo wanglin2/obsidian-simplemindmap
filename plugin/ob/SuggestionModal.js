@@ -5,7 +5,7 @@ export class SuggestionModal extends SuggestModal {
     super(app)
     this.plugin = plugin
     this.emptyStateText = this.plugin._t('tip.noMatchResult')
-    this.type = type // folder（选择目录）
+    this.type = type
     if (this.type === 'folder') {
       this.getSuggestions = this._queryFolders.bind(this)
     } else {
@@ -14,7 +14,6 @@ export class SuggestionModal extends SuggestModal {
     this.onSelect = onSelect
   }
 
-  // 查询目录
   _queryFolders(query) {
     const list = this.app.vault.getAllFolders()
     return list

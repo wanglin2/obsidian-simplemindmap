@@ -53,7 +53,6 @@ import Toolbar from './components/Toolbar.vue'
 
 Themes.init(MindMap)
 
-// 注册插件
 MindMap.usePlugin(NodeImgAdjust)
   .usePlugin(TouchEvent)
   .usePlugin(Formula)
@@ -77,14 +76,10 @@ export default {
   },
   computed: {
     ...mapState({
-      extendFontFamilyList: state => state.extendFontFamilyList,
-      supportRightFishbone: state => state.supportRightFishbone,
       isDark: state => state.localConfig.isDark
     })
   },
   created() {
-    const { addedFonts } = this.$root.$obsidianAPI.getSettings()
-    this.setExtendFontFamilyList(addedFonts)
     this.initLocalConfig()
   },
   mounted() {
@@ -101,7 +96,7 @@ export default {
     this.unmount()
   },
   methods: {
-    ...mapMutations(['setExtendFontFamilyList', 'setLocalConfig']),
+    ...mapMutations(['setLocalConfig']),
 
     unmount() {
       this.$root.$bus.$off('unmount', this.unmount)
@@ -115,7 +110,6 @@ export default {
       window.removeEventListener('resize', this.handleResize)
     },
 
-    // 初始化本地配置
     initLocalConfig() {
       const config = this.$root.$obsidianAPI.getMindMapLocalConfig()
       if (config) {
@@ -126,7 +120,6 @@ export default {
       }
     },
 
-    // 处理位置变化
     handleResize() {
       clearTimeout(this.resizeTimer)
       this.resizeTimer = setTimeout(() => {
@@ -134,7 +127,6 @@ export default {
       }, 300)
     },
 
-    // 获取思维导图数据
     getData() {
       this.mindMapData = this.$root.$obsidianAPI.getInitMindMapData()
     },
@@ -167,7 +159,6 @@ export default {
           },
           ...options
         })
-        this.mindMap.richText.extendFont(this.extendFontFamilyList)
       })
     },
 

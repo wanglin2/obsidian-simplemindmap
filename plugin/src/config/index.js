@@ -14,6 +14,7 @@ import {
   borderDasharrayList as borderDasharrayListZh,
   lineStyleList as lineStyleListZh,
   rootLineKeepSameInCurveList as rootLineKeepSameInCurveListZh,
+  rootLineKeepSameInCurveList2 as rootLineKeepSameInCurveList2Zh,
   backgroundRepeatList as backgroundRepeatListZh,
   backgroundPositionList as backgroundPositionListZh,
   shortcutKeyList as shortcutKeyListZh,
@@ -23,13 +24,14 @@ import {
   downTypeList as downTypeListZh,
   linearGradientDirList as linearGradientDirListZh,
   alignList as alignListZh,
-  layoutGroupList as layoutGroupListZh
+  layoutGroupList as layoutGroupListZh,
 } from './zh'
 import {
   fontFamilyList as fontFamilyListEn,
   borderDasharrayList as borderDasharrayListEn,
   lineStyleList as lineStyleListEn,
   rootLineKeepSameInCurveList as rootLineKeepSameInCurveListEn,
+  rootLineKeepSameInCurveList2 as rootLineKeepSameInCurveList2En,
   backgroundRepeatList as backgroundRepeatListEn,
   backgroundPositionList as backgroundPositionListEn,
   shortcutKeyList as shortcutKeyListEn,
@@ -47,6 +49,7 @@ import {
   borderDasharrayList as borderDasharrayListZhtw,
   lineStyleList as lineStyleListZhtw,
   rootLineKeepSameInCurveList as rootLineKeepSameInCurveListZhtw,
+  rootLineKeepSameInCurveList2 as rootLineKeepSameInCurveList2Zhtw,
   backgroundRepeatList as backgroundRepeatListZhtw,
   backgroundPositionList as backgroundPositionListZhtw,
   shortcutKeyList as shortcutKeyListZhtw,
@@ -64,6 +67,7 @@ import {
   borderDasharrayList as borderDasharrayListVi,
   lineStyleList as lineStyleListVi,
   rootLineKeepSameInCurveList as rootLineKeepSameInCurveListVi,
+  rootLineKeepSameInCurveList2 as rootLineKeepSameInCurveList2Vi,
   backgroundRepeatList as backgroundRepeatListVi,
   backgroundPositionList as backgroundPositionListVi,
   shortcutKeyList as shortcutKeyListVi,
@@ -103,6 +107,13 @@ const rootLineKeepSameInCurveList = {
   en: rootLineKeepSameInCurveListEn,
   zhtw: rootLineKeepSameInCurveListZhtw,
   vi: rootLineKeepSameInCurveListVi
+}
+
+const rootLineKeepSameInCurveList2 = {
+  zh: rootLineKeepSameInCurveList2Zh,
+  en: rootLineKeepSameInCurveList2En,
+  zhtw: rootLineKeepSameInCurveList2Zhtw,
+  vi: rootLineKeepSameInCurveList2Vi
 }
 
 const backgroundRepeatList = {
@@ -196,6 +207,7 @@ export {
   lineStyleList,
   lineStyleMap,
   rootLineKeepSameInCurveList,
+  rootLineKeepSameInCurveList2,
   backgroundRepeatList,
   backgroundPositionList,
   backgroundSizeList,

@@ -26,7 +26,6 @@ import { mapState, mapMutations } from 'vuex'
 import Outline from './Outline.vue'
 import { printOutline } from '@/utils'
 
-// 大纲侧边栏
 export default {
   components: {
     Sidebar,
@@ -64,7 +63,6 @@ export default {
       }
     },
 
-    // 打印
     onPrint() {
       printOutline(this.$refs.outlineRef.$el)
     }

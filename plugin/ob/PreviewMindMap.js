@@ -24,7 +24,6 @@ export class PreviewMindMap {
     this._renderView()
   }
 
-  // 渲染思维导图
   async _renderView() {
     const content = await this.app.vault.read(this.file)
     const mindMapData = await this.plugin._mdToMindmapData(content)

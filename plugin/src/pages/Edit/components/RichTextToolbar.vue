@@ -159,11 +159,13 @@
 </template>
 
 <script>
-import { fontFamilyList, fontSizeList, alignList } from '@/config'
+import { fontSizeList, alignList } from '@/config'
 import Color from './Color.vue'
 import { mapState } from 'vuex'
+import fontFamilyMixin from '@/mixins/fontFamily'
 
 export default {
+  mixins: [fontFamilyMixin],
   components: {
     Color
   },
@@ -189,10 +191,6 @@ export default {
     ...mapState({
       isDark: state => state.localConfig.isDark
     }),
-
-    fontFamilyList() {
-      return fontFamilyList[this.$i18n.locale] || fontFamilyList.en
-    },
 
     alignList() {
       return alignList[this.$i18n.locale] || alignList.en

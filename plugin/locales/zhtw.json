@@ -23,6 +23,10 @@
     "changeToMindMapFile": "轉換為心智圖檔案"
   },
   "tip": {
+    "tip": "提示",
+    "confirm": "確認",
+    "cancel": "取消",
+    "close": "關閉",
     "fileExist": "檔案已經存在",
     "createMindMapFail": "新建思維導圖失敗",
     "fileIsNotMd": "當前檔案不是 markdown 檔案",
@@ -40,7 +44,14 @@
     "pluginNoNewVersion": "當前已是最新版本",
     "pluginVersionCheckError": "檢查失敗",
     "changeSuccess": "轉換完成",
-    "mdToMindMapFail": "轉換失敗，沒有解析到可以轉換為心智圖的數據"
+    "mdToMindMapFail": "轉換失敗，沒有解析到可以轉換為心智圖的數據",
+    "imgCreateFail": "圖片檔案創建失敗",
+    "mdModifyTip": "請勿修改除YAML外的任何資訊",
+    "fileNameEmpty": "檔名不能為空",
+    "fileNameIllegal": "檔名包含非法字元",
+    "fileRenameFail": "檔案重命名失敗",
+    "mindMapToMdTip": "轉換為Markdown檔案後，僅會保留部分內容，比如節點文字、概要文字、備註等，其他內容將丟棄且不可恢復，請先做好備份。",
+    "mdToMindMapTip": "僅支持將標題、清單等語法轉換為心智圖，其他內容將丟棄且不可恢復，請先做好備份。"
   },
   "setting": {
     "title": {
@@ -48,7 +59,8 @@
       "title2": "文件",
       "title3": "圖片壓縮",
       "title4": "嵌入",
-      "title5": "其他"
+      "title5": "其他",
+      "title6": "圖床主機"
     },
     "themeMode": {
       "title": "主題模式",
@@ -89,7 +101,9 @@
       "title8": "支持ob蒐索",
       "desc8": "心智圖數據是編碼壓縮後存儲的，所以無法在ob中蒐索，如果你想在ob中能蒐索到心智圖的節點文字內容，可以開啟該選項，開啟後會在檔案中額外保存所有節點的文字內容用於蒐索，帶來的副作用是會導致檔案體積變大，可能會影響檔案打開和保存的速度",
       "title9": "存儲畫布位置和縮放數據",
-      "desc9": "開啟後會在檔案中保存畫布位置和縮放數據，這樣下次打開時能恢復到上次關閉時的位置和縮放狀態。缺點是只要移動和縮放過畫布就會造成檔案改動"
+      "desc9": "開啟後會在檔案中保存畫布位置和縮放數據，這樣下次打開時能恢復到上次關閉時的位置和縮放狀態。缺點是只要移動和縮放過畫布就會造成檔案改動",
+      "title10": "節點文字轉Markdown標題的最大層級",
+      "desc10": "小於等於該層級的節點文字會轉為Markdown標題，其餘的轉為無序清單"
     },
     "compress": {
       "title1": "壓縮圖片",
@@ -109,7 +123,9 @@
     },
     "codeBlock": {
       "title": "程式碼區塊嵌入初始高度",
-      "desc": "smm 程式碼區塊方式嵌入時初始高度，單位：px"
+      "desc": "smm 程式碼區塊方式嵌入時初始高度，單位：px",
+      "title2": "程式碼塊嵌入背景是否透明",
+      "desc2": "smm程式碼塊嵌入時背景是否透明，否則會跟隨所選的心智圖主題背景顏色"
     },
     "linkInfo": {
       "issues": "提交bug或建議",
@@ -117,16 +133,32 @@
       "community": "社區"
     },
     "embed": {
-      "title1": "嵌入預覽按兩下是否新窗口打開",
-      "desc1": "![[]]格式嵌入md檔案時按兩下預覽影像是否新窗口打開文件",
+      "title1": "嵌入預覽按兩下是否新標籤頁打開",
+      "desc1": "![[]]格式嵌入md檔案時按兩下預覽影像是否新標籤頁打開文件",
       "title2": "嵌入預覽的圖像背景是否透明",
-      "desc2": "設定![[]]格式嵌入預覽的圖像背景是否透明"
+      "desc2": "設定![[]]格式嵌入預覽的圖像背景是否透明",
+      "title3": "嵌入的圖片是否以單獨檔案的形式存儲",
+      "desc3": "默認用於![[]]格式嵌入預覽的圖片會以svg格式的檔案單獨存儲到倉庫裏，這樣心智圖檔案中只存儲檔案路徑，可以顯著减小檔案體積，加快檔案的讀取和保存速度。 如果關閉，則會把圖片資料存儲到心智圖檔案中，體積會顯著增大",
+      "title4": "嵌入圖片檔存儲目錄",
+      "desc4": "嵌入預覽的圖片檔存儲的資料夾，相對於倉庫根目錄，建議不要為空，且目錄以.開頭作為隱藏資料夾",
+      "title5": "新標籤頁打開節點連結",
+      "desc5": "點擊插入的節點連結（不包含網絡連結）是否在新標籤頁打開。 關閉後也可以通過Ctrl+滑鼠左鍵在新標籤頁打開"
     },
     "file": {
-      "title1": "新建思維導圖的檔案名稱前綴",
-      "desc1": "新建思維導圖檔案名稱預設的命名格式為：前綴 + 空格 + 日期時間戳",
-      "title2": "新建思維導圖的檔案名稱日期時間戳格式",
-      "desc2": "預設為：YYYY-MM-DD HH.mm.ss，實際範例：2025-01-01 23.59.59，如不清楚該格式的具體含義及如何修改，請參考：https://day.js.org/docs/en/parse/string-format"
+      "title1": "新建心智圖的檔名格式",
+      "desc1": "新建心智圖檔名的命名格式。支持除notename外的其他變數",
+      "title3": "粘貼圖片的命名格式",
+      "desc3": "在節點上粘貼的圖片的命名格式",
+      "filenameFormatDesc": "檔名格式說明"
+    },
+    "font": {
+      "title": "字體",
+      "desc": "擴展心智圖的字體清單",
+      "btn": "管理",
+      "placeholder": "蒐索字體。 也可按回車鍵直接添加輸入的字體",
+      "empty": "暫無已添加字體",
+      "noMatch": "無匹配字體",
+      "noFont": "沒有可用字體"
     },
     "button": {
       "select": "選擇"
@@ -134,48 +166,21 @@
     "other": {
       "title1": "檢查新版本",
       "desc1": "開啟後會在挿件啟動時檢查是否有新版本可用，如果你的網絡訪問不到Github，則建議關閉該選項"
+    },
+    "imageHosting": {
+      "title1": "開啟圖床",
+      "desc1": "開啟後，所有圖片都將上傳到圖床",
+      "tip1": "請先完善圖床配寘資訊",
+      "title2": "圖床url",
+      "desc2": "根據你使用的圖床工具填寫對應的上傳介面地址",
+      "title3": "表單欄位",
+      "desc3": "上傳圖片時的表單欄位名稱",
+      "title4": "接口響應結構",
+      "desc4": "上傳圖片時的接口響應結構。詳細說明請參考：",
+      "desc5": "圖床功能說明"
     }
   },
-  "commands": {
-    "save": "編輯操作-儲存",
-    "saveAndUpdateImage": "編輯操作-儲存並更新圖像",
-    "undo": "編輯操作-復原",
-    "redo": "編輯操作-重做",
-    "searchReplace": "編輯操作-搜尋和取代",
-    "insertChildNode": "節點操作-插入下級節點",
-    "insertSiblingNode": "節點操作-插入同級節點",
-    "insertParentNode": "節點操作-插入父節點",
-    "moveUpNode": "節點操作-上移節點",
-    "moveDownNode": "節點操作-下移節點",
-    "insertSummary": "節點操作-插入概要",
-    "toggleExpandNode": "節點操作-展開/收起節點",
-    "deleteNode": "節點操作-刪除節點",
-    "deleteNodeOnly": "節點操作-僅刪除目前節點",
-    "copyNode": "節點操作-複製節點",
-    "cutNode": "節點操作-剪下節點",
-    "pasteNode": "節點操作-貼上節點",
-    "selectAllNode": "節點操作-全選",
-    "organizeLayout": "節點操作-一鍵整理版面配置",
-    "toggleBoldNode": "節點操作-切換粗體",
-    "toggleItalicNode": "節點操作-切換斜體",
-    "toggleUnderlineNode": "節點操作-切換底線",
-    "toggleStrikethroughNode": "節點操作-切換刪除線",
-    "increaseFontSizeNode": "節點操作-增大字型大小",
-    "decreaseFontSizeNode": "節點操作-減小字型大小",
-    "zoomInCanvas": "畫布操作-放大",
-    "zoomOutCanvas": "畫布操作-縮小",
-    "backToRootCanvas": "畫布操作-回到根節點",
-    "activateLeftCanvas": "畫布操作-向左移動焦點",
-    "activateTopCanvas": "畫布操作-向上移動焦點",
-    "activateRightCanvas": "畫布操作-向右移動焦點",
-    "activateBottomCanvas": "畫布操作-向下移動焦點",
-    "zoomFitCanvas": "畫布操作-適應畫布",
-    "enterDemonstrate": "輔助操作-進入演示模式",
-    "openImageEdit": "介面操作-開啟圖片編輯彈窗",
-    "openHyperlinkEdit": "介面操作-開啟超連結編輯彈窗",
-    "openRemarkEdit": "介面操作-開啟備註編輯彈窗",
-    "openTagEdit": "介面操作-開啟標籤編輯彈窗",
-    "openImport": "介面操作-開啟匯入彈窗",
-    "openExport": "介面操作-開啟匯出彈窗"
+  "html": {
+    "filenameFormatDesc": "<p>除了固定名稱外，也可以使用變數，用 {} 括起來，可用變數如下：</p><p>1.{notename}：目前檔案的檔名，不包含副檔名；</p><p>2.{date}：目前日期，格式為 YYYY-MM-DD；</p><p>3.{time}：目前時間，格式為 HH:mm:ss；</p><p>4.{datatime}：目前日期時間，格式為：YYYY-MM-DD HH:mm:ss；</p><p>5.{date:Format}：指定日期時間格式，例如：MM-DD HH:mm，可參考：<a href='https://day.js.org/docs/en/parse/string-format'>格式說明</a>；</p><p>6.{random}：隨機字串，長度為 6 位；</p>"
   }
 }

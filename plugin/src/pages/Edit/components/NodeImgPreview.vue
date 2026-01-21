@@ -1,5 +1,5 @@
 <template>
-  <viewer :images="images">
+  <viewer :images="images" style="position: absolute; left: -9999999px;">
     <img v-for="src in images" :key="src" :src="src" />
   </viewer>
 </template>

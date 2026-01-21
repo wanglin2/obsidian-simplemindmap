@@ -20,7 +20,6 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 
-// 鼠标操作设置
 export default {
   props: {
     mindMap: {

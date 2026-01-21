@@ -21,7 +21,6 @@
         <div class="row">
           <div class="rowItem">
             <span class="name">{{ $t('nodeOuterFrame.boxStyle') }}</span>
-            <!-- 宽度 -->
             <el-select
               size="mini"
               style="width: 80px"
@@ -47,7 +46,6 @@
                 ></span>
               </el-option>
             </el-select>
-            <!-- 实现虚线 -->
             <el-select
               size="mini"
               style="width: 80px;margin-left: 4px;"
@@ -395,14 +393,15 @@ import { mapState, mapMutations } from 'vuex'
 import {
   lineWidthList,
   borderDasharrayList,
-  fontFamilyList,
   fontSizeList,
   borderRadiusList,
   lineHeightList
 } from '@/config'
 import OuterFrame from 'simple-mind-map/src/plugins/OuterFrame'
+import fontFamilyMixin from '@/mixins/fontFamily'
 
 export default {
+  mixins: [fontFamilyMixin],
   components: {
     Sidebar,
     Color
@@ -434,11 +433,7 @@ export default {
       borderDasharrayList() {
         return borderDasharrayList[this.$i18n.locale] || borderDasharrayList.en
       }
-    }),
-
-    fontFamilyList() {
-      return fontFamilyList[this.$i18n.locale] || fontFamilyList.en
-    }
+    })
   },
   watch: {
     activeSidebar(val) {
@@ -463,7 +458,6 @@ export default {
     ...mapMutations(['setActiveSidebar']),
 
     onOuterFrameActive(el, parentNode, range) {
-      // 取范围内第一个节点的外框样式
       const firstNode = parentNode.children[range[0]]
       const firstNodeOuterFrame = firstNode.getData('outerFrame')
       Object.keys(this.styleConfig).forEach(key => {
@@ -486,14 +480,12 @@ export default {
       })
     },
 
-    // 切换加粗样式
     toggleFontWeight() {
       const newValue =
         this.styleConfig.fontWeight === 'bold' ? 'normal' : 'bold'
       this.updateOuterFrame('fontWeight', newValue)
     },
 
-    // 切换字体样式
     toggleFontStyle() {
       const newValue =
         this.styleConfig.fontStyle === 'italic' ? 'normal' : 'italic'

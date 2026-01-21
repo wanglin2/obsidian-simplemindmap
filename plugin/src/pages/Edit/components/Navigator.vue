@@ -90,7 +90,6 @@ export default {
     )
   },
   methods: {
-    // 切换显示小地图
     toggle_mini_map(show) {
       this.showMiniMap = show
       this.$nextTick(() => {
@@ -103,7 +102,6 @@ export default {
       })
     },
 
-    // 思维导图数据改变，更新小地图
     data_change() {
       if (!this.showMiniMap) {
         return
@@ -114,7 +112,6 @@ export default {
       }, 500)
     },
 
-    // 计算容器宽度
     setSize() {
       clearTimeout(this.setSizeTimer)
       this.setSizeTimer = setTimeout(() => {
@@ -128,14 +125,12 @@ export default {
       }, 300)
     },
 
-    // 获取宽高
     init() {
       let { width, height } = this.$refs.navigatorBox.getBoundingClientRect()
       this.boxWidth = width - 2 // 减去边框
       this.boxHeight = height - 2
     },
 
-    // 渲染小地图
     drawMiniMap() {
       let {
         getImgUrl,
@@ -144,7 +139,6 @@ export default {
         miniMapBoxLeft,
         miniMapBoxTop
       } = this.mindMap.miniMap.calculationMiniMap(this.boxWidth, this.boxHeight)
-      // 渲染到小地图
       getImgUrl(img => {
         this.mindMapImg = img
       })
@@ -154,17 +148,14 @@ export default {
       this.svgBoxTop = miniMapBoxTop
     },
 
-    // 小地图鼠标按下事件
     onMousedown(e) {
       this.mindMap.miniMap.onMousedown(e)
     },
 
-    // 小地图鼠标移动事件
     onMousemove(e) {
       this.mindMap.miniMap.onMousemove(e)
     },
 
-    // 鼠标松开事件，最好绑定要window
     onMouseup(e) {
       if (!this.withTransition) {
         this.withTransition = true
@@ -172,17 +163,14 @@ export default {
       if (this.mindMap.miniMap) this.mindMap.miniMap.onMouseup(e)
     },
 
-    // 视口框的鼠标按下事件
     onViewBoxMousedown(e) {
       this.mindMap.miniMap.onViewBoxMousedown(e)
     },
 
-    // 视口框的鼠标移动事件
     onViewBoxMousemove(e) {
       this.mindMap.miniMap.onViewBoxMousemove(e)
     },
 
-    // 视口框的位置大小改变了，需要更新
     onViewBoxPositionChange({ left, right, top, bottom }) {
       this.withTransition = false
       this.viewBoxStyle.left = left

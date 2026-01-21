@@ -29,7 +29,6 @@ import { mapState } from 'vuex'
 import { layoutImgMap } from '@/config/constant.js'
 import { layoutGroupList } from '@/config'
 
-// 结构
 export default {
   components: {
     Sidebar

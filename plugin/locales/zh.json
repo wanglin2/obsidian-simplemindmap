@@ -23,6 +23,10 @@
     "changeToMindMapFile": "转换为思维导图文档"
   },
   "tip": {
+    "tip": "提示",
+    "confirm": "确认",
+    "cancel": "取消",
+    "close": "关闭",
     "fileExist": "文件已经存在",
     "createMindMapFail": "新建思维导图失败",
     "fileIsNotMd": "当前文件不是markdown文件",
@@ -40,7 +44,14 @@
     "pluginNoNewVersion": "当前已是最新版本",
     "pluginVersionCheckError": "检查失败",
     "changeSuccess": "转换完成",
-    "mdToMindMapFail": "转换失败，没有解析到可以转换为思维导图的数据"
+    "mdToMindMapFail": "转换失败，没有解析到可以转换为思维导图的数据",
+    "imgCreateFail": "图片文件创建失败",
+    "mdModifyTip": "请勿修改除YAML外的任何信息",
+    "fileNameEmpty": "文件名不能为空",
+    "fileNameIllegal": "文件名包含非法字符",
+    "fileRenameFail": "文件重命名失败",
+    "mindMapToMdTip": "转换为Markdown文档后，仅会保留部分内容，比如节点文本、概要文本、备注等，其他内容将丢弃且不可恢复，请先做好备份。",
+    "mdToMindMapTip": "仅支持将标题、列表等语法转换为思维导图，其他内容将丢弃且不可恢复，请先做好备份。"
   },
   "setting": {
     "title": {
@@ -48,12 +59,13 @@
       "title2": "文件",
       "title3": "图片压缩",
       "title4": "嵌入",
-      "title5": "其他"
+      "title5": "其他",
+      "title6": "图床"
     },
     "themeMode": {
       "title": "主题模式",
       "desc": "深色、浅色模式",
-      "option1": "跟随Obsidian",
+      "option1": "跟随obsidian",
       "option2": "浅色模式",
       "option3": "深色模式"
     },
@@ -89,10 +101,12 @@
       "title8": "支持ob搜索",
       "desc8": "思维导图数据是编码压缩后存储的，所以无法在ob中搜索，如果你想在ob中能搜索到思维导图的节点文本内容，可以开启该选项，开启后会在文件中额外保存所有节点的文本内容用于搜索，带来的副作用是会导致文件体积变大，可能会影响文件打开和保存的速度",
       "title9": "存储画布位置和缩放数据",
-      "desc9": "开启后会在文件中保存画布位置和缩放数据，这样下次打开时能恢复到上次关闭时的位置和缩放状态。缺点是只要移动和缩放过画布就会造成文件改动"
+      "desc9": "开启后会在文件中保存画布位置和缩放数据，这样下次打开时能恢复到上次关闭时的位置和缩放状态。缺点是只要移动和缩放过画布就会造成文件改动",
+      "title10": "节点文字转Markdown标题的最大层级",
+      "desc10": "小于等于该层级的节点文字会转为Markdown标题，其余的转为无序列表"
     },
     "compress": {
-      "title1": "是否压缩图片",
+      "title1": "压缩图片",
       "desc1": "是否压缩上传的节点图片（从本地选择的图片）",
       "title2": "最大压缩宽度",
       "desc2": "图片压缩后的最大宽度",
@@ -109,7 +123,9 @@
     },
     "codeBlock": {
       "title": "代码块嵌入初始高度",
-      "desc": "smm代码块方式嵌入时初始高度，单位：px"
+      "desc": "smm代码块方式嵌入时初始高度，单位：px",
+      "title2": "代码块嵌入背景是否透明",
+      "desc2": "smm代码块嵌入时背景是否透明，否则会跟随所选的思维导图主题背景颜色"
     },
     "linkInfo": {
       "issues": "提交bug或建议",
@@ -117,16 +133,32 @@
       "community": "社区"
     },
     "embed": {
-      "title1": "嵌入预览双击是否新窗口打开",
-      "desc1": "![[]]格式嵌入md文档时双击预览图像是否新窗口打开文件",
+      "title1": "嵌入预览双击是否新标签页打开",
+      "desc1": "![[]]格式嵌入md文档时双击预览图像是否新标签页打开文件",
       "title2": "嵌入预览的图像背景是否透明",
-      "desc2": "![[]]格式嵌入预览的图像背景是否透明"
+      "desc2": "![[]]格式嵌入预览的图像背景是否透明",
+      "title3": "嵌入的图片是否以单独文件的形式存储",
+      "desc3": "默认用于![[]]格式嵌入预览的图片会以svg格式的文件单独存储到仓库里，这样思维导图文件中只存储文件路径，可以显著减小文件体积，加快文件的读取和保存速度。如果关闭，则会把图片数据存储到思维导图文件中，体积会显著增大",
+      "title4": "嵌入图片文件存储目录",
+      "desc4": "嵌入预览的图片文件存储的文件夹，相对于仓库根目录，建议不要为空，且目录以.开头作为隐藏文件夹",
+      "title5": "新标签页打开节点链接",
+      "desc5": "点击插入的节点链接（不包含网络链接）是否在新标签页打开。关闭后也可以通过Ctrl+鼠标左键在新标签页打开"
     },
     "file": {
-      "title1": "新建思维导图的文件名前缀",
-      "desc1": "新建思维导图文件名默认的命名格式为：前缀 + 空格 + 日期时间戳",
-      "title2": "新建思维导图的文件名日期时间戳格式",
-      "desc2": "默认为：YYYY-MM-DD HH.mm.ss，实际示例：2025-01-01 23.59.59，如不清楚该格式的具体含义及如何修改，请参考：https://day.js.org/docs/en/parse/string-format"
+      "title1": "新建思维导图的文件名格式",
+      "desc1": "新建思维导图文件名的命名格式。支持除notename外的其他变量",
+      "title3": "粘贴图片的命名格式",
+      "desc3": "在节点上粘贴的图片的命名格式",
+      "filenameFormatDesc": "文件名格式说明"
+    },
+    "font": {
+      "title": "字体",
+      "desc": "扩展思维导图的字体列表",
+      "btn": "管理",
+      "placeholder": "搜索字体。也可按回车键直接添加输入的字体",
+      "empty": "暂无已添加字体",
+      "noMatch": "无匹配字体",
+      "noFont": "没有可用字体"
     },
     "button": {
       "select": "选择"
@@ -134,48 +166,21 @@
     "other": {
       "title1": "检查新版本",
       "desc1": "开启后会在插件启动时检查是否有新版本可用，如果你的网络访问不到Github，则建议关闭该选项"
+    },
+    "imageHosting": {
+      "title1": "开启图床",
+      "desc1": "开启后，所有图片都将上传到图床",
+      "tip1": "请先完善图床配置信息",
+      "title2": "图床url",
+      "desc2": "根据你使用的图床工具填写对应的上传接口地址",
+      "title3": "表单字段",
+      "desc3": "上传图片时的表单字段名称",
+      "title4": "接口响应结构",
+      "desc4": "上传图片时的接口响应结构。详细说明请参考：",
+      "desc5": "图床功能说明"
     }
   },
-  "commands": {
-    "save": "编辑操作-保存",
-    "saveAndUpdateImage": "编辑操作-保存并更新图像",
-    "undo": "编辑操作-回退",
-    "redo": "编辑操作-前进",
-    "searchReplace": "编辑操作-搜索和替换",
-    "insertChildNode": "节点操作-插入下级节点",
-    "insertSiblingNode": "节点操作-插入同级节点",
-    "insertParentNode": "节点操作-插入父节点",
-    "moveUpNode": "节点操作-上移节点",
-    "moveDownNode": "节点操作-下移节点",
-    "insertSummary": "节点操作-插入概要",
-    "toggleExpandNode": "节点操作-展开/收起节点",
-    "deleteNode": "节点操作-删除节点",
-    "deleteNodeOnly": "节点操作-仅删除当前节点",
-    "copyNode": "节点操作-复制节点",
-    "cutNode": "节点操作-剪切节点",
-    "pasteNode": "节点操作-粘贴节点",
-    "selectAllNode": "节点操作-全选",
-    "organizeLayout": "节点操作-一键整理布局",
-    "toggleBoldNode": "节点操作-切换粗体",
-    "toggleItalicNode": "节点操作-切换斜体",
-    "toggleUnderlineNode": "节点操作-切换下划线",
-    "toggleStrikethroughNode": "节点操作-切换删除线",
-    "increaseFontSizeNode": "节点操作-增大字号",
-    "decreaseFontSizeNode": "节点操作-减小字号",
-    "zoomInCanvas": "画布操作-放大",
-    "zoomOutCanvas": "画布操作-缩小",
-    "backToRootCanvas": "画布操作-回到根节点",
-    "activateLeftCanvas": "画布操作-向左移动焦点",
-    "activateTopCanvas": "画布操作-向上移动焦点",
-    "activateRightCanvas": "画布操作-向右移动焦点",
-    "activateBottomCanvas": "画布操作-向下移动焦点",
-    "zoomFitCanvas": "画布操作-适应画布",
-    "enterDemonstrate": "辅助操作-进入演示模式",
-    "openImageEdit": "界面操作-打开图片编辑弹窗",
-    "openHyperlinkEdit": "界面操作-打开超链接编辑弹窗",
-    "openRemarkEdit": "界面操作-打开备注编辑弹窗",
-    "openTagEdit": "界面操作-打开标签编辑弹窗",
-    "openImport": "界面操作-打开导入弹窗",
-    "openExport": "界面操作-打开导出弹窗"
+  "html": {
+    "filenameFormatDesc": "<p>除了固定名称外，也可以使用变量，用 {} 括起来，可用变量如下：</p><p>1.{notename}：当前文件的文件名，不包含扩展名；</p><p>2.{date}：当前日期，格式为 YYYY-MM-DD；</p><p>3.{time}：当前时间，格式为 HH:mm:ss；</p><p>4.{datatime}：当前日期时间，格式为：YYYY-MM-DD HH:mm:ss；</p><p>5.{date:Format}：指定日期时间格式，比如：MM-DD HH:mm，可参考：<a href='https://day.js.org/docs/en/parse/string-format'>格式说明</a>；</p><p>6.{random}：随机字符串，长度为 6 位；</p>"
   }
 }

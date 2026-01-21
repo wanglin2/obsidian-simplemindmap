@@ -31,7 +31,7 @@ export default {
     associativeLineColor: '顏色',
     associativeLineActiveWidth: '啟用時寬度',
     associativeLineActiveColor: '啟用時顏色',
-    rootStyle: '根節點',
+    rootStyle: '根節點連線風格',
     associativeLineText: '關聯線文字',
     fontFamily: '字型',
     fontSize: '字型大小',
@@ -62,9 +62,6 @@ export default {
     activeOnly: '僅啟用新節點，不進入編輯',
     openRealtimeRenderOnNodeTextEdit: '開啟文本編輯實時渲染效果',
     isShowScrollbar: '顯示捲軸',
-    isUseHandDrawnLikeStyle: '使用手繪風格',
-    isUseMomentum: '是否開啓拖動畫布的動量效果',
-    isUseSameNodeAlign: '是否使用相同節點對齊',
     openBlankMode: '是否開啓演示模式的填空功能',
     watermark: '浮水印',
     showWatermark: '顯示浮水印',
@@ -84,29 +81,38 @@ export default {
       '該操作會清空所有曆史修改記錄，並且修改思維導圖數據，是否繼續？',
     changeRichTextTip2: '是否切換爲富文本模式？',
     changeRichTextTip3: '是否切換爲非富文本模式？',
-    enableDragImport: '是否允許直接拖拽文件到頁面進行導入',
     imgTextMargin: '節點圖片和文本間隔',
     textContentMargin: '節點各種內容間隔',
     enableAutoEnterTextEditWhenKeydown: '鍵盤輸入時自動進入文本編輯',
     enableInheritAncestorLineStyle: '節點連線樣式繼承祖先節點的樣式',
     alwaysShowExpandBtn: '是否壹直顯示展開收起按鈕',
-    enableAi: '是否開啓AI功能',
     isShowBottomToolbar: '顯示底部工具列',
     rootEnableUnExpand: '根節點是否允許收起下級',
     settingConfig: '思緒心智圖設定',
     title1: '節點',
     title2: '編輯',
     title3: '顯示',
-    title4: '其他'
+    title4: '其他',
+    sameNodeAlignInitWidth: '同級節點對齊初始寬度',
+    enableFreeDragTip:
+      '關閉設定後，如果要恢復預設佈局，請點擊畫布右鍵選單-【一鍵整理佈局】',
+    isUseSameNodeAlignTip1:
+      '1.節點編輯後寬度不會自動對齊，需手動點擊畫布右鍵選單-【一鍵同級節點對齊】',
+    isUseSameNodeAlignTip2:
+      '2.關閉設定後，如果要恢復預設寬度，請點擊畫布右鍵選單-【一鍵去除所有節點自訂寬度】',
+    openRealtimeRenderOnNodeTextEditTip:
+      '開啟後可能會導致效能下降，建議在節點數量比較多時關閉',
+    openPerformanceTip: '如果節點數量比較多，可以嘗試開啟效能模式加快渲染'
   },
   color: {
     moreColor: '更多顏色'
   },
   contextmenu: {
-    insertSiblingNode: '插入同層節點',
-    insertChildNode: '插入子節點',
-    insertParentNode: '插入父節點',
-    insertSummary: '插入概要',
+    insertNode: '插入節點',
+    insertSiblingNode: '同層節點',
+    insertChildNode: '子節點',
+    insertParentNode: '父節點',
+    insertSummary: '概要',
     moveUpNode: '上移節點',
     moveDownNode: '下移節點',
     deleteNode: '刪除節點',
@@ -154,7 +160,8 @@ export default {
     removeCustomWidth: '去除自定義寬度',
     copyAsInternalUrl: '複製為內鏈',
     removeAllCustomWidth: '一鍵去除所有節點自定義寬度',
-    download: '下載到本地'
+    download: '下載到本地',
+    copyNodeToTxt: '複製為純文字'
   },
   count: {
     words: '字數',
@@ -213,7 +220,10 @@ export default {
     mdPlaceholder: '請輸入Markdown格式的內容',
     mdEmptyTip: '內容不能爲空',
     mdImportFailTip: '導入失敗，沒有解析到可導入內容。 只支持標題、清單等語法',
-    rootNodeName: '根節點'
+    rootNodeName: '根節點',
+    importTip: '其中.mm、.xlsx會員可用',
+    dragTip: '拖動倉庫或電腦本地檔案到此',
+    warningTip: '注意：導入會覆蓋現有內容，且無法恢復，請先做好備份！'
   },
   navigatorToolbar: {
     openMiniMap: '開啟小地圖',
@@ -274,7 +284,8 @@ export default {
   },
   nodeTag: {
     title: '標籤',
-    addTip: '請按回車鍵添加，最多可添加五個標籤'
+    addTip: '請按回車鍵添加，最多可添加五個標籤',
+    add: '添加'
   },
   outline: {
     title: '大綱',
@@ -282,7 +293,7 @@ export default {
     print: '打印',
     fullscreen: '全屏',
     tip1: '插入兄弟節點：',
-    tip2: '插入子節點：',
+    tip2: '節點下移層級：',
     tip3: '節點上移層級：',
     tip4: '删除節點：',
     tip5: '按住節點可拖拽'
@@ -292,8 +303,7 @@ export default {
     zoomOut: '縮小'
   },
   shortcutKey: {
-    title: '快速鍵',
-    tip: '其他操作請通過命令，也可自行設定命令的快速鍵'
+    title: '快速鍵'
   },
   strusture: {
     title: '結構'
@@ -425,7 +435,10 @@ export default {
     defaultGeneralizationText: '概要',
     defaultAssociativeLineText: '關聯',
     defaultOuterFrameText: '外框',
-    pasteImage: '粘貼圖片'
+    pasteImage: '粘貼圖片',
+    notSplit: '不分割',
+    keepLevel: '保留層級',
+    ignoreLevel: '忽略層級'
   },
   mouseAction: {
     tip1: '目前：左鍵拖曳畫布，右鍵框選節點。點擊可切換',
@@ -480,15 +493,6 @@ export default {
   attachment: {
     deleteAttachment: '刪除附件',
     tip: '附件功能僅在用戶端可用'
-  },
-  annotation: {
-    mark: '標記',
-    show: '顯示標記',
-    type: '類型',
-    color: '顏色',
-    lineWidth: '線寬',
-    padding: '內距',
-    animate: '動畫'
   },
   nodeOuterFrame: {
     outerFrameSetting: '外框',

@@ -70,10 +70,15 @@ import {
   htmlEscape,
   handleInputPasteText
 } from 'simple-mind-map/src/utils'
-import { printOutline } from '@/utils'
+import {
+  printOutline,
+  linkRichToObUrlText,
+  obUrlToLinkRich,
+  parseInnerLinkAndText
+} from '@/utils'
 import Import from './Import.vue'
+import CursorTextHandler from '@/utils/CursorTextHandler'
 
-// 大纲侧边栏
 export default {
   components: {
     Import
@@ -125,7 +130,6 @@ export default {
     this.$root.$bus.$off('printOutline', this.onPrint)
   },
   methods: {
-    // 获取初始数据
     getData() {
       this.mindMapData = JSON.parse(
         this.$root.$obsidianAPI.getInitMindMapData()
@@ -134,20 +138,19 @@ export default {
       this.mindMapDataToTree(rootData)
     },
 
-    // 思维导图数据转换为树结构
     mindMapDataToTree(rootData, callback = () => {}) {
       this.currentData = null
       this.currentNode = null
       this.treeData = []
       this.$nextTick(() => {
-        rootData.root = true // 标记根节点
+        rootData.root = true
         let walk = root => {
           let text = root.data.richText
-            ? nodeRichTextToTextWithWrap(root.data.text)
+            ? nodeRichTextToTextWithWrap(linkRichToObUrlText(root.data.text))
             : root.data.text
           text = htmlEscape(text)
           text = text.replace(/\n/g, '<br>')
-          root.textCache = text // 保存一份修改前的数据，用于对比是否修改了
+          root.textCache = text
           root.label = text
           root.uid = root.data.uid
           if (root.children && root.children.length > 0) {
@@ -157,54 +160,57 @@ export default {
           }
         }
         walk(rootData)
-        this.treeData = [rootData]
+        const freeNodeTrees = rootData.data.freeNodeTrees || []
+        delete rootData.data.freeNodeTrees
+        if (freeNodeTrees && freeNodeTrees.length > 0) {
+          freeNodeTrees.forEach(item => {
+            item.root = true
+            walk(item)
+          })
+        }
+        this.treeData = [rootData, ...freeNodeTrees]
         callback()
       })
     },
 
-    // 根节点不允许拖拽
     checkAllowDrag(node) {
       return !node.data.root
     },
 
-    // 拖拽结束事件
     onNodeDrop() {
       this.autoSave()
     },
 
-    // 当前选中的树节点变化事件
     onCurrentChange(data, node) {
       this.currentData = data
       this.currentNode = node
     },
 
-    // 失去焦点更新节点文本
     onBlur(e, node) {
-      // 节点数据没有修改
       if (node.data.textCache === e.target.innerHTML) {
         return
       }
       const richText = node.data.data.richText
       let text = richText ? e.target.innerHTML : e.target.innerText
       if (richText) {
-        text = textToNodeRichTextWithWrap(text)
+        let text2 = textToNodeRichTextWithWrap(text)
+        text2 = obUrlToLinkRich(text2)
+        node.data.data.text = text2
       }
-      node.data.data.text = text
+      node.data.label = text
       node.data.textCache = e.target.innerHTML
       this.autoSave()
     },
 
-    // 节点输入区域按键事件
     onNodeInputKeydown(e, node) {
       const richText = !!node.data.data.richText
       const uid = createUid()
-      const text = this.$t('outline.nodeDefaultText')
       const data = {
-        textCache: text,
         uid,
-        label: text,
+        textCache: '',
+        label: '',
         data: {
-          text: richText ? textToNodeRichTextWithWrap(text) : text,
+          text: '',
           uid,
           richText
         },
@@ -212,20 +218,51 @@ export default {
       }
       if (e.keyCode === 13 && !e.shiftKey) {
         e.preventDefault()
-        if (node.data.root) {
-          return
+        if (e.ctrlKey) {
+          const cursorTextHandler = new CursorTextHandler(e.target)
+          const afterText = cursorTextHandler.getTextAfterCursor()
+          if (!afterText) {
+            return
+          }
+          const beforeText = cursorTextHandler.getTextBeforeCursor()
+          e.target.innerHTML = beforeText
+          data.label = afterText
+          data.textCache = afterText
+          data.data.text = richText
+            ? textToNodeRichTextWithWrap(afterText)
+            : afterText
+          this.$refs.tree.insertAfter(data, node)
+        } else {
+          const text = this.$t('outline.nodeDefaultText')
+          data.label = text
+          data.textCache = text
+          data.data.text = richText ? textToNodeRichTextWithWrap(text) : text
+          if (node.data.root) {
+            this.$refs.tree.append(data, node)
+          } else {
+            this.$refs.tree.insertAfter(data, node)
+          }
         }
-        this.$refs.tree.insertAfter(data, node)
       }
       if (e.keyCode === 9) {
         e.preventDefault()
-        if (e.shiftKey) {
-          // 上移一个层级
-          this.$refs.tree.insertAfter(node.data, node.parent)
-          this.$refs.tree.remove(node)
-        } else {
-          this.$refs.tree.append(data, node)
+        if (node.data.root) {
+          return
         }
+        if (e.shiftKey) {
+          this.onBlur(e, node)
+          this.$refs.tree.insertAfter(node.data, node.parent)
+        } else {
+          const index = node.parent.childNodes.findIndex(item => {
+            return item === node
+          })
+          if (index <= 0) return
+          const prevNode = node.parent.childNodes[index - 1]
+          if (prevNode) {
+            this.$refs.tree.append(node.data, prevNode)
+          }
+        }
+        this.$refs.tree.remove(node)
       }
       this.autoSave()
       this.$nextTick(() => {
@@ -245,7 +282,6 @@ export default {
       })
     },
 
-    // 删除节点
     onKeyDown(e) {
       if ([46, 8].includes(e.keyCode) && this.currentData) {
         e.stopPropagation()
@@ -256,22 +292,18 @@ export default {
       }
     },
 
-    // 拦截粘贴事件
     onPaste(e) {
       handleInputPasteText(e)
     },
 
-    // 生成唯一的key
     getKey() {
       return Math.random()
     },
 
-    // 打印
     onPrint() {
       printOutline(this.$refs.smmOutlineEditBox)
     },
 
-    // 滚动
     scrollTo(y) {
       let container = this.$refs.smmOutlineEditBox
       let height = container.offsetHeight
@@ -282,7 +314,6 @@ export default {
       }
     },
 
-    // 导入数据
     onImportData(data) {
       let rootNodeData = null
       if (data.root) {
@@ -295,7 +326,6 @@ export default {
       })
     },
 
-    // 获取当前编辑中的思维导图数据
     getCurrentData() {
       let newNode = {}
       let node = this.treeData[0]
@@ -309,23 +339,37 @@ export default {
         })
       }
       walk(node, newNode)
+      const freeNodeTrees = []
+      if (this.treeData.length > 1) {
+        this.treeData.slice(1).forEach(item => {
+          const newNode = {}
+          freeNodeTrees.push(newNode)
+          walk(item, newNode)
+        })
+        newNode.data.freeNodeTrees = freeNodeTrees
+      }
       return simpleDeepClone(newNode)
     },
 
-    // 发送最新数据给ob保存
     emitMindMapCurrentData() {
       try {
         const curData = {
           ...this.mindMapData,
           root: this.getCurrentData()
         }
-        this.$root.$obsidianAPI.getMindMapCurrentData(JSON.stringify(curData))
+        const { linkData, textData } = parseInnerLinkAndText(
+          curData,
+          this.$root.$obsidianAPI
+        )
+        this.$root.$obsidianAPI.getMindMapCurrentData(
+          JSON.stringify(curData),
+          linkData,
+          textData
+        )
       } catch (error) {
-        console.log(error)
       }
     },
 
-    // 自动保存
     autoSave() {
       this.$root.$bus.$emit('data_change')
       clearTimeout(this.autoSaveTimer)
@@ -334,29 +378,24 @@ export default {
       }, this.autoSaveTime * 1000)
     },
 
-    // 取消当前自动保存
     clearAutoSave() {
       clearTimeout(this.autoSaveTimer)
     },
 
-    // 手动触发保存
     manuallySave() {
       clearTimeout(this.autoSaveTimer)
       this.saveToLocal()
     },
 
-    // 保存
     saveToLocal() {
       this.$root.$obsidianAPI.saveMindMapData()
     },
 
-    // 从obsidian获取数据后更新思维导图数据
     onUpdateMindMapDataFromOb(data) {
       try {
         data = JSON.parse(data)
         this.mindMapDataToTree(data.root)
       } catch (e) {
-        console.log(e)
       }
     },
 
@@ -495,7 +534,6 @@ export default {
 
       /deep/ .smmOutlineTreeCustomNode {
         .smmOutlineTreeCustomNodeEdit {
-          // max-width: 800px;
         }
       }
     }
