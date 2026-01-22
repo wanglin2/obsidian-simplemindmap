@@ -10,7 +10,7 @@ mind-map 也提供了独立的思维导图客户端，可以点击[客户端](ht
 
 独立客户端下载（Windows、macOS、Linux）：[点击这里](https://github.com/wanglin2/mind-map/releases)
 
-安装：[中文](./docs/install_zh.md) | [English](./docs/install.md)
+如何安装：[中文](./docs/install_zh.md) | [English](./docs/install.md)
 
 更新记录：[中文](./docs/changelog_zh.md) | [English](./docs/changelog.md)
 
