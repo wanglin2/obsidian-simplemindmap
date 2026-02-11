@@ -18,7 +18,8 @@ const createStore = () => {
       isOutlineEdit: false,
       isReadonly: false,
       extraTextOnExport: '',
-      isMobile: false
+      isMobile: false,
+      prependSidebarList: []
     },
     mutations: {
       setLocalConfig(state, data) {
@@ -45,6 +46,20 @@ const createStore = () => {
 
       setIsMobile(state, data) {
         state.isMobile = data
+      },
+
+      appendPrependSidebarList(state, data) {
+        state.prependSidebarList.push(data)
+      },
+
+      clearPrependSidebarList(state) {
+        state.prependSidebarList = []
+      },
+
+      removePrependSidebarList(state, data) {
+        state.prependSidebarList = state.prependSidebarList.filter(
+          item => item.value !== data
+        )
       }
     },
     actions: {}

@@ -225,6 +225,10 @@
         <span class="name">{{ $t('contextmenu.zenMode') }}</span>
         <span class="el-icon-check" v-if="isZenMode"></span>
       </div>
+      <div class="item" @click="toggleLinesHidden">
+        <span class="name">隐藏关联线</span>
+        <span class="el-icon-check" v-if="linesHidden"></span>
+      </div>
       <div class="splitLine"></div>
       <div
         class="item"
@@ -303,7 +307,8 @@ export default {
       numberLevel: '',
       subItemsShowLeft: false,
       isNodeMousedown: false,
-      listBoxWidth: '250px'
+      listBoxWidth: '250px',
+      linesHidden: false
     }
   },
   computed: {
@@ -696,6 +701,12 @@ export default {
       } else if (type === 'children') {
         this.mindMap.execCommand('SELECT_CHILDREN')
       }
+      this.hide()
+    },
+
+    toggleLinesHidden() {
+      this.linesHidden = !this.linesHidden
+      this.mindMap.associativeLine.setLinesVisibility(!this.linesHidden)
       this.hide()
     }
   }

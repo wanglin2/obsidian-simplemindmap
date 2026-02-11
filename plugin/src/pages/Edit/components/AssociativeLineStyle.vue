@@ -219,11 +219,7 @@
 <script>
 import Sidebar from './Sidebar.vue'
 import Color from './Color.vue'
-import {
-  lineWidthList,
-  fontSizeList,
-  borderDasharrayList
-} from '@/config'
+import { lineWidthList, fontSizeList, borderDasharrayList } from '@/config'
 import { mapState, mapMutations } from 'vuex'
 import fontFamilyMixin from '@/mixins/fontFamily'
 
@@ -287,7 +283,11 @@ export default {
     )
   },
   methods: {
-    ...mapMutations(['setActiveSidebar']),
+    ...mapMutations([
+      'setActiveSidebar',
+      'appendPrependSidebarList',
+      'removePrependSidebarList'
+    ]),
 
     onAssociativeLineClick(a, b, node, toNode) {
       this.activeLineNode = node
@@ -299,10 +299,15 @@ export default {
       Object.keys(this.style).forEach(item => {
         this.style[item] = styleConfig[item]
       })
-      this.setActiveSidebar('associativeLineStyle')
+      this.appendPrependSidebarList({
+        value: 'associativeLineStyle',
+        name: '关联线',
+        icon: 'iconlianjiexian'
+      })
     },
 
     associativeLineDeactivate() {
+      this.removePrependSidebarList('associativeLineStyle')
       if (this.activeSidebar === 'associativeLineStyle') {
         this.setActiveSidebar(null)
       }

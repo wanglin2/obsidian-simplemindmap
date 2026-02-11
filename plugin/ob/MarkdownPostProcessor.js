@@ -1,5 +1,8 @@
 import { TFile } from 'obsidian'
-import { parseMarkdownText } from './metadataAndMarkdown.js'
+import {
+  parseMarkdownText,
+  assembleMarkdownText
+} from './metadataAndMarkdown.js'
 import { dataURItoBlob, smmFilePathToFileName } from './utils.js'
 import LZString from 'lz-string'
 import { SMM_VIEW_TYPE } from './constant.js'
@@ -112,7 +115,6 @@ export default class MarkdownPostProcessor {
         ? `${embedImageIsSeparateFileFolder}/${targetFileName}`
         : targetFileName
       const exist = await this.plugin.app.vault.exists(previewFilePath)
-      console.log('删除预览图像文件:', previewFilePath, exist)
       if (exist) {
         await this.plugin.app.vault.adapter.remove(previewFilePath)
       }
@@ -122,20 +124,31 @@ export default class MarkdownPostProcessor {
   }
 
   async handleModifySvgName(file, oldName) {
+    if (!(file instanceof TFile) || !this.plugin._isSmmFile(file)) return
+    let newPath = ''
     try {
       oldName = smmFilePathToFileName(oldName, '.svg')
       const { embedImageIsSeparateFileFolder } = this.plugin.settings
       const oldPath = embedImageIsSeparateFileFolder + '/' + oldName
       const exist = await this.plugin.app.vault.exists(oldPath)
+      const newName = smmFilePathToFileName(file.name, '.svg')
+      newPath = embedImageIsSeparateFileFolder + '/' + newName
       if (exist) {
-        const newName = smmFilePathToFileName(file.name, '.svg')
-        const newPath = embedImageIsSeparateFileFolder + '/' + newName
         await this.plugin.app.vault.adapter.rename(oldPath, newPath)
       }
     } catch (error) {
       console.error('修改svg文件名失败:', error)
     }
+    await this._modifyFileSvgPathData(file, newPath)
+  }
+
+  async _modifyFileSvgPathData(file, newPath) {
     try {
+      const { embedImageIsSeparateFile } = this.plugin.settings
+      const newSvgData = `![[${newPath}]]`
+      const newDate = moment().format('YYYY-MM-DD HH:mm:ss')
+      // 如果当前文件已经打开了，那么走视图自己的保存逻辑
+      let isOpen = false
       const markdownLeafs = this.plugin.app.workspace.getLeavesOfType(
         SMM_VIEW_TYPE
       )
@@ -144,9 +157,29 @@ export default class MarkdownPostProcessor {
           leaf.view instanceof SmmEditView &&
           leaf.view.file.path === file.path
         ) {
+          isOpen = true
+          if (embedImageIsSeparateFile) {
+            leaf.view.parsedMindMapData.svgdata = newSvgData
+            leaf.view.parsedMindMapData.svgdataUpdateAt = newDate
+          }
           leaf.view.forceSave(true)
           break
         }
+      }
+      // 否则直接修改文件内容
+      if (!isOpen) {
+        const content = await this.plugin.app.vault.read(file)
+        const result = parseMarkdownText(content)
+        result.metadata.path = file.path
+        if (embedImageIsSeparateFile) {
+          result.svgdata = newSvgData
+          result.svgdataUpdateAt = newDate
+        }
+        this.plugin.app.noSaveOnClose = false
+        const str = assembleMarkdownText(result)
+        await this.plugin.app.vault.process(file, () => {
+          return str
+        })
       }
     } catch (error) {
       console.error('保存失败:', error)
@@ -162,7 +195,6 @@ export default class MarkdownPostProcessor {
   async _markdownPostProcessor(el, ctx) {
     try {
       if (this._isSpecialCard(el)) {
-        console.log('特殊卡片处理')
         return this._processSpecialCard(el)
       }
 

@@ -412,3 +412,7 @@ export const tFileToFile = async function(tfile, app, mimeTypes = {}) {
 export const checkIsMac = () => {
   return Platform.isMacOS
 }
+
+export const isImgFile = filename => {
+  return /\.(png|jpe?g|gif|bmp|webp|svg|tiff?)$/i.test(filename)
+}

@@ -39,7 +39,6 @@ class SmmEditView extends TextFileView {
     this.isActive = true
     this.resizeObserver = null
     this.isUnSave = false
-    this.isOuterChange = false
     this.isNotTriggerDataChange = false
     this.isHidden = false
     this.needResize = false
@@ -86,9 +85,6 @@ class SmmEditView extends TextFileView {
   }
 
   async onOpen() {
-    this.registerEvent(
-      this.app.vault.on('modify', this._handleExternalChange.bind(this))
-    )
     // 注册激活状态监听
     this.registerEvent(
       this.app.workspace.on(
@@ -129,7 +125,6 @@ class SmmEditView extends TextFileView {
         if (content) {
           let passedContent = ''
           try {
-            // 兼容未编码的老版数据
             const json = JSON.parse(content)
             if (json && json.root) {
               passedContent = content
@@ -311,12 +306,21 @@ class SmmEditView extends TextFileView {
       },
       openFile: (filePath, isNewTab = false, createOnNoExist = false) => {
         if (!filePath) return
-        const arr = filePath.split(/(#|^|\|)/)
+        let arr = filePath.split(/(#|^|\|)/)
         filePath = arr[0]
-        let postfix = ''
-        if (arr.length > 1 && arr[1] !== '|') {
-          postfix = arr.slice(1).join('')
+        let postfix = []
+        arr = arr.slice(1)
+        let ignore = false
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i] === '|') {
+            ignore = true
+          } else if (ignore) {
+            ignore = false
+          } else {
+            postfix.push(arr[i])
+          }
         }
+        postfix = postfix.join('')
         const file = this.tryGetFileByPath(filePath)
         if (file && file instanceof TFile) {
           this.app.workspace.openLinkText(
@@ -553,13 +557,9 @@ class SmmEditView extends TextFileView {
           this.isHidden = false
           this._checkForExternalChanges()
         }
-        // 更新尺寸
         if (this.needResize) {
           this.needResize = false
           this._handleResize()
-        }
-        if (this.isOuterChange) {
-          this.isOuterChange = false
         }
       }
     } else if (!nowActive && this.isActive) {
@@ -572,13 +572,6 @@ class SmmEditView extends TextFileView {
         this.mindMapAPP.$clearUpdateMindMapSize()
       }
       this.isActive = false
-    }
-  }
-
-  async _handleExternalChange(file) {
-    if (this.isActive) return
-    if (file.path === this.file?.path) {
-      this.isOuterChange = true
     }
   }
 
@@ -602,7 +595,6 @@ class SmmEditView extends TextFileView {
     this.mindMapData = ''
     this.parsedMindMapData = null
     this.isUnSave = false
-    this.isOuterChange = false
     this.isNotTriggerDataChange = false
     this.isHidden = false
     this.needResize = false

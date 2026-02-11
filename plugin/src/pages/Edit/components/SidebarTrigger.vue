@@ -54,7 +54,8 @@ export default {
       isDark: state => state.localConfig.isDark,
       activeSidebar: state => state.activeSidebar,
       isReadonly: state => state.isReadonly,
-      isMobile: state => state.isMobile
+      isMobile: state => state.isMobile,
+      prependSidebarList: state => state.prependSidebarList
     }),
 
     triggerList() {
@@ -69,7 +70,7 @@ export default {
           return ['outline'].includes(item.value)
         })
       }
-      return list
+      return [...this.prependSidebarList, ...list]
     }
   },
   watch: {

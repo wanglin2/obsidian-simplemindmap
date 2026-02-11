@@ -211,3 +211,17 @@
 # v0.1.6
 **Fixes**:
 1. Fixed the issue where when dragging image files directly onto a node, they are uploaded to the attachment directory instead of the image directory;
+
+# v0.1.7
+
+**New Features:**
+1. **PDF Export:** Improved export clarity and added support for page-by-page export.
+2. **Canvas Right-Click Menu:** Added a new menu item "Hide Associated Lines".
+3. **Activation Behavior:** When activating associated lines or outer frames, the sidebar will no longer pop up immediately. Instead, a trigger button has been added.
+
+**Bug Fixes:**
+1. Optimized support for links to the pdf++ plugin.
+2. Optimized internal link navigation.
+3. Fixed an issue where dragging image files directly onto nodes would upload them to the attachment directory instead of the image directory.
+4. Fixed an issue where modifying a mind map file's name after saving a preview image would cause the preview image file to change, but the path in the mind map data was not updated, resulting in the preview image not being displayed.
+5. Fixed the issue where modifying the folder name would cause all files in the folder to be accidentally modified, resulting in inaccessible files;

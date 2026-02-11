@@ -111,17 +111,23 @@
                       @keydown.native.stop
                     ></el-input>
                   </div>
-                  <div class="valueSubItem">
-                    <el-checkbox
-                      v-show="['png', 'pdf', 'svg'].includes(exportType)"
-                      v-model="isTransparent"
-                      >{{ $t('export.isTransparent') }}</el-checkbox
-                    >
+                  <div
+                    class="valueSubItem"
+                    v-show="['png', 'pdf', 'svg'].includes(exportType)"
+                  >
+                    <el-checkbox v-model="isTransparent">{{
+                      $t('export.isTransparent')
+                    }}</el-checkbox>
                   </div>
-                  <div class="valueSubItem">
-                    <el-checkbox v-show="showFitBgOption" v-model="isFitBg">{{
+                  <div class="valueSubItem" v-show="showFitBgOption">
+                    <el-checkbox v-model="isFitBg">{{
                       $t('export.isFitBg')
                     }}</el-checkbox>
+                  </div>
+                  <div class="valueSubItem" v-if="exportType === 'pdf'">
+                    <el-checkbox v-model="pdfPagingExport"
+                      >分页导出</el-checkbox
+                    >
                   </div>
                 </div>
               </div>
@@ -167,7 +173,8 @@ export default {
       paddingY: 10,
       extraText: '',
       isFitBg: true,
-      imageFormat: 'png'
+      imageFormat: 'png',
+      pdfPagingExport: false
     }
   },
   computed: {
@@ -192,9 +199,7 @@ export default {
     },
 
     noOptions() {
-      return ['md', 'xmind', 'txt', 'xlsx', 'mm'].includes(
-        this.exportType
-      )
+      return ['md', 'xmind', 'txt', 'xlsx', 'mm'].includes(this.exportType)
     }
   },
   created() {
@@ -263,7 +268,9 @@ export default {
           true,
           this.fileName,
           this.isTransparent,
-          this.isFitBg
+          this.isFitBg,
+          false,
+          this.pdfPagingExport
         )
       } else if (this.exportType === 'mm') {
         this.$root.$bus.$emit('export', this.exportType, true, this.fileName, {

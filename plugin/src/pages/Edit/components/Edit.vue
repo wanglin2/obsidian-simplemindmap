@@ -158,7 +158,8 @@ import {
   isNormalUrl,
   getFilenameWithExtension,
   checkMindTreeHasImg,
-  parseInnerLinkAndText
+  parseInnerLinkAndText,
+  isImgFile
 } from '@/utils'
 import NodeTextInputObLink from './NodeTextInputObLink.vue'
 import Demonstrate from './Demonstrate.vue'
@@ -973,18 +974,18 @@ export default {
         let fileUrl = ''
         if (textData) {
           const tFile = this.$root.$obsidianAPI.getFileFromUri(textData)
-          // ob文件
           if (tFile) {
             fileUrl = tFile.path
           }
         }
         if (!fileUrl && files.length > 0) {
           const file = files[0]
+          const isImg = isImgFile(file.name)
           let result = ''
-          if (useImgHosting && /\.(jpg|jpeg|png|gif|webp)$/.test(file.name)) {
+          if (useImgHosting && isImg) {
             result = await this.uploadImgToHosting(file)
           } else {
-            result = await this.$root.$obsidianAPI.saveFileToVault(file, false)
+            result = await this.$root.$obsidianAPI.saveFileToVault(file, isImg)
           }
           if (result) {
             fileUrl = result
@@ -997,7 +998,7 @@ export default {
           this.$root.$obsidianAPI.showTip(err || this.$t('nodeHyperlink.tip5'))
           return
         }
-        if (/\.(jpg|jpeg|png|gif|webp)$/.test(fileUrl)) {
+        if (isImgFile(fileUrl)) {
           const viewUrl = useImgHosting
             ? fileUrl
             : this.$root.$obsidianAPI.getResourcePath(fileUrl)

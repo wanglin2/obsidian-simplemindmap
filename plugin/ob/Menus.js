@@ -122,9 +122,7 @@ export default class Menus {
                         break
                       }
                     }
-                    await this.app.vault.process(renamedFile, () => {
-                      return mdStr
-                    })
+                    await this.app.vault.modify(renamedFile, mdStr)
                     this.app.noSaveOnClose = false
                     const ref = this.app.metadataCache.on(
                       'changed',
@@ -254,9 +252,7 @@ export default class Menus {
                             break
                           }
                         }
-                        await this.app.vault.process(renamedFile, () => {
-                          return str
-                        })
+                        await this.app.vault.modify(renamedFile, str)
                         const ref = this.app.metadataCache.on(
                           'changed',
                           changedFile => {

@@ -455,7 +455,11 @@ export default {
     this.mindMap.off('outer_frame_deactivate', this.hide)
   },
   methods: {
-    ...mapMutations(['setActiveSidebar']),
+    ...mapMutations([
+      'setActiveSidebar',
+      'appendPrependSidebarList',
+      'removePrependSidebarList'
+    ]),
 
     onOuterFrameActive(el, parentNode, range) {
       const firstNode = parentNode.children[range[0]]
@@ -470,7 +474,11 @@ export default {
       const [pl, pt] = this.styleConfig.textFillPadding
       this.paddingStyle.paddingX = pl
       this.paddingStyle.paddingY = pt
-      this.setActiveSidebar('nodeOuterFrameStyle')
+      this.appendPrependSidebarList({
+        value: 'nodeOuterFrameStyle',
+        name: '外框',
+        icon: 'iconwaikuang'
+      })
     },
 
     updateOuterFrame(key, val) {
@@ -510,10 +518,10 @@ export default {
     },
 
     hide() {
-      if (this.activeSidebar !== 'nodeOuterFrameStyle') {
-        return
+      this.removePrependSidebarList('nodeOuterFrameStyle')
+      if (this.activeSidebar === 'nodeOuterFrameStyle') {
+        this.setActiveSidebar(null)
       }
-      this.setActiveSidebar(null)
     }
   }
 }
