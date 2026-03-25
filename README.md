@@ -174,7 +174,7 @@
 
 有任何bug、建议、需求反馈可在[Issues](https://github.com/wanglin2/obsidian-simplemindmap/issues)里提交。
 
-# 微信公众号
+# 关注我们
 
 <table>
     <tr>
