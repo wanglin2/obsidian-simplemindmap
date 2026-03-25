@@ -2,13 +2,15 @@
 
 # SimpleMindMap Plugin
 
-Provides a user-friendly mind map plugin for Obsidian.
+The best mind map plugin for making Obsidian.
 
-The mind map functionality is built upon the [mind-map](https://github.com/wanglin2/mind-map) project, which offers a JavaScript mind map library and a complete online version.
+> The plugin source code is not open source, and this repository only stores documentation.
 
-mind-map also provides a standalone mind map client. Learn more about the [Client](https://github.com/wanglin2/mind-map/releases).
-
-Download standalone client(Windows、macOS、Linux): [Click here](https://github.com/wanglin2/mind-map/releases)
+> The mind map functionality is built upon the [mind-map](https://github.com/wanglin2/mind-map) project, which offers a JavaScript mind map library and a complete online version.
+>
+> mind-map also provides a standalone mind map client. Learn more about the [Client](https://github.com/wanglin2/mind-map/releases).
+>
+>Download standalone client(Windows、macOS、Linux): [Click here](https://github.com/wanglin2/mind-map/releases)
 
 How to install: [中文](./docs/install_zh.md) | [English](./docs/install.md)
 
@@ -17,8 +19,6 @@ Changelog: [中文](./docs/changelog_zh.md) | [English](./docs/changelog.md)
 Help: [中文](./docs/help_zh.md) | [English](./docs/help.md)
 
 Image Hosting Help: [中文](./docs/imageHosting_zh.md) | [English](./docs/imageHosting.md)
-
-> The plugin source code is not open source, and this repository only stores documentation.
 
 # Feature List
 

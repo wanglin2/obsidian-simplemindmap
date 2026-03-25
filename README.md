@@ -2,13 +2,15 @@
 
 # SimpleMindMap 插件
 
-为 Obsidian 提供一个好用的思维导图插件。
+做 Obsidian 最好用的思维导图插件。
 
-本插件思维导图功能建立在[mind-map](https://github.com/wanglin2/mind-map)项目之上，mind-map 项目提供了一个 js 思维导图库，以及一个完整的在线版思维导图。
+> 本插件源码不开源，本仓库仅存放文档。
 
-mind-map 也提供了独立的思维导图客户端，可以点击[客户端](https://github.com/wanglin2/mind-map/releases)了解更多。
-
-独立客户端下载（Windows、macOS、Linux）：[点击这里](https://github.com/wanglin2/mind-map/releases)
+> 本插件思维导图功能建立在[mind-map](https://github.com/wanglin2/mind-map)项目之上，mind-map 项目提供了一个 js 思维导图库，以及一个完整的在线版思维导图。
+>
+> mind-map 也提供了独立的思维导图客户端，可以点击[客户端](https://github.com/wanglin2/mind-map/releases)了解更多。
+>
+> 独立客户端下载（Windows、macOS、Linux）：[点击这里](https://github.com/wanglin2/mind-map/releases)。
 
 如何安装：[中文](./docs/install_zh.md) | [English](./docs/install.md)
 
@@ -18,7 +20,6 @@ mind-map 也提供了独立的思维导图客户端，可以点击[客户端](ht
 
 图床配置帮助：[中文](./docs/imageHosting_zh.md) | [English](./docs/imageHosting.md)
 
-> 插件源码不开源，本仓库仅存放文档。
 
 # 功能清单
 
@@ -179,9 +180,16 @@ mind-map 也提供了独立的思维导图客户端，可以点击[客户端](ht
     <tr>
         <td align="center" style="word-wrap: break-word; width: 75.0; height: 75.0">
             <a href="#">
-                <img src="./docs/imgs/gzh.jpeg" width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px"/>
+                <img src="./docs/imgs/gzh.jpg" width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px"/>
                 <br />
                 <sub style="font-size:14px"><b>微信公众号</b></sub>
+            </a>
+        </td>
+        <td align="center" style="word-wrap: break-word; width: 75.0; height: 75.0">
+            <a href="#">
+                <img src="./docs/imgs/xhs.jpg" width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px"/>
+                <br />
+                <sub style="font-size:14px"><b>小红书</b></sub>
             </a>
         </td>
     </tr>
