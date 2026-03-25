@@ -18,6 +18,8 @@ mind-map 也提供了独立的思维导图客户端，可以点击[客户端](ht
 
 图床配置帮助：[中文](./docs/imageHosting_zh.md) | [English](./docs/imageHosting.md)
 
+> 插件源码不开源，本仓库仅存放文档。
+
 # 功能清单
 
 - 思维导图本身的功能可从[mind-map](https://github.com/wanglin2/mind-map)项目了解更多，也可以在这里查[看常见问题](./Help_zh.md)。

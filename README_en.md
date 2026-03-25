@@ -18,6 +18,8 @@ Help: [中文](./docs/help_zh.md) | [English](./docs/help.md)
 
 Image Hosting Help: [中文](./docs/imageHosting_zh.md) | [English](./docs/imageHosting.md)
 
+> The plugin source code is not open source, and this repository only stores documentation.
+
 # Feature List
 
 - For mind map features, refer to the [mind-map](https://github.com/wanglin2/mind-map) project. You can also check [Common Issues](./Help.md) here.
