@@ -1,0 +1,37 @@
+/* 改变主题色变量 */
+$--color-primary: #885bf3;
+
+// var(--color-accent)
+// var(--text-accent)
+
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+@import '~element-ui/packages/theme-chalk/src/base.scss';
+@import '~element-ui/packages/theme-chalk/src/dialog.scss';
+@import '~element-ui/packages/theme-chalk/src/dropdown.scss';
+@import '~element-ui/packages/theme-chalk/src/dropdown-menu.scss';
+@import '~element-ui/packages/theme-chalk/src/dropdown-item.scss';
+@import '~element-ui/packages/theme-chalk/src/input.scss';
+@import '~element-ui/packages/theme-chalk/src/input-number.scss';
+@import '~element-ui/packages/theme-chalk/src/radio.scss';
+@import '~element-ui/packages/theme-chalk/src/radio-group.scss';
+@import '~element-ui/packages/theme-chalk/src/radio-button.scss';
+@import '~element-ui/packages/theme-chalk/src/checkbox.scss';
+@import '~element-ui/packages/theme-chalk/src/checkbox-button.scss';
+@import '~element-ui/packages/theme-chalk/src/checkbox-group.scss';
+@import '~element-ui/packages/theme-chalk/src/select.scss';
+@import '~element-ui/packages/theme-chalk/src/button.scss';
+@import '~element-ui/packages/theme-chalk/src/button-group.scss';
+@import '~element-ui/packages/theme-chalk/src/popover.scss';
+@import '~element-ui/packages/theme-chalk/src/message-box.scss';
+@import '~element-ui/packages/theme-chalk/src/tabs.scss';
+@import '~element-ui/packages/theme-chalk/src/tab-pane.scss';
+@import '~element-ui/packages/theme-chalk/src/tree.scss';
+@import '~element-ui/packages/theme-chalk/src/slider.scss';
+@import '~element-ui/packages/theme-chalk/src/loading.scss';
+@import '~element-ui/packages/theme-chalk/src/upload.scss';
+@import '~element-ui/packages/theme-chalk/src/spinner.scss';
+@import '~element-ui/packages/theme-chalk/src/message.scss';
+@import '~element-ui/packages/theme-chalk/src/color-picker.scss';
+@import '~element-ui/packages/theme-chalk/src/link.scss';

@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		// 其他配置...
+		"types": ["node", "obsidian"],
+		"moduleResolution": "node" // 启用 Node 风格的模块解析
+	},
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.vue",
+		"shims-vue.d.ts", // 包含声明文件
+		"src/main.js"
+	]
+}
