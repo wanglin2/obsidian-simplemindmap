@@ -4,6 +4,8 @@
 
 做 Obsidian 最好用的思维导图插件。
 
+**重要提醒：目前尚未上架obsidian插件市场，同名插件是其他人的，请注意分辨！**
+
 > 除了插件，也有独立的思维导图客户端，功能更强大更完整，支持（Windows、macOS、Linux），支持（中文简体、繁體中文、English、Tiếng Việt、Русский、日本語、한국어、Deutsch、Français、Português）。[下载地址](https://github.com/wanglin2/mind-map/releases)、[了解更多](https://github.com/wanglin2/mind-map#%E6%80%9D%E7%BB%AA%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF)。
 
 如何安装：[中文](./docs/install_zh.md) | [English](./docs/install.md)
