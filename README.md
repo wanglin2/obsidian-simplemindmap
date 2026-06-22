@@ -4,15 +4,41 @@
 
 做 Obsidian 最好用的思维导图插件。
 
-> 除了插件，也有独立的思维导图客户端，功能更强大更完整，支持（Windows、macOS、Linux），支持（中文简体、繁體中文、English、Tiếng Việt、Русский、日本語、한국어、Deutsch、Français、Português）。[下载地址](https://github.com/wanglin2/mind-map/releases)、[了解更多](https://github.com/wanglin2/mind-map#%E6%80%9D%E7%BB%AA%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF)。
+> 支持语言：中文简体、繁體中文、English、Việt
 
-如何安装：[中文](./docs/install_zh.md) | [English](./docs/install.md)
+- 如何安装
 
-更新记录：[中文](./docs/changelog_zh.md) | [English](./docs/changelog.md)
+已上架 Obsidian 插件市场，[点此直达](https://community.obsidian.md/plugins/simple-mind-map)，也可在插件市场中搜索 simple mind map 进行安装。
 
-使用帮助：[中文](./docs/help_zh.md) | [English](./docs/help.md)
+如需手动安装，可参考教程：[中文](./docs/install_zh.md) | [English](./docs/install.md)
+
+- 更新记录
+
+查看更新记录：[中文](./docs/changelog_zh.md) | [English](./docs/changelog.md)
+
+- 使用帮助
+
+常见问题：[中文](./docs/help_zh.md) | [English](./docs/help.md)
 
 图床配置帮助：[中文](./docs/imageHosting_zh.md) | [English](./docs/imageHosting.md)
+
+## 独立客户端
+
+除了插件，本项目也提供独立的思维导图客户端，功能更强大更完整。
+
+支持（Windows、macOS、Linux），支持（中文简体、繁體中文、English、Tiếng Việt、Русский、日本語、한국어、Deutsch、Français、Português）。
+
+[下载地址](https://github.com/wanglin2/mind-map/releases)、[了解更多](https://github.com/wanglin2/mind-map#%E6%80%9D%E7%BB%AA%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF)。
+
+## 开源版本
+
+本项目底层基于开源项目 [mind-map](https://github.com/wanglin2/mind-map) ，该项目提供了开源的思维导图JavaScript库及web版。
+
+# 截图
+
+![](./docs/imgs/preview.png)
+
+![](./docs/imgs/preview2.png)
 
 # 功能清单
 
@@ -189,9 +215,3 @@
         </td>
     </tr>
 </table>
-
-# 截图
-
-![](./docs/imgs/preview.png)
-
-![](./docs/imgs/preview2.png)

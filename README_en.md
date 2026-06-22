@@ -4,15 +4,42 @@
 
 The best mind map plugin for making Obsidian.
 
-> In addition to plugins, there is also an independent mind mapping client with more powerful and complete functions， support(Windows、macOS、Linux), support(中文简体、繁體中文、English、Tiếng Việt、Русский、日本語、한국어、Deutsch、Français、Português). [Download link](https://github.com/wanglin2/mind-map/releases)、[Learn more](https://github.com/wanglin2/mind-map#%E6%80%9D%E7%BB%AA%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF).
+> Support languages: 中文简体、繁體中文、English、Việt
 
-How to install: [中文](./docs/install_zh.md) | [English](./docs/install.md)
+- How to install
 
-Changelog: [中文](./docs/changelog_zh.md) | [English](./docs/changelog.md)
+Obsidian plugin market has been launched, [click here to go directly](https://community.obsidian.md/plugins/simple-mind-map). You can also search for the simple mind map in the plugin market for installation.
 
-Help: [中文](./docs/help_zh.md) | [English](./docs/help.md)
+If manual installation is required, please refer to the tutorial:
+[中文](./docs/install_zh.md) | [English](./docs/install.md)
+
+- Changelog
+
+View update records: [中文](./docs/changelog_zh.md) | [English](./docs/changelog.md)
+
+- Help
+
+Common problem: [中文](./docs/help_zh.md) | [English](./docs/help.md)
 
 Image Hosting Help: [中文](./docs/imageHosting_zh.md) | [English](./docs/imageHosting.md)
+
+## Independent client
+
+In addition to plugins, there is also an independent mind mapping client with more powerful and complete functions.
+
+Support(Windows、macOS、Linux), support(中文简体、繁體中文、English、Tiếng Việt、Русский、日本語、한국어、Deutsch、Français、Português). 
+
+[Download link](https://github.com/wanglin2/mind-map/releases)、[Learn more](https://github.com/wanglin2/mind-map#%E6%80%9D%E7%BB%AA%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF).
+
+## Open source version
+
+The underlying of this project is based on open-source projects [mind-map](https://github.com/wanglin2/mind-map), This project provides an open-source mind map JavaScript library and web version.
+
+# Screenshots
+
+![](./docs/imgs/preview.png)
+
+![](./docs/imgs/preview2.png)
 
 # Feature List
 
@@ -134,9 +161,3 @@ Image Hosting Help: [中文](./docs/imageHosting_zh.md) | [English](./docs/image
 # Bugs/Suggestions/Requests
 
 Submit via [Issues](https://github.com/wanglin2/obsidian-simplemindmap/issues).
-
-# Screenshots
-
-![](./docs/imgs/preview.png)
-
-![](./docs/imgs/preview2.png)
