@@ -22,6 +22,8 @@
 
 图床配置帮助：[中文](./docs/imageHosting_zh.md) | [English](./docs/imageHosting.md)
 
+AI配置帮助：[中文](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
+
 - 专业版
 
 专业版功能清单、演示：[中文](https://github.com/wanglin2/obsmm-pro-functions) | [English](https://github.com/wanglin2/obsmm-pro-functions/blob/main/README_en.md)

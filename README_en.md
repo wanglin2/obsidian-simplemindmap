@@ -23,6 +23,14 @@ Common problem: [中文](./docs/help_zh.md) | [English](./docs/help.md)
 
 Image Hosting Help: [中文](./docs/imageHosting_zh.md) | [English](./docs/imageHosting.md)
 
+AI configuration assistance: [中文](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
+
+- Professional version
+
+Professional version feature list and demonstration: [中文](https://github.com/wanglin2/obsmm-pro-functions) | [English](https://github.com/wanglin2/obsmm-pro-functions/blob/main/README_en.md)
+
+Purchase address: [Pkmer](https://pkmer.cn/products/simplemindmap/)
+
 ## Independent client
 
 In addition to plugins, there is also an independent mind mapping client with more powerful and complete functions.
