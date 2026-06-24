@@ -6,17 +6,23 @@
 
 > 支持语言：中文简体、繁體中文、English、Việt
 
-- 如何安装
+- 🚀专业版
+
+专业版功能清单、演示：[中文](https://github.com/wanglin2/obsmm-pro-functions) | [English](https://github.com/wanglin2/obsmm-pro-functions/blob/main/README_en.md)
+
+购买地址：[Pkmer](https://pkmer.cn/products/simplemindmap/)
+
+- 📦如何安装
 
 已上架 Obsidian 插件市场，[点此直达](https://community.obsidian.md/plugins/simple-mind-map)，也可在插件市场中搜索 `simple mind map` 进行安装。
 
 如需手动安装，可参考教程：[中文](./docs/install_zh.md) | [English](./docs/install.md)
 
-- 更新记录
+- 🆕更新记录
 
 查看更新记录：[中文](./docs/changelog_zh.md) | [English](./docs/changelog.md)
 
-- 使用帮助
+- 🛠️使用帮助
 
 常见问题：[中文](./docs/help_zh.md) | [English](./docs/help.md)
 
@@ -24,11 +30,7 @@
 
 AI配置帮助：[中文](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
 
-- 专业版
-
-专业版功能清单、演示：[中文](https://github.com/wanglin2/obsmm-pro-functions) | [English](https://github.com/wanglin2/obsmm-pro-functions/blob/main/README_en.md)
-
-购买地址：[Pkmer](https://pkmer.cn/products/simplemindmap/)
+插件设置-文件-新建思维导图的文件名格式/粘贴图片的命名格式说明：[中文](./docs/filenameFormat_zh.md) | [English](./docs/filenameFormat.md)
 
 ## 独立客户端
 
