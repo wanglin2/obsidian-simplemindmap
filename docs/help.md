@@ -116,3 +116,21 @@
 - **Node Line Style Inheritance?**  
   If enabled, descendant nodes inherit line styles (unless they have custom styles).  
   *Toggle:* Settings → *Node Line Style Inherits from Ancestor*.  
+
+- You can double-click the note icon to open the note editor.
+
+1. You can activate a node, then click the note button in the top toolbar to open the note editor.
+
+2. For nodes that already have a note inserted, you can also directly double-click the note icon to open the note editor.
+
+- What does the [Auto Layout] option in the canvas right-click menu do?
+
+1. After you enable the [Free Drag] setting and drag to adjust the position of nodes, you can use this menu to restore them to their default positions.
+
+2. If you have set a [Bottom Margin] style for a node and want to revert it, you can click this menu.
+
+- How to resolve overlapping positions between a frame or frame text and other nodes?
+
+This can be resolved by setting a [Bottom Margin] style for the node above.
+
+If you have set a bottom margin for multiple nodes and want to revert it, you can click the [Auto Layout] option in the canvas right-click menu.
