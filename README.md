@@ -34,7 +34,7 @@ AI配置帮助：[中文](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
 
 - 🌐产品官网
 
-[http://www.sxmind.tech/](http://www.sxmind.tech/)
+[http://www.sxmind.cn/](http://www.sxmind.cn/)
 
 ## 独立客户端
 

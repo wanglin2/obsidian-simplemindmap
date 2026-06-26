@@ -35,7 +35,7 @@ Plugin Settings - Files - New Mind Map File Name Format/Paste Image Naming Forma
 
 - 🌐Product official website
 
-[http://www.sxmind.tech/](http://www.sxmind.tech/)
+[http://www.sxmind.cn/](http://www.sxmind.cn/)
 
 ## Independent client
 
