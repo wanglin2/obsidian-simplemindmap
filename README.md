@@ -34,11 +34,13 @@ AI配置帮助：[中文](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
 
 ## 独立客户端
 
-除了插件，本项目也提供独立的思维导图客户端，功能更强大更完整。
+除了插件，本项目也有独立的思维导图客户端，功能更强大、更完整。
 
 支持（Windows、macOS、Linux），支持（中文简体、繁體中文、English、Tiếng Việt、Русский、日本語、한국어、Deutsch、Français、Português）。
 
 [下载地址](https://github.com/wanglin2/mind-map/releases)、[了解更多](https://github.com/wanglin2/mind-map#%E6%80%9D%E7%BB%AA%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF)。
+
+> 温馨提醒：插件和客户端的专业版不互通，需单独购买，建议两者都体验后根据需求购买。
 
 ## 开源版本
 
