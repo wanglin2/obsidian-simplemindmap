@@ -1,4 +1,4 @@
-【English | [简体中文](./README_zh.md)】
+【English | [简体中文](https://github.com/wanglin2/obsidian-simplemindmap)】
 
 # SimpleMindMap Plugin
 
@@ -35,7 +35,7 @@ Plugin Settings - Files - New Mind Map File Name Format/Paste Image Naming Forma
 
 - 🌐Product official website
 
-[http://www.sxmind.cn/](http://www.sxmind.cn/)
+[http://sxmind.cn/](http://sxmind.cn/)
 
 ## Independent client
 
@@ -66,6 +66,15 @@ The underlying of this project is based on open-source projects [mind-map](https
 ![](./docs/imgs/6.png)
 
 ![](./docs/imgs/7.png)
+
+# Limitations
+
+- No support for standalone window editing
+- Some UI components don't sync with Obsidian theme colors
+
+# Bugs/Suggestions/Requests
+
+Submit via [Issues](https://github.com/wanglin2/obsidian-simplemindmap/issues).
 
 # Feature List
 
@@ -178,12 +187,3 @@ The underlying of this project is based on open-source projects [mind-map](https
 - Preview Markdown document as a mind map
 
   Add the 'Preview as Mind Map' option to the Markdown document view menu, which will display a pop-up window to render the document content through a mind map. It supports switching between structure and theme, and can be exported as PNG, SVG, or PDF files.
-
-# Limitations
-
-- No support for standalone window editing
-- Some UI components don't sync with Obsidian theme colors
-
-# Bugs/Suggestions/Requests
-
-Submit via [Issues](https://github.com/wanglin2/obsidian-simplemindmap/issues).

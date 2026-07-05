@@ -1,4 +1,4 @@
-【[English](./README_en.md) | 简体中文】
+【[English](https://github.com/wanglin2/obsidian-simplemindmap/blob/main/README_en.md) | 简体中文】
 
 # SimpleMindMap 插件
 
@@ -34,7 +34,7 @@ AI配置帮助：[中文](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
 
 - 🌐产品官网
 
-[http://www.sxmind.cn/](http://www.sxmind.cn/)
+[https://sxmind.cn/](https://sxmind.cn/)
 
 ## 独立客户端
 
@@ -65,6 +65,36 @@ AI配置帮助：[中文](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
 ![](./docs/imgs/6.png)
 
 ![](./docs/imgs/7.png)
+
+# 限制
+
+- 不支持独立窗口编辑
+- 部分 UI 组件的主题色无法同步 Obsidian 的主题色
+
+# bug、建议、需求
+
+有任何bug、建议、需求反馈可在[Issues](https://github.com/wanglin2/obsidian-simplemindmap/issues)里提交。
+
+# 关注我们
+
+<table>
+    <tr>
+        <td align="center" style="word-wrap: break-word; width: 75.0; height: 75.0">
+            <a href="#">
+                <img src="./docs/imgs/gzh.jpg" width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px"/>
+                <br />
+                <sub style="font-size:14px"><b>微信公众号</b></sub>
+            </a>
+        </td>
+        <td align="center" style="word-wrap: break-word; width: 75.0; height: 75.0">
+            <a href="#">
+                <img src="./docs/imgs/xhs.jpg" width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px"/>
+                <br />
+                <sub style="font-size:14px"><b>小红书</b></sub>
+            </a>
+        </td>
+    </tr>
+</table>
 
 # 功能清单
 
@@ -211,33 +241,3 @@ AI配置帮助：[中文](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
 - 将Markdown文档预览为思维导图
 
   Markdown文档视图更多菜单中增加【预览为思维导图】选项，点击后显示一个弹窗将文档内容通过思维导图渲染出来，支持切换结构、主题，可导出为png、svg、pdf文件；
-
-# 限制
-
-- 不支持独立窗口编辑
-- 部分 UI 组件的主题色无法同步 Obsidian 的主题色
-
-# bug、建议、需求
-
-有任何bug、建议、需求反馈可在[Issues](https://github.com/wanglin2/obsidian-simplemindmap/issues)里提交。
-
-# 关注我们
-
-<table>
-    <tr>
-        <td align="center" style="word-wrap: break-word; width: 75.0; height: 75.0">
-            <a href="#">
-                <img src="./docs/imgs/gzh.jpg" width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px"/>
-                <br />
-                <sub style="font-size:14px"><b>微信公众号</b></sub>
-            </a>
-        </td>
-        <td align="center" style="word-wrap: break-word; width: 75.0; height: 75.0">
-            <a href="#">
-                <img src="./docs/imgs/xhs.jpg" width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px"/>
-                <br />
-                <sub style="font-size:14px"><b>小红书</b></sub>
-            </a>
-        </td>
-    </tr>
-</table>

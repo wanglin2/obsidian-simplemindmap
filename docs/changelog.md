@@ -1,5 +1,28 @@
 # Official Version
 
+## 0.2.2
+
+Fixes:
+1. Fixed an issue where the loading state would not close when selecting to import as a child of the active node while no node was activated;
+2. Fixed an issue where the fill-in-blank mode in presentation mode would not take effect in real time and required reopening the window to apply;
+3. Fixed incorrect protocol display when reloading regular hyperlinks added to nodes;
+4. Optimized the display position of the file list popup triggered by typing [[ within node text;
+5. Fixed an issue where keyboard shortcuts did not work inside modals from the Modal Opener plugin;
+6. Fixed failed operations when opening files as Markdown documents for some users;
+7. Fixed an issue where clicking the [Test] button after finishing AI configuration prompted incomplete configuration;
+8. Fixed an issue where links added to text of free tree nodes were not saved to the # linkdata block in the source file;
+9. Fixed an issue where text from free tree nodes was not saved to the # textdata block in the source file when the [Enable Obsidian Search] setting was turned on;
+
+New Features:
+1. Clicking the filename input box at the top of the mind map editing tab automatically selects the text before the .smm extension;
+2. Press the F2 shortcut to rename the current mind map file when no node is activated;
+3. Added support for custom protocols other than http/https when adding regular hyperlinks to nodes;
+4. Added a setting in plugin options to switch math formula rendering modes;
+5. When typing [[ inside node text, the text following [[ is used as the search filter for the file list, and the search box in the file list is removed;
+6. Added an Obsidian command labeled [Preview as Mind Map];
+7. Support converting between mind maps and Markdown by creating new files during conversion;
+8. Added compatibility for xxx:// custom protocol links inserted via [[]] inside node text;
+
 ## 0.2.0
 
 New Features:
