@@ -1,5 +1,30 @@
 # Official Version
 
+## 0.2.3
+
+Fixes:
+1. Attempted to fix the issue where clicking the login button has no response on iOS systems;
+2. Fixed the issue where enabling fill-in-the-blank mode in one tab affects other tabs when multiple tabs are open simultaneously;
+3. Fixed the issue where images inserted into nodes are not saved in `![[]]` format when stored in the `# linkdata` block of the source file;
+4. Fixed the issue where the replace button appears when using search in a mind map when a new tab previews Markdown as a mind map;
+5. Fixed the issue where the outer frame button in the top toolbar is not disabled when the root node is activated;
+6. Fixed the parsing failure caused by AI returning data in the format `<think>thinking content</think>main content`;
+7. Fixed the generation failure caused by an occasional invalid JSON response during AI streaming generation;
+8. Fixed the error that occurs when clicking an internal link in `[[xxx|xxx]]` format inserted into node text;
+
+New Features:
+1. When previewing a Markdown document as a mind map, if multiple root nodes are parsed, an additional root node will be added with the current file name as its text;
+2. Added a "Search under this node" menu item to the node right-click menu;
+3. The settings page reloads after modifying the language option in plugin settings;
+4. Plugin Settings: Added tooltip for directory-related settings — only applies to newly inserted files afterwards; existing files will not be moved automatically;
+5. Plugin AI Settings: Automatically fetches the list of available models after the API and key are filled in;
+6. Automatically switches to non-streaming request mode for AI interfaces that do not support cross-origin requests;
+7. Automatically converts `[[]]` format links when converting Markdown to a mind map or importing Markdown;
+8. Dragging files from the Obsidian file list or local computer onto a node now adds them to the node text as `[[]]` link format, instead of hyperlink icons;
+9. Removed the "Obsidian File" and "Local File" options from the dialog opened by the "Hyperlink" button in the top toolbar; only hyperlinks are supported now;
+10. References in the mind map are updated synchronously when the file name or location of inserted images/files changes;
+11. The "Preview as Mind Map" Obsidian command now toggles the preview — shows the preview when none exists, and closes it when one is already open;
+
 ## 0.2.2
 
 Fixes:

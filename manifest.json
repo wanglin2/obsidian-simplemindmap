@@ -1,10 +1,10 @@
 {
   "id": "simple-mind-map",
   "name": "Simple mind map",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "minAppVersion": "1.8.3",
   "description": "A relatively powerful mind map.",
   "author": "wanglin",
-  "authorUrl": "https://github.com/wanglin2",
+  "authorUrl": "https://sxmind.cn",
   "isDesktopOnly": false
 }
