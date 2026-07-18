@@ -8,7 +8,7 @@
 
 - 🚀专业版
 
-专业版功能清单、演示：[中文](https://github.com/wanglin2/obsmm-pro-functions) | [English](https://github.com/wanglin2/obsmm-pro-functions/blob/main/README_en.md)
+专业版功能清单、演示：[中文](https://www.sxmind.cn/docs/pro/) | [English](https://www.sxmind.cn/docs/pro/en.html)
 
 购买地址：[Pkmer](https://pkmer.cn/products/simplemindmap/)
 
@@ -16,21 +16,21 @@
 
 已上架 Obsidian 插件市场，[点此直达](https://community.obsidian.md/plugins/simple-mind-map)，也可在插件市场中搜索 `simple mind map` 进行安装。
 
-如需手动安装，可参考教程：[中文](./docs/install_zh.md) | [English](./docs/install.md)
+如需手动安装，可参考教程：[中文](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/install) | [English](https://www.sxmind.cn/docs/en/index.html?p=obsidian/install)
 
 - 🆕更新记录
 
-查看更新记录：[中文](./docs/changelog_zh.md) | [English](./docs/changelog.md)
+查看更新记录：[中文](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/changelog) | [English](https://www.sxmind.cn/docs/en/index.html?p=obsidian/changelog)
 
 - 🛠️使用帮助
 
-常见问题：[中文](./docs/help_zh.md) | [English](./docs/help.md)
+常见问题：[中文](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/help) | [English](./docs/help.md)
 
-图床配置帮助：[中文](./docs/imageHosting_zh.md) | [English](./docs/imageHosting.md)
+图床配置帮助：[中文](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/imageHosting) | [English](./docs/imageHosting.md)
 
 AI配置帮助：[中文](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
 
-插件设置-文件-新建思维导图的文件名格式/粘贴图片的命名格式说明：[中文](./docs/filenameFormat_zh.md) | [English](./docs/filenameFormat.md)
+插件设置-文件-新建思维导图的文件名格式/粘贴图片的命名格式说明：[中文](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/filenameFormat) | [English](https://www.sxmind.cn/docs/en/index.html?p=obsidian/filenameFormat)
 
 - 🌐产品官网
 
