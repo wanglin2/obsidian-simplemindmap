@@ -12,6 +12,8 @@ Professional version feature list and demonstration: [中文](https://www.sxmind
 
 Purchase address: [Pkmer](https://pkmer.cn/products/simplemindmap/)
 
+> Warning: This plugin is primarily for PC users, and the mobile version is not yet complete. If you primarily use mobile devices, please consider purchasing the professional version.
+
 - 📦How to install
 
 Obsidian plugin market has been launched, [click here to go directly](https://community.obsidian.md/plugins/simple-mind-map). You can also search for the `simple mind map` in the plugin market for installation.

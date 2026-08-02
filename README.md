@@ -12,6 +12,8 @@
 
 购买地址：[Pkmer](https://pkmer.cn/products/simplemindmap/)
 
+> 温馨提醒：本插件为PC端优先，移动端很不完善，如你主要在移动端使用，那么请谨慎考虑购买。
+
 - 📦如何安装
 
 已上架 Obsidian 插件市场，[点此直达](https://community.obsidian.md/plugins/simple-mind-map)，也可在插件市场中搜索 `simple mind map` 进行安装。
