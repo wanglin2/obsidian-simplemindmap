@@ -8,7 +8,7 @@ The best mind map plugin for making Obsidian.
 
 - 🚀Professional version
 
-Professional version feature list and demonstration: [中文](https://www.sxmind.cn/docs/pro/) | [English](https://www.sxmind.cn/docs/pro/en.html)
+Professional version feature list and demonstration: [Address](https://www.sxmind.cn/docs/pro/en.html)
 
 Purchase address: [Pkmer](https://pkmer.cn/products/simplemindmap/)
 
@@ -18,22 +18,21 @@ Purchase address: [Pkmer](https://pkmer.cn/products/simplemindmap/)
 
 Obsidian plugin market has been launched, [click here to go directly](https://community.obsidian.md/plugins/simple-mind-map). You can also search for the `simple mind map` in the plugin market for installation.
 
-If manual installation is required, please refer to the tutorial:
-[中文](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/install) | [English](https://www.sxmind.cn/docs/en/index.html?p=obsidian/install)
+If manual installation is required, please refer to the [tutorialEnglish](https://www.sxmind.cn/docs/en/index.html?p=obsidian/install)
 
 - 🆕Changelog
 
-View update records: [中文](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/changelog) | [English](https://www.sxmind.cn/docs/en/index.html?p=obsidian/changelog)
+[Changelog](https://www.sxmind.cn/docs/en/index.html?p=obsidian/changelog)
 
 - 🛠️Help
 
-Common problem: [中文](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/help) | [English](https://www.sxmind.cn/docs/en/index.html?p=obsidian/help)
+[Common problem](https://www.sxmind.cn/docs/en/index.html?p=obsidian/help)
 
-Image Hosting Help: [中文](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/imageHosting) | [English](https://www.sxmind.cn/docs/en/index.html?p=obsidian/imageHosting)
+[Image Hosting Help](https://www.sxmind.cn/docs/en/index.html?p=obsidian/imageHosting)
 
-AI configuration assistance: [中文](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
+[AI configuration assistance](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
 
-Plugin Settings - Files - New Mind Map File Name Format/Paste Image Naming Format Instructions: [中文](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/filenameFormat) | [English](https://www.sxmind.cn/docs/en/index.html?p=obsidian/filenameFormat)
+Plugin Settings - Files - New Mind Map File Name Format/Paste Image Naming Format Instructions: [Address](https://www.sxmind.cn/docs/en/index.html?p=obsidian/filenameFormat)
 
 - 🌐Product official website
 
