@@ -8,9 +8,7 @@
 
 - 🚀专业版
 
-专业版功能清单、演示：[地址](https://www.sxmind.cn/docs/pro/)
-
-购买地址：[Pkmer](https://pkmer.cn/products/simplemindmap/)
+专业版功能清单、演示：[地址](https://www.sxmind.cn/docs/pro/) | 购买地址：[Pkmer](https://pkmer.cn/products/simplemindmap/)
 
 > 温馨提醒：本插件为PC端优先，移动端很不完善，如你主要在移动端使用，那么请谨慎考虑购买。
 
@@ -26,11 +24,7 @@
 
 - 🛠️使用帮助
 
-[常见问题](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/help)
-
-[图床配置帮助](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/imageHosting)
-
-[AI配置帮助](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
+[常见问题](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/help) | [图床配置帮助](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/imageHosting) | [AI配置帮助](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
 
 插件设置-文件-新建思维导图的文件名格式/粘贴图片的命名格式说明：[地址](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/filenameFormat)
 

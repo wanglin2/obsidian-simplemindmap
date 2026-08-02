@@ -26,11 +26,7 @@ If manual installation is required, please refer to the [tutorialEnglish](https:
 
 - 🛠️Help
 
-[Common problem](https://www.sxmind.cn/docs/en/index.html?p=obsidian/help)
-
-[Image Hosting Help](https://www.sxmind.cn/docs/en/index.html?p=obsidian/imageHosting)
-
-[AI configuration assistance](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
+[Common problem](https://www.sxmind.cn/docs/en/index.html?p=obsidian/help) | [Image Hosting Help](https://www.sxmind.cn/docs/en/index.html?p=obsidian/imageHosting) | [AI configuration assistance](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
 
 Plugin Settings - Files - New Mind Map File Name Format/Paste Image Naming Format Instructions: [Address](https://www.sxmind.cn/docs/en/index.html?p=obsidian/filenameFormat)
 
