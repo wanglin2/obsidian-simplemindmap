@@ -14,19 +14,11 @@
 
 - 📦如何安装
 
-已上架 Obsidian 插件市场，[点此直达](https://community.obsidian.md/plugins/simple-mind-map)，也可在插件市场中搜索 `simple mind map` 进行安装。
-
-如需手动安装，可参考[教程](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/install)
-
-- 🆕更新记录
-
-[更新记录](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/changelog)
+已上架 Obsidian 插件市场，[点此直达](https://community.obsidian.md/plugins/simple-mind-map)，也可在插件市场中搜索 `simple mind map` 进行安装。如想手动安装，可参考[教程](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/install)。
 
 - 🛠️使用帮助
 
-[常见问题](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/help) | [图床配置帮助](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/imageHosting) | [AI配置帮助](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
-
-插件设置-文件-新建思维导图的文件名格式/粘贴图片的命名格式说明：[地址](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/filenameFormat)
+[更新记录](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/changelog) | [常见问题](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/help) | [图床配置帮助](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/imageHosting) | [AI配置帮助](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg) | [插件设置-文件-新建思维导图的文件名格式/粘贴图片的命名格式说明](https://www.sxmind.cn/docs/zh/index.html?p=obsidian/filenameFormat)
 
 - 🌐产品官网
 

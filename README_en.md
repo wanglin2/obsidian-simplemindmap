@@ -16,19 +16,11 @@ Purchase address: [Pkmer](https://pkmer.cn/products/simplemindmap/)
 
 - 📦How to install
 
-Obsidian plugin market has been launched, [click here to go directly](https://community.obsidian.md/plugins/simple-mind-map). You can also search for the `simple mind map` in the plugin market for installation.
-
-If manual installation is required, please refer to the [tutorialEnglish](https://www.sxmind.cn/docs/en/index.html?p=obsidian/install)
-
-- 🆕Changelog
-
-[Changelog](https://www.sxmind.cn/docs/en/index.html?p=obsidian/changelog)
+Obsidian plugin market has been launched, [click here to go directly](https://community.obsidian.md/plugins/simple-mind-map). You can also search for the `simple mind map` in the plugin market for installation. If manual installation is required, please refer to the [tutorialEnglish](https://www.sxmind.cn/docs/en/index.html?p=obsidian/install).
 
 - 🛠️Help
 
-[Common problem](https://www.sxmind.cn/docs/en/index.html?p=obsidian/help) | [Image Hosting Help](https://www.sxmind.cn/docs/en/index.html?p=obsidian/imageHosting) | [AI configuration assistance](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg)
-
-Plugin Settings - Files - New Mind Map File Name Format/Paste Image Naming Format Instructions: [Address](https://www.sxmind.cn/docs/en/index.html?p=obsidian/filenameFormat)
+[Changelog](https://www.sxmind.cn/docs/en/index.html?p=obsidian/changelog) | [Common problem](https://www.sxmind.cn/docs/en/index.html?p=obsidian/help) | [Image Hosting Help](https://www.sxmind.cn/docs/en/index.html?p=obsidian/imageHosting) | [AI configuration assistance](https://mp.weixin.qq.com/s/jybRdfuUhF5Af1SesLItfg) | [Plugin Settings - Files - New Mind Map File Name Format/Paste Image Naming Format Instructions](https://www.sxmind.cn/docs/en/index.html?p=obsidian/filenameFormat)
 
 - 🌐Product official website
 
