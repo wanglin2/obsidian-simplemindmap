@@ -2,7 +2,7 @@
 
 # SimpleMindMap 插件
 
-做 Obsidian 最好用的思维导图插件。
+一个功能和颜值并存的思维导图。
 
 > 支持语言：中文简体、繁體中文、English、Việt
 
@@ -38,30 +38,13 @@
 
 本项目底层基于开源项目 [mind-map](https://github.com/wanglin2/mind-map) ，该项目提供了开源的思维导图JavaScript库及web版。
 
-# 截图
-
-![](./docs/imgs/1.png)
-
-![](./docs/imgs/2.png)
-
-![](./docs/imgs/3.png)
-
-![](./docs/imgs/4.png)
-
-![](./docs/imgs/5.png)
-
-![](./docs/imgs/6.png)
-
-![](./docs/imgs/7.png)
-
-# 限制
-
-- 不支持独立窗口编辑
-- 部分 UI 组件的主题色无法同步 Obsidian 的主题色
+> 本插件源码不开源。
 
 # bug、建议、需求
 
 有任何bug、建议、需求反馈可在[Issues](https://github.com/wanglin2/obsidian-simplemindmap/issues)里提交。
+
+如你比较急，也可以发送邮件至：1013335014@qq.com
 
 # 关注我们
 
@@ -83,6 +66,27 @@
         </td>
     </tr>
 </table>
+
+# 截图
+
+![](./docs/imgs/1.png)
+
+![](./docs/imgs/2.png)
+
+![](./docs/imgs/3.png)
+
+![](./docs/imgs/4.png)
+
+![](./docs/imgs/5.png)
+
+![](./docs/imgs/6.png)
+
+![](./docs/imgs/7.png)
+
+# 限制
+
+- 不支持独立窗口编辑
+- 部分 UI 组件的主题色无法同步 Obsidian 的主题色
 
 # 功能清单
 

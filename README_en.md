@@ -2,7 +2,7 @@
 
 # SimpleMindMap Plugin
 
-The best mind map plugin for making Obsidian.
+A mind map plugin with a lot of features and a good look.
 
 > Support languages: 中文简体、繁體中文、English、Việt
 
